@@ -17,7 +17,6 @@ model Event {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   signups     EventSignup[]
-  images      EventImage[]
 }
 
 model EventSignup {
@@ -31,13 +30,3 @@ model EventSignup {
 
   @@index([eventId])
 }
-
-model EventImage {
-  id        String   @id @default(cuid())
-  eventId   String
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  url       String
-  createdAt DateTime @default(now())
-
-  @@index([eventId])
-} 
