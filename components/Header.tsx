@@ -12,7 +12,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LanguageSelector } from "./LanguageSelector";
 import { ThemeToggle } from "./ThemeToggle";
-import { Menu } from "lucide-react";
+import { Menu, LogIn } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Sheet,
@@ -78,7 +78,8 @@ export default function Header() {
           <SignedOut>
             <SignInButton mode="modal">
               <button className="text-white hover:text-accent transition-colors">
-                Sign in
+                <span className="hidden md:inline">Sign in</span>
+                <LogIn className="h-5 w-5 md:hidden" />
               </button>
             </SignInButton>
           </SignedOut>
