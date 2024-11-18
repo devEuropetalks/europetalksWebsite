@@ -1,19 +1,18 @@
 import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { eventId: string } }
-) {
+interface RouteContext {
+  params: Promise<{
+    eventId: string;
+  }>;
+}
+
+export async function DELETE(req: Request, { params }: RouteContext) {
   try {
-    const { eventId } = params;
-
+    const { eventId } = await params;
     await db.event.delete({
-      where: {
-        id: eventId,
-      },
+      where: { id: eventId },
     });
-
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Error deleting event:", error);
@@ -21,18 +20,13 @@ export async function DELETE(
   }
 }
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { eventId: string } }
-) {
+export async function PATCH(req: Request, { params }: RouteContext) {
   try {
-    const { eventId } = params;
+    const { eventId } = await params;
     const body = await req.json();
 
     const event = await db.event.update({
-      where: {
-        id: eventId,
-      },
+      where: { id: eventId },
       data: {
         title: body.title,
         description: body.description,

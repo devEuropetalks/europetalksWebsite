@@ -1,5 +1,4 @@
 import { db } from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -19,8 +18,6 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const { sessionClaims } = await auth();
-
     const body = await req.json();
     const event = await db.event.create({
       data: {
@@ -29,7 +26,6 @@ export async function POST(req: Request) {
         date: new Date(body.date),
         location: body.location,
         imageUrl: body.imageUrl,
-        createdBy: sessionClaims.userId,
       },
     });
 
