@@ -12,6 +12,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LanguageSelector } from "./LanguageSelector";
 import { ThemeToggle } from "./ThemeToggle";
+import { Menu } from "lucide-react";
+import { Button } from "./ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet";
 
 export default function Header() {
   const pathname = usePathname();
@@ -44,7 +53,9 @@ export default function Header() {
             priority
           />
         </Link>
-        <nav className="flex items-center space-x-6">
+
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-6">
           {navLinks.map(({ href, label }) => (
             <Link
               key={href}
@@ -57,6 +68,7 @@ export default function Header() {
             </Link>
           ))}
         </nav>
+
         <div className="flex items-center space-x-4">
           <LanguageSelector />
           <ThemeToggle />
@@ -70,6 +82,33 @@ export default function Header() {
               </button>
             </SignInButton>
           </SignedOut>
+
+          {/* Mobile Menu */}
+          <Sheet>
+            <SheetTrigger asChild className="md:hidden">
+              <Button variant="ghost" size="icon" className="text-white">
+                <Menu className="h-6 w-6" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Menu</SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col space-y-4 mt-6">
+                {navLinks.map(({ href, label }) => (
+                  <Link
+                    key={href}
+                    href={href}
+                    className={`text-foreground hover:text-accent transition-colors ${
+                      pathname === href ? "text-accent" : ""
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>
