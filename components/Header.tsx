@@ -51,6 +51,7 @@ export default function Header() {
             height={100}
             className="h-full w-auto object-contain"
             priority
+            quality={100}
           />
         </Link>
 
