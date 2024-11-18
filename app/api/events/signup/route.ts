@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport(
-  process.env.EVENT_SIGNUP_EMAIL_SERVER as string
-);
+const transporter = nodemailer.createTransport({
+  host: process.env.EMAIL_SERVER_HOST,
+  port: Number(process.env.EMAIL_SERVER_PORT),
+  auth: {
+    user: process.env.EVENT_SIGNUP_EMAIL_SERVER_USER,
+    pass: process.env.EVENT_SIGNUP_EMAIL_SERVER_PASSWORD,
+  },
+  secure: true,
+});
 
 export async function POST(request: Request) {
   try {
@@ -25,7 +31,7 @@ export async function POST(request: Request) {
     // Send notification to admin with motivation included
     await transporter.sendMail({
       from: process.env.EVENT_SIGNUP_EMAIL_FROM,
-      to: process.env.ADMIN_EMAIL,
+      to: process.env.SEND_TO_EMAIL,
       subject: "New Event Registration",
       html: `
         <h1>New Registration</h1>
