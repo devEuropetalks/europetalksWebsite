@@ -37,9 +37,9 @@ export default async function HomePage() {
                 </Button>
                 <Button
                   size="lg"
-                  variant="outline"
+                  variant="secondary"
                   asChild
-                  className="bg-transparent text-white hover:bg-white/10"
+                  className="bg-white/20 hover:bg-white/30 text-white border-white"
                 >
                   <Link href="/about">Learn More</Link>
                 </Button>

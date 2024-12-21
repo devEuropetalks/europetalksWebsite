@@ -47,8 +47,8 @@ export default function Header() {
           <Image
             src="/images/etlogo.png"
             alt="Logo"
-            width={100}
-            height={100}
+            width={768}
+            height={182}
             className="h-full w-auto object-contain"
             priority
             quality={100}
