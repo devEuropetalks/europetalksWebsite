@@ -41,7 +41,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-blue-900">
+    <header className="sticky top-0 z-50 w-full bg-blue-900">
       <div className="container flex h-14 items-center justify-between max-w-6xl mx-auto px-4">
         <Link href="/" className="mr-4 h-full">
           <Image
