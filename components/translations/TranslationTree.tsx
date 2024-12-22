@@ -29,11 +29,12 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
         const response = await fetch(
           `/api/translations?language=${language}&namespace=${namespace}`
         );
+        const data = await response.json();
+        
         if (!response.ok) {
-          const data = await response.json();
           throw new Error(data.error || "Failed to load translations");
         }
-        const data = await response.json();
+        
         setTranslations(data);
       } catch (error) {
         console.error("Error loading translations:", error);
