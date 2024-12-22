@@ -1,15 +1,16 @@
 {
   "navigation": {
-    "home": "Home",
-    "about": "About",
-    "events": "Events",
-    "gallery": "Gallery",
+    "home": "Maison",
+    "about": "À propos",
+    "events": "Événements",
+    "gallery": "Galerie",
     "contact": "Contact",
-    "admin": "Admin",
-    "cloud": "Cloud"
+    "admin": "Administrateur",
+    "cloud": "Nuage"
   },
-  "auth": {
-    "signIn": "Sign In",
+  "other": {
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
     "menu": "Menu"
   }
-} 
+}

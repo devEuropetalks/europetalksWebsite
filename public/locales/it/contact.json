@@ -1,16 +1,16 @@
 {
-  "title": "Contact Us",
-  "description": "Get in touch with us for any questions or inquiries.",
+  "title": "Contattaci",
+  "description": "Per qualsiasi domanda o richiesta contattateci.",
   "form": {
-    "name": "Name",
-    "email": "Email",
-    "subject": "Subject",
-    "message": "Message",
-    "submit": "Send Message"
+    "name": "Nome",
+    "email": "E-mail",
+    "subject": "Soggetto",
+    "message": "Messaggio",
+    "submit": "Invia messaggio"
   },
   "info": {
-    "title": "Other Ways to Connect",
-    "email": "Email us at:",
-    "social": "Follow us on social media:"
+    "title": "Altri modi per connettersi",
+    "email": "Inviateci un'e-mail a:",
+    "social": "Seguici sui social media:"
   }
-} 
+}

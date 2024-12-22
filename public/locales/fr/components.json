@@ -1,8 +1,12 @@
 {
   "languageSelector": {
-    "label": "Select language"
+    "label": "Sélectionner la langue"
   },
-  "auth":{
-    "signIn": "Sign in"
+  "theme": {
+    "toggleTheme": "Basculer le thème"
+  },
+  "events": {
+    "eventEnded": "Événement terminé",
+    "signUp": "S'inscrire"
   }
 }

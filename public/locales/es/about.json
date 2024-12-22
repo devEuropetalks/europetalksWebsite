@@ -1,35 +1,35 @@
 {
-  "title": "About EuropeTalks",
+  "title": "Acerca de EuropeTalks",
   "whoWeAre": {
-    "title": "Who We Are",
-    "intro": "We are a group of activists from all over Europe who are united in one goal – to boost European cooperation and solidarity!",
-    "mission": "Our main goal is to provide a platform for European democrats, to connect like-minded people from all over Europe and beyond and to work together for a common European vision, based on social democratic and socialist values. We want to enable people to share their values and visions on how to further develop and shape the European Union."
+    "title": "Quienes somos",
+    "intro": "Somos un grupo de activistas de toda Europa que estamos unidos en un objetivo: ¡impulsar la cooperación y la solidaridad europeas!",
+    "mission": "Nuestro principal objetivo es ofrecer una plataforma para los demócratas europeos, conectar a personas con ideas afines de toda Europa y más allá y trabajar juntos en pos de una visión europea común, basada en valores socialdemócratas y socialistas. Queremos permitir que las personas compartan sus valores y visiones sobre cómo seguir desarrollando y dando forma a la Unión Europea."
   },
   "leadership": {
-    "title": "Leadership",
-    "intro": "Mainly responsible for EuropeTalks is:",
+    "title": "Liderazgo",
+    "intro": "Los principales responsables de EuropeTalks son:",
     "name": "Vivien Costanzo",
     "role": {
-      "title": "Member of the European Parliament",
-      "party": "Social Democratic Party of Germany"
+      "title": "Miembro del Parlamento Europeo",
+      "party": "Partido Socialdemócrata de Alemania"
     }
   },
   "background": {
-    "title": "Background",
-    "conference": "It all started after the \"Europe, we need to talk!\" – conference in 2018, which was organized by the Jusos and SPD Hessen-Süd in Germany. This was supported by Udo Bullmann, MEP and Michael Roth, German Minister Of State For Europe In The Foreign Ministry.",
-    "activists": "Activists from all over Europe were invited to talk about common issues like social inequality across member states as well as our European identity. We looked for collaborations and inspirations to find answers to the problems and challenges we face all over Europe. At the conference we all saw the need to keep on working together on these issues and many more – direct and without intermediary – as a European grassroot movement. At the end of our kick-off event, a resolution was adopted in the manifesto \"Europe, we need to talk\", which serves as the basis for further cooperation and common policy making.",
-    "perspective": "We usually discuss Europe in our parties from a national perspective. We want to establish a European perspective. Every local party and political committee can create an exchange through social democratic and socialist partner organizations. This can be achieved through local exchange projects, digital networking and much more. We link every regional group on a long-term and sustainable basis in order make sure Europe is at the centre of in our daily party work.",
-    "countries": "We are a group of activists from 14 different countries: Spain, France, Lithuania, Belgium, the Netherlands, Germany, Portugal, Poland, Italy, Croatia, Ukraine, Austria, Latvia as well as the UK. But we are always looking for new activists from all over Europe and beyond. Are you interested? Just get in touch with us."
+    "title": "Fondo",
+    "conference": "Todo empezó después de la conferencia «¡Europa, tenemos que hablar!» de 2018, organizada por la Jusos y el SPD Hessen-Süd en Alemania, con el apoyo del eurodiputado Udo Bullmann y del ministro de Estado para Europa del Ministerio de Asuntos Exteriores alemán, Michael Roth.",
+    "activists": "Se invitó a activistas de toda Europa a hablar sobre cuestiones comunes como la desigualdad social entre los Estados miembros y nuestra identidad europea. Buscamos colaboraciones e inspiraciones para encontrar respuestas a los problemas y desafíos que enfrentamos en toda Europa. En la conferencia, todos vimos la necesidad de seguir trabajando juntos en estas cuestiones y muchas más, de forma directa y sin intermediarios, como un movimiento de base europeo. Al final de nuestro evento inaugural, se adoptó una resolución en el manifiesto \"Europa, tenemos que hablar\", que sirve como base para una mayor cooperación y la formulación de políticas comunes.",
+    "perspective": "En nuestros partidos, normalmente hablamos de Europa desde una perspectiva nacional. Queremos establecer una perspectiva europea. Cada partido local y comité político puede crear un intercambio a través de organizaciones socias socialdemócratas y socialistas. Esto se puede lograr a través de proyectos de intercambio locales, redes digitales y mucho más. Conectamos a todos los grupos regionales de forma sostenible y a largo plazo para asegurarnos de que Europa esté en el centro de nuestro trabajo diario en el partido.",
+    "countries": "Somos un grupo de activistas de 14 países diferentes: España, Francia, Lituania, Bélgica, Países Bajos, Alemania, Portugal, Polonia, Italia, Croacia, Ucrania, Austria, Letonia y el Reino Unido. Pero siempre estamos buscando nuevos activistas de toda Europa y más allá. ¿Estás interesado? Ponte en contacto con nosotros."
   },
   "howWeWork": {
-    "title": "How We Work",
-    "intro": "We, as Socialists and Social Democrats, must embody the European idea and create European networks at every level. Only then can European policies be credibly represented and promoted.",
-    "method": "We make this happen by connecting people in every local organization. In order to support individuals to understand different point of views, to share political experiences, and to work together on solutions to common issues we organize workshops and events – both online and in person.",
-    "workshops": "Our workshops tackle specific issues and offer the possibility to exchange ideas and find solutions to common European problems. How can we better deal with migration and refugees in the European Union in a humane way? What can we do to make housing affordable and sustainable? What would a socialist international security policy look like?",
-    "papers": "These workshops form the basis for our joint work and our positioning in terms of specific policy issues. At the end of each workshop, we draw up discussion papers, which are carried into the individual organizations and which are intended to contribute to the formation of policy in these organizations. This is the only way we can ensure that European issues are included in the debate and discussed with a real European perspective.",
-    "support": "We also support local party organisations to connect each other. Are you part of a local committee and need support in building a European network? Then write to us!"
+    "title": "Cómo trabajamos",
+    "intro": "Nosotros, como socialistas y socialdemócratas, debemos encarnar la idea europea y crear redes europeas a todos los niveles. Sólo así se podrán representar y promover de forma creíble las políticas europeas.",
+    "method": "Para lograrlo, conectamos a personas de todas las organizaciones locales. Para ayudar a las personas a comprender diferentes puntos de vista, compartir experiencias políticas y trabajar juntas en la búsqueda de soluciones a problemas comunes, organizamos talleres y eventos, tanto en línea como en persona.",
+    "workshops": "Nuestros talleres abordan cuestiones específicas y ofrecen la posibilidad de intercambiar ideas y encontrar soluciones a problemas europeos comunes. ¿Cómo podemos abordar mejor y de forma más humana la migración y los refugiados en la Unión Europea? ¿Qué podemos hacer para que la vivienda sea asequible y sostenible? ¿Cómo sería una política de seguridad internacional socialista?",
+    "papers": "Estos talleres son la base de nuestro trabajo conjunto y de nuestro posicionamiento en torno a cuestiones políticas concretas. Al final de cada taller, elaboramos documentos de debate que se trasladan a las distintas organizaciones y que tienen como objetivo contribuir a la formulación de políticas en dichas organizaciones. Sólo así podemos garantizar que las cuestiones europeas se incluyan en el debate y se discutan desde una perspectiva verdaderamente europea.",
+    "support": "También apoyamos a las organizaciones partidarias locales para que se conecten entre sí. ¿Formas parte de un comité local y necesitas apoyo para construir una red europea? ¡Escríbenos!"
   },
   "getToKnowUs": {
-    "title": "Get to know us"
+    "title": "Conócenos"
   }
-} 
+}

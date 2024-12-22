@@ -1,47 +1,46 @@
 {
-    "events": {
-      "title": "Veranstaltungen",
-      "viewPastEvents": "Veranstaltungen ansehen",
-      "loading": "Veranstaltungen werden geladen..."
+  "events": {
+    "title": "Veranstaltungen",
+    "viewPastEvents": "Vergangene Veranstaltungen anzeigen",
+    "loading": "Ereignisse werden geladen..."
+  },
+  "pastEvents": {
+    "title": "Vergangene Veranstaltungen",
+    "viewUpcomingEvents": "Kommende Events anzeigen",
+    "noEvents": "Keine Events gefunden"
+  },
+  "eventCard": {
+    "signUp": "Melden Sie sich an",
+    "eventEnded": "Veranstaltung beendet",
+    "readMore": "Mehr lesen",
+    "date": "Datum",
+    "time": "Zeit",
+    "location": "Standort",
+    "online": "Online",
+    "hybrid": "Hybrid",
+    "inPerson": "Persönlich"
+  },
+  "signUp": {
+    "title": "Registrieren Sie sich für",
+    "fullName": {
+      "label": "Name",
+      "error": "Der Name muss mindestens 3 Zeichen lang sein"
     },
-    "pastEvents": {
-      "title": "Veranstaltungen",
-      "viewUpcomingEvents": "Veranstaltungen ansehen",
-      "noEvents": "Keine Veranstaltungen gefunden"
+    "email": {
+      "label": "E-Mail",
+      "error": "Ungültige E-Mail-Adresse"
     },
-    "eventCard": {
-      "signUp": "Anmelden",
-      "eventEnded": "Veranstaltung beendet",
-      "readMore": "Mehr lesen",
-      "date": "Datum",
-      "time": "Zeit",
-      "location": "Ort",
-      "online": "Online",
-      "hybrid": "Hybrid",
-      "inPerson": "In Person"
+    "motivation": {
+      "label": "Motivation",
+      "error": "Bitte erläutern Sie in mindestens 50 Zeichen, warum Sie an dieser Veranstaltung teilnehmen möchten..."
     },
-    "signUp": {
-      "title": "Sign up for",
-      "fullName": {
-        "label": "Name",
-        "error": "Name muss mindestens 3 Zeichen lang sein"
-      },
-      "email": {
-        "label": "Email",
-        "error": "Ungültige E-Mail-Adresse"
-      },
-      "motivation": {
-        "label": "Motivation",
-        "error": "Bitte erklären Sie in mindestens 50 Zeichen, warum Sie an dieser Veranstaltung teilnehmen möchten..."
-      },
-      "submit": "Anmelden",
-      "submitting": "Anmelden...",
-      "cancel": "Abbrechen",
-      "success": "Erfolgreich",
-      "successMessage": "Sie haben sich erfolgreich für die Veranstaltung angemeldet.",
-      "error": "Fehler",
-      "errorMessage": "Fehler beim Anmelden. Bitte versuchen Sie es erneut.",
-      "eventEnded": "Veranstaltung beendet"
-    }
+    "submit": "Melden Sie sich an",
+    "submitting": "Anmeldung...",
+    "cancel": "Stornieren",
+    "success": "Erfolg",
+    "successMessage": "Sie haben sich erfolgreich für die Veranstaltung angemeldet.",
+    "error": "Fehler",
+    "errorMessage": "Bei der Registrierung ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "eventEnded": "Veranstaltung beendet"
   }
-  
+}

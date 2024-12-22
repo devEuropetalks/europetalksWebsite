@@ -1,28 +1,28 @@
 {
   "hero": {
-    "title": "Welcome to EuropeTalks",
-    "subtitle": "Join our community of Europeans sharing ideas, culture, and creating connections across borders."
+    "title": "Bienvenue à EuropeTalks",
+    "subtitle": "Rejoignez notre communauté d'Européens partageant des idées, de la culture et créant des liens au-delà des frontières."
   },
   "features": {
     "cultural": {
-      "title": "Cultural Exchange",
-      "description": "Experience diverse European cultures through our events and workshops."
+      "title": "Échange culturel",
+      "description": "Découvrez diverses cultures européennes à travers nos événements et ateliers."
     },
     "community": {
-      "title": "Community",
-      "description": "Connect with like-minded Europeans and build lasting relationships."
+      "title": "Communauté",
+      "description": "Connectez-vous avec des Européens partageant les mêmes idées et construisez des relations durables."
     },
     "knowledge": {
-      "title": "Share knowledge",
-      "description": "Share and expand your knowledge through interactive discussions, workshops and learn from others."
+      "title": "Partager des connaissances",
+      "description": "Partagez et développez vos connaissances grâce à des discussions interactives, des ateliers et apprenez des autres."
     }
   },
   "cta": {
-    "title": "Ready to Join?",
-    "description": "Become a member and get access to exclusive events and features.",
+    "title": "Prêt à nous rejoindre ?",
+    "description": "Devenez membre et accédez à des événements et fonctionnalités exclusifs.",
     "buttons": {
-      "explore": "Explore Events",
-      "learnMore": "Learn More"
+      "explore": "Découvrir les événements",
+      "learnMore": "Apprendre encore plus"
     }
   }
-} 
+}

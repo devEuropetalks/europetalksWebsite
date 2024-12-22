@@ -1,29 +1,46 @@
 {
-    "title": "Past Events",
-    "viewUpcomingEvents": "View Upcoming Events",
-    "loading": "Loading...",
-    "signUp": {
-        "title": "Sign up for",
-        "fullName": {
-            "label": "Name",
-            "error": "Name must be at least 3 characters"
-        },
-        "email": {
-            "label": "Email",
-            "error": "Invalid email address"
-        },
-        "motivation": {
-            "label": "Motivation",
-            "error": "Please explain in at least 50 characters why you would like to join this event..."
-        },
-        "submit": "Sign up",
-        "submitting": "Signing up...",
-        "cancel": "Cancel",
-        "success": "Success",
-        "successMessage": "You have successfully signed up for the event.",
-        "error": "Error",
-        "errorMessage": "Error signing up. Please try again.",
-        "eventEnded": "Event ended"
-    }
+  "events": {
+    "title": "Eventi",
+    "viewPastEvents": "Visualizza gli eventi passati",
+    "loading": "Caricamento eventi in corso..."
+  },
+  "pastEvents": {
+    "title": "Eventi passati",
+    "viewUpcomingEvents": "Visualizza i prossimi eventi",
+    "noEvents": "Nessun evento trovato"
+  },
+  "eventCard": {
+    "signUp": "Iscrizione",
+    "eventEnded": "Evento terminato",
+    "readMore": "Per saperne di più",
+    "date": "Data",
+    "time": "Tempo",
+    "location": "Posizione",
+    "online": "In linea",
+    "hybrid": "Ibrido",
+    "inPerson": "Di persona"
+  },
+  "signUp": {
+    "title": "Iscriviti per",
+    "fullName": {
+      "label": "Nome",
+      "error": "Il nome deve contenere almeno 3 caratteri"
+    },
+    "email": {
+      "label": "E-mail",
+      "error": "Indirizzo email non valido"
+    },
+    "motivation": {
+      "label": "Motivazione",
+      "error": "Per favore spiega in almeno 50 caratteri perché vorresti partecipare a questo evento..."
+    },
+    "submit": "Iscrizione",
+    "submitting": "Registrazione in corso...",
+    "cancel": "Cancellare",
+    "success": "Successo",
+    "successMessage": "Ti sei iscritto con successo all'evento.",
+    "error": "Errore",
+    "errorMessage": "Errore durante la registrazione. Riprova.",
+    "eventEnded": "Evento terminato"
+  }
 }
-
