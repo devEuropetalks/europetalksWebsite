@@ -1,4 +1,12 @@
 {
+  "cta": {
+    "title": "Ready to join?",
+    "buttons": {
+      "explore": "Explore Events",
+      "learnMore": "Learn More"
+    },
+    "description": "Become a member and get access to exclusive events and features."
+  },
   "hero": {
     "title": "Welcome to EuropeTalks",
     "subtitle": "Join our community of Europeans sharing ideas, culture, and creating connections across borders."
@@ -16,13 +24,5 @@
       "title": "Share knowledge",
       "description": "Share and expand your knowledge through interactive discussions, workshops and learn from others."
     }
-  },
-  "cta": {
-    "title": "Ready to Join?",
-    "description": "Become a member and get access to exclusive events and features.",
-    "buttons": {
-      "explore": "Explore Events",
-      "learnMore": "Learn More"
-    }
   }
-} 
+}
