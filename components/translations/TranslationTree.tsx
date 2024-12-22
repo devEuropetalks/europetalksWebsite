@@ -64,25 +64,32 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
     obj: TranslationObject,
     path: string[] = []
   ): JSX.Element[] => {
+    if (!obj || typeof obj !== 'object') {
+      return [];
+    }
+
     return Object.entries(obj).map(([key, value]) => {
       const currentPath = [...path, key];
       
-      if (typeof value === "object") {
+      if (value && typeof value === "object") {
         return (
-          <div key={key} className="ml-4">
+          <div key={currentPath.join('.')} className="ml-4">
             <h3 className="font-semibold mt-4 mb-2">{key}</h3>
-            {renderTranslationTree(value, currentPath)}
+            <div className="space-y-2">
+              {renderTranslationTree(value, currentPath)}
+            </div>
           </div>
         );
       }
 
       return (
-        <div key={key} className="flex gap-4 items-center my-2">
-          <label className="w-48 text-sm">{key}:</label>
+        <div key={currentPath.join('.')} className="flex gap-4 items-center my-2">
+          <label className="w-48 text-sm font-medium">{key}:</label>
           <Input
-            value={value}
+            value={value as string || ''}
             onChange={(e) => handleInputChange(currentPath, e.target.value)}
             className="flex-1"
+            placeholder={`Enter ${key} translation`}
           />
         </div>
       );
