@@ -7,6 +7,7 @@ import { toast } from "@/hooks/use-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import ContentWrapper from "@/components/ContentWrapper";
 
 const formSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
@@ -49,8 +50,9 @@ export default function ContactPage() {
   }
 
   return (
-    <div className="container max-w-2xl py-8 mx-auto">
-      <h1 className="text-4xl font-bold mb-8 text-center">Get in Touch</h1>
+    <ContentWrapper>
+      <div className="container max-w-2xl py-8 mx-auto">
+        <h1 className="text-4xl font-bold mb-8 text-center">Get in Touch</h1>
 
       <div className="space-y-8 mx-auto">
         <p className="text-muted-foreground text-center">
@@ -140,7 +142,8 @@ export default function ContactPage() {
             {form.formState.isSubmitting ? "Sending..." : "Send Message"}
           </Button>
         </form>
+        </div>
       </div>
-    </div>
+    </ContentWrapper>
   );
 }

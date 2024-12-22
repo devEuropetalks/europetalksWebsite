@@ -1,6 +1,6 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-
+import ContentWrapper from "@/components/ContentWrapper";
 export default async function AdminLayout({
   children,
 }: {
@@ -12,11 +12,11 @@ export default async function AdminLayout({
   }
   console.log(user?.publicMetadata?.role);
   return (
-    <div className="container py-8">
+    <ContentWrapper>
       <div className="mb-8">
         <h1 className="text-3xl font-bold">Admin Dashboard</h1>
       </div>
       {children}
-    </div>
+    </ContentWrapper>
   );
 }
