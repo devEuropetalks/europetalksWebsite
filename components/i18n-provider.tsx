@@ -38,6 +38,11 @@ import aboutIT from '@/public/locales/it/about.json'
 import contactIT from '@/public/locales/it/contact.json'
 import eventsIT from '@/public/locales/it/events.json'
 import galleryIT from '@/public/locales/it/gallery.json'
+import authEN from '@/public/locales/en/auth.json'
+import authDE from '@/public/locales/de/auth.json'
+import authFR from '@/public/locales/fr/auth.json'
+import authES from '@/public/locales/es/auth.json'
+import authIT from '@/public/locales/it/auth.json'
 import { InitOptions } from 'i18next';
 
 export const i18n = i18next;
@@ -70,6 +75,7 @@ const config: InitOptions = {
       components: componentsEN,
       events: eventsEN,
       gallery: galleryEN,
+      auth: authEN,
       other: {}
     },
     fr: {
@@ -79,7 +85,8 @@ const config: InitOptions = {
       header: headerFR,
       components: componentsFR,
       events: eventsFR,
-      gallery: galleryFR
+      gallery: galleryFR,
+      auth: authFR
     },
     de: {
       home: homeDE,
@@ -88,7 +95,8 @@ const config: InitOptions = {
       header: headerDE,
       components: componentsDE,
       events: eventsDE,
-      gallery: galleryDE
+      gallery: galleryDE,
+      auth: authDE
     },
     es: {
       home: homeES,
@@ -97,7 +105,8 @@ const config: InitOptions = {
       header: headerES,
       components: componentsES,
       events: eventsES,
-      gallery: galleryES
+      gallery: galleryES,
+      auth: authES
     },
     it: {
       home: homeIT,
@@ -106,7 +115,8 @@ const config: InitOptions = {
       header: headerIT,
       components: componentsIT,
       events: eventsIT,
-      gallery: galleryIT
+      gallery: galleryIT,
+      auth: authIT
     },
     // Add other languages here
   },

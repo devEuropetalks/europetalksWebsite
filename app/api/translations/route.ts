@@ -3,73 +3,39 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import fs from "fs/promises";
 import path from "path";
-import { TranslationObject } from "@/types/translations";
-
-type BaseTranslationModel = {
-  findUnique: (args: {
-    where: { language: string };
-  }) => Promise<{ content: TranslationObject } | null>;
-  upsert: (args: {
-    where: { language: string };
-    create: { language: string; content: TranslationObject };
-    update: { content: TranslationObject };
-  }) => Promise<{ content: TranslationObject }>;
-};
-
-const namespaceToModel: Record<string, BaseTranslationModel> = {
-  home: db.homeTranslation as unknown as BaseTranslationModel,
-  header: db.headerTranslation as unknown as BaseTranslationModel,
-  about: db.aboutTranslation as unknown as BaseTranslationModel,
-  contact: db.contactTranslation as unknown as BaseTranslationModel,
-  events: db.eventsTranslation as unknown as BaseTranslationModel,
-  gallery: db.galleryTranslation as unknown as BaseTranslationModel,
-  components: db.componentsTranslation as unknown as BaseTranslationModel,
-  other: db.otherTranslation as unknown as BaseTranslationModel,
-};
 
 export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const language = searchParams.get("language");
-  const namespace = searchParams.get("namespace");
-
-  if (!language || !namespace) {
-    return NextResponse.json({ error: "Missing parameters" }, { status: 400 });
-  }
-
   try {
-    const model = namespaceToModel[namespace];
-    if (!model) {
-      return NextResponse.json({});
+    const { searchParams } = new URL(request.url);
+    const language = searchParams.get("language");
+    const namespace = searchParams.get("namespace");
+
+    if (!language || !namespace) {
+      return NextResponse.json(
+        { error: "Language and namespace are required" },
+        { status: 400 }
+      );
     }
 
-    // Try to get from database first
-    const translation = await model.findUnique({
+    const translation = await db.translation.findUnique({
       where: { language },
     });
 
-    if (translation) {
-      return NextResponse.json(translation.content);
+    if (!translation) {
+      return NextResponse.json(
+        { error: "Translation not found" },
+        { status: 404 }
+      );
     }
 
-    // Fall back to file system if no translation in DB
-    try {
-      const filePath = path.join(
-        process.cwd(),
-        "public",
-        "locales",
-        language,
-        `${namespace}.json`
-      );
-      const content = await fs.readFile(filePath, "utf-8");
-      return NextResponse.json(JSON.parse(content));
-    } catch (error) {
-      console.warn(`Warning: No translation file found for ${language}/${namespace}`);
-      console.error(error);
-      return NextResponse.json({});
-    }
-  } catch (error: unknown) {
-    console.error("Translation load error:", error);
-    return NextResponse.json({});
+    const content = translation.content as Record<string, unknown>;
+    return NextResponse.json(content[namespace] || {});
+  } catch (error) {
+    console.error("Translation fetch error:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch translations" },
+      { status: 500 }
+    );
   }
 }
 
@@ -83,24 +49,25 @@ export async function POST(request: Request) {
   try {
     const { language, namespace, translations } = await request.json();
 
-    const model = namespaceToModel[namespace];
-    if (!model) {
-      throw new Error(`Invalid namespace: ${namespace}`);
-    }
+    const existing = await db.translation.findUnique({
+      where: { language },
+    });
 
-    // Update in database
-    await model.upsert({
+    const content = existing ? { ...(existing.content as object) } : {};
+    content[namespace] = translations;
+
+    await db.translation.upsert({
       where: { language },
       create: {
         language,
-        content: translations,
+        content,
       },
       update: {
-        content: translations,
+        content,
       },
     });
 
-    // Also update the file system for fallback
+    // Update file system for fallback
     const filePath = path.join(
       process.cwd(),
       "public",
@@ -111,7 +78,7 @@ export async function POST(request: Request) {
     await fs.writeFile(filePath, JSON.stringify(translations, null, 2));
 
     return NextResponse.json({ success: true });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error("Translation save error:", error);
     return NextResponse.json(
       { error: "Failed to save translations" },

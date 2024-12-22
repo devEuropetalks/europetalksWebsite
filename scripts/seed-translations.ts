@@ -5,50 +5,52 @@ import fs from "fs/promises";
 const prisma = new PrismaClient();
 
 async function loadJsonFile(language: string, namespace: string) {
-  const filePath = path.join(process.cwd(), "public", "locales", language, `${namespace}.json`);
-  const content = await fs.readFile(filePath, "utf-8");
-  return JSON.parse(content);
+  try {
+    const filePath = path.join(process.cwd(), "public", "locales", language, `${namespace}.json`);
+    const content = await fs.readFile(filePath, "utf-8");
+    return JSON.parse(content);
+  } catch (error) {
+    console.error(`Failed to load ${language}/${namespace}:`, error);
+    return {};
+  }
 }
 
 async function main() {
   const languages = ["en", "de", "fr", "es", "it"];
-  const namespaces = ["home", "about", "contact", "events", "gallery", "header", "components", "other"];
+  const namespaces = [
+    "home", 
+    "about", 
+    "contact", 
+    "events", 
+    "gallery", 
+    "header", 
+    "components",
+    "auth",
+    "other"
+  ];
 
   // Clear existing data
-  await prisma.homeTranslation.deleteMany();
-  await prisma.headerTranslation.deleteMany();
-  await prisma.aboutTranslation.deleteMany();
-  await prisma.contactTranslation.deleteMany();
-  await prisma.eventsTranslation.deleteMany();
-  await prisma.galleryTranslation.deleteMany();
-  await prisma.componentsTranslation.deleteMany();
-  await prisma.otherTranslation.deleteMany();
+  await prisma.translation.deleteMany();
 
   // Seed translations
   for (const language of languages) {
+    const content: Record<string, unknown> = {};
+    
     for (const namespace of namespaces) {
-      const content = await loadJsonFile(language, namespace);
-      
-      // Specific translation tables
-      const modelMap: Record<string, any> = {
-        home: prisma.homeTranslation,
-        about: prisma.aboutTranslation,
-        contact: prisma.contactTranslation,
-        events: prisma.eventsTranslation,
-        gallery: prisma.galleryTranslation,
-        header: prisma.headerTranslation,
-        components: prisma.componentsTranslation,
-        other: prisma.otherTranslation,
-      };
+      const namespaceContent = await loadJsonFile(language, namespace);
+      content[namespace] = namespaceContent;
+    }
 
-      if (namespace in modelMap) {
-        await modelMap[namespace].create({
-          data: {
-            language,
-            content,
-          },
-        });
-      }
+    try {
+      await prisma.translation.create({
+        data: {
+          language,
+          content,
+        },
+      });
+      console.log(`✓ Seeded ${language} translations`);
+    } catch (error) {
+      console.error(`✗ Failed to seed ${language} translations:`, error);
     }
   }
 }
@@ -60,4 +62,4 @@ main()
   })
   .finally(async () => {
     await prisma.$disconnect();
-  }); 
+  });

@@ -31,66 +31,10 @@ model EventSignup {
   @@index([eventId])
 }
 
-model HomeTranslation {
+model Translation {
   id        String   @id @default(cuid())
   language  String   @unique
-  content   Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model HeaderTranslation {
-  id        String   @id @default(cuid())
-  language  String   @unique
-  content   Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model AboutTranslation {
-  id        String   @id @default(cuid())
-  language  String   @unique
-  content   Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ContactTranslation {
-  id        String   @id @default(cuid())
-  language  String   @unique
-  content   Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model EventsTranslation {
-  id        String   @id @default(cuid())
-  language  String   @unique
-  content   Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model GalleryTranslation {
-  id        String   @id @default(cuid())
-  language  String   @unique
-  content   Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model ComponentsTranslation {
-  id        String   @id @default(cuid())
-  language  String   @unique
-  content   Json
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model OtherTranslation {
-  id        String   @id @default(cuid())
-  language  String   @unique
-  content   Json
+  content   Json     // Will contain all translations in a nested structure
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

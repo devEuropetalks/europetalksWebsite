@@ -35,6 +35,7 @@ export function TranslationEditor() {
     "gallery", 
     "header", 
     "components",
+    "auth",
     "other"
   ];
 
