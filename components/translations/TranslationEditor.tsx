@@ -27,7 +27,16 @@ export function TranslationEditor() {
     { code: "it", name: "Italiano" },
   ];
 
-  const namespaces = ["home", "about", "contact", "events", "gallery", "header", "components"];
+  const namespaces = [
+    "home", 
+    "about", 
+    "contact", 
+    "events", 
+    "gallery", 
+    "header", 
+    "components",
+    "other"
+  ];
 
   const handleSave = async (translations: TranslationObject) => {
     try {

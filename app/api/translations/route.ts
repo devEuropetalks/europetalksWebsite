@@ -1,11 +1,20 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
 import fs from "fs/promises";
 import path from "path";
 import { TranslationObject } from "@/types/translations";
 
-// Change to app directory instead of public
-const TRANSLATIONS_DIR = path.join(process.cwd(), "app", "translations-data");
+const namespaceToModel: Record<string, any> = {
+  home: db.homeTranslation,
+  header: db.headerTranslation,
+  about: db.aboutTranslation,
+  contact: db.contactTranslation,
+  events: db.eventsTranslation,
+  gallery: db.galleryTranslation,
+  components: db.componentsTranslation,
+  other: db.otherTranslation,
+};
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -17,23 +26,30 @@ export async function GET(request: Request) {
   }
 
   try {
-    // First try to read from app directory
-    const filePath = path.join(TRANSLATIONS_DIR, language, `${namespace}.json`);
-    try {
-      const content = await fs.readFile(filePath, "utf-8");
-      return NextResponse.json(JSON.parse(content) as TranslationObject);
-    } catch {
-      // If file doesn't exist in app directory, fall back to public directory
-      const publicPath = path.join(
-        process.cwd(),
-        "public",
-        "locales",
-        language,
-        `${namespace}.json`
-      );
-      const content = await fs.readFile(publicPath, "utf-8");
-      return NextResponse.json(JSON.parse(content) as TranslationObject);
+    const model = namespaceToModel[namespace];
+    if (!model) {
+      throw new Error(`Invalid namespace: ${namespace}`);
     }
+
+    // Try to get from database first
+    const translation = await model.findUnique({
+      where: { language },
+    });
+
+    if (translation) {
+      return NextResponse.json(translation.content);
+    }
+
+    // Fall back to file system if no translation in DB
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "locales",
+      language,
+      `${namespace}.json`
+    );
+    const content = await fs.readFile(filePath, "utf-8");
+    return NextResponse.json(JSON.parse(content) as TranslationObject);
   } catch (error: unknown) {
     console.error("Translation load error:", error);
     return NextResponse.json(
@@ -53,17 +69,21 @@ export async function POST(request: Request) {
   try {
     const { language, namespace, translations } = await request.json();
     
-    // Save to app directory
-    const localesDir = path.join(TRANSLATIONS_DIR, language);
-    await fs.mkdir(localesDir, { recursive: true });
-    
-    const filePath = path.join(localesDir, `${namespace}.json`);
-    
-    await fs.writeFile(
-      filePath,
-      JSON.stringify(translations, null, 2),
-      "utf-8"
-    );
+    const model = namespaceToModel[namespace];
+    if (!model) {
+      throw new Error(`Invalid namespace: ${namespace}`);
+    }
+
+    await model.upsert({
+      where: { language },
+      create: {
+        language,
+        content: translations,
+      },
+      update: {
+        content: translations,
+      },
+    });
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
@@ -73,4 +93,4 @@ export async function POST(request: Request) {
       { status: 500 }
     );
   }
-} 
+}
