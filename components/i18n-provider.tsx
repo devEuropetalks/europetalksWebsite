@@ -48,12 +48,14 @@ i18n.reloadResources = async (language: string, namespace: string) => {
     const response = await fetch(
       `/api/translations?language=${language}&namespace=${namespace}`
     );
-    if (!response.ok) throw new Error("Failed to reload translations");
+    if (!response.ok) {
+      console.warn(`Warning: Failed to reload translations for ${language}/${namespace}`);
+      return;
+    }
     const data = await response.json();
-    
     i18n.addResourceBundle(language, namespace, data, true, true);
   } catch (error) {
-    console.error("Error reloading translations:", error);
+    console.warn("Warning: Error reloading translations:", error);
   }
 };
 
@@ -67,7 +69,8 @@ const config: InitOptions = {
       header: headerEN,
       components: componentsEN,
       events: eventsEN,
-      gallery: galleryEN
+      gallery: galleryEN,
+      other: {}
     },
     fr: {
       home: homeFR,
@@ -118,7 +121,8 @@ const config: InitOptions = {
   },
   load: 'languageOnly',
   returnNull: false,
-  returnEmptyString: false
+  returnEmptyString: false,
+  fallbackNS: "other"
 };
 
 i18next

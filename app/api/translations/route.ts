@@ -39,7 +39,7 @@ export async function GET(request: Request) {
   try {
     const model = namespaceToModel[namespace];
     if (!model) {
-      throw new Error(`Invalid namespace: ${namespace}`);
+      return NextResponse.json({});
     }
 
     // Try to get from database first
@@ -52,21 +52,24 @@ export async function GET(request: Request) {
     }
 
     // Fall back to file system if no translation in DB
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "locales",
-      language,
-      `${namespace}.json`
-    );
-    const content = await fs.readFile(filePath, "utf-8");
-    return NextResponse.json(JSON.parse(content));
+    try {
+      const filePath = path.join(
+        process.cwd(),
+        "public",
+        "locales",
+        language,
+        `${namespace}.json`
+      );
+      const content = await fs.readFile(filePath, "utf-8");
+      return NextResponse.json(JSON.parse(content));
+    } catch (error) {
+      console.warn(`Warning: No translation file found for ${language}/${namespace}`);
+      console.error(error);
+      return NextResponse.json({});
+    }
   } catch (error: unknown) {
     console.error("Translation load error:", error);
-    return NextResponse.json(
-      { error: "Failed to load translations" },
-      { status: 500 }
-    );
+    return NextResponse.json({});
   }
 }
 
