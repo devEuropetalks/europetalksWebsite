@@ -1,0 +1,46 @@
+{
+  "events": {
+    "title": "Events",
+    "viewPastEvents": "View Past Events",
+    "loading": "Loading events..."
+  },
+  "pastEvents": {
+    "title": "Past Events",
+    "viewUpcomingEvents": "View Upcoming Events",
+    "noEvents": "No events found"
+  },
+  "eventCard": {
+    "signUp": "Sign Up",
+    "eventEnded": "Event Ended",
+    "readMore": "Read More",
+    "date": "Date",
+    "time": "Time",
+    "location": "Location",
+    "online": "Online",
+    "hybrid": "Hybrid",
+    "inPerson": "In Person"
+  },
+  "signUp": {
+    "title": "Sign up for",
+    "fullName": {
+      "label": "Name",
+      "error": "Name must be at least 3 characters"
+    },
+    "email": {
+      "label": "Email",
+      "error": "Invalid email address"
+    },
+    "motivation": {
+      "label": "Motivation",
+      "error": "Please explain in at least 50 characters why you would like to join this event..."
+    },
+    "submit": "Sign up",
+    "submitting": "Signing up...",
+    "cancel": "Cancel",
+    "success": "Success",
+    "successMessage": "You have successfully signed up for the event.",
+    "error": "Error",
+    "errorMessage": "Error signing up. Please try again.",
+    "eventEnded": "Event ended"
+  }
+}

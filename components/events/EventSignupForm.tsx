@@ -23,6 +23,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Textarea } from "../ui/textarea";
+import { useTranslation } from "react-i18next";
 
 interface EventSignupFormProps {
   eventId: string;
@@ -37,13 +38,14 @@ export default function EventSignupForm({
   isOpen,
   onClose,
 }: EventSignupFormProps) {
+  const { t } = useTranslation("events");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
   const { user } = useUser();
 
   const signupSchema = z.object({
-    fullName: z.string().min(3, "Full name must be at least 3 characters"),
-    email: z.string().email("Invalid email address"),
+    fullName: z.string().min(3, t("events.signUp.fullName.error")),
+    email: z.string().email(t("events.signUp.email.error")),
     phone: z.string().optional(),
     motivation: z
       .string()
@@ -59,8 +61,7 @@ export default function EventSignupForm({
             minimum: 50,
             type: "string",
             inclusive: true,
-            message:
-              "Please provide at least 50 characters explaining why you want to join",
+            message: t("events.signUp.motivation.error"),
           });
         }
       }),
@@ -126,7 +127,9 @@ export default function EventSignupForm({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Sign up for {eventTitle}</DialogTitle>
+          <DialogTitle>
+            {t("events.signUp.title")} {eventTitle}
+          </DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -139,7 +142,7 @@ export default function EventSignupForm({
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Full Name</FormLabel>
+                  <FormLabel>{t("events.signUp.fullName.label")}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -153,7 +156,7 @@ export default function EventSignupForm({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t("events.signUp.email.label")}</FormLabel>
                   <FormControl>
                     <Input {...field} type="email" />
                   </FormControl>
@@ -167,7 +170,7 @@ export default function EventSignupForm({
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Phone (optional)</FormLabel>
+                  <FormLabel>{t("events.signUp.phone.label")}</FormLabel>
                   <FormControl>
                     <Input {...field} type="tel" />
                   </FormControl>
@@ -182,12 +185,12 @@ export default function EventSignupForm({
                 name="motivation"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Why do you want to join this event?</FormLabel>
+                    <FormLabel>{t("events.signUp.motivation.label")}</FormLabel>
                     <FormControl>
                       <Textarea
                         {...field}
                         className="min-h-[100px]"
-                        placeholder="Please explain in at least 50 characters why you would like to join this event..."
+                        placeholder={t("events.signUp.motivation.placeholder")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -198,10 +201,10 @@ export default function EventSignupForm({
 
             <div className="flex justify-end gap-4">
               <Button type="button" variant="outline" onClick={onClose}>
-                Cancel
+                {t("events.signUp.cancel")}
               </Button>
               <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Signing up..." : "Sign Up"}
+                {isSubmitting ? t("events.signUp.submitting") : t("events.signUp.submit")}
               </Button>
             </div>
           </form>

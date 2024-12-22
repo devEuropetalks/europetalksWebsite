@@ -9,16 +9,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import Image from "next/image";
+
 
 export function LanguageSelector() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation("components");
 
   const languages = [
-    { code: "en", name: "English", flag: "🇬🇧" },
-    { code: "fr", name: "Français", flag: "🇫🇷" },
-    { code: "de", name: "Deutsch", flag: "🇩🇪" },
-    { code: "es", name: "Español", flag: "🇪🇸" },
-    { code: "it", name: "Italiano", flag: "🇮🇹" },
+    { code: "en", name: "English", flag: "/images/languageFlags/en.png" },
+    { code: "de", name: "Deutsch", flag: "/images/languageFlags/de.png" },
+    { code: "fr", name: "Français", flag: "/images/languageFlags/fr.png" },
+    { code: "es", name: "Español", flag: "/images/languageFlags/es.png" },
+    { code: "it", name: "Italiano", flag: "/images/languageFlags/it.png" },
   ];
 
   return (
@@ -30,7 +32,7 @@ export function LanguageSelector() {
           className="hover:text-primary-foreground"
         >
           <Globe className="h-5 w-5 text-accent hover:text-primary-foreground" />
-          <span className="sr-only">Select language</span>
+          <span className="sr-only">{t("languageSelector.label")}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
@@ -40,7 +42,14 @@ export function LanguageSelector() {
             onClick={() => i18n.changeLanguage(lang.code)}
             className="flex items-center gap-2"
           >
-            <span className="text-lg">{lang.flag}</span>
+            <div className="relative w-6 h-4">
+              <Image
+                src={lang.flag}
+                alt={`${lang.name} flag`}
+                fill
+                className="object-cover rounded-sm"
+              />
+            </div>
             {lang.name}
           </DropdownMenuItem>
         ))}

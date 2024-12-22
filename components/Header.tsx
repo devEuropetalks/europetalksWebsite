@@ -12,33 +12,29 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LanguageSelector } from "./LanguageSelector";
 import { ThemeToggle } from "./ThemeToggle";
+import { Sheet,  SheetContent,  SheetHeader,  SheetTitle,  SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 import { Menu, LogIn } from "lucide-react";
-import { Button } from "./ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "./ui/sheet";
-
+import { useTranslation } from "react-i18next";
 export default function Header() {
   const pathname = usePathname();
   const { user } = useUser();
   const isAdmin = user?.publicMetadata?.role === "admin";
   const isMember = user?.publicMetadata?.role === "member";
+  const { t } = useTranslation("header");
 
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/events", label: "Events" },
-    { href: "/gallery", label: "Gallery" },
-    { href: "/contact", label: "Contact" },
-    ...(isAdmin ? [{ href: "/admin/events", label: "Admin" }] : []),
-    ...(isMember || isAdmin
-      ? [{ href: "https://cloud.europetalks.eu", label: "Cloud" }]
-      : []),
-  ];
+const navLinks = [
+  { href: "/", label: t("navigation.home") },
+  { href: "/about", label: t("navigation.about") },
+  { href: "/events", label: t("navigation.events") },
+  { href: "/gallery", label: t("navigation.gallery") },
+  { href: "/contact", label: t("navigation.contact") },
+  ...(isAdmin ? [{ href: "/admin/events", label: "navigation.admin" }] : []),
+  ...(isMember || isAdmin
+    ? [{ href: "https://cloud.europetalks.eu", label: "navigation.cloud" }]
+    : []),
+];
+
 
   return (
     <header className="sticky top-0 z-50 w-full bg-blue-900">
@@ -79,7 +75,7 @@ export default function Header() {
           <SignedOut>
             <SignInButton mode="modal">
               <button className="text-white hover:text-accent transition-colors">
-                <span className="hidden md:inline">Sign in</span>
+                <span className="hidden md:inline">{t("other.signIn")}</span>
                 <LogIn className="h-5 w-5 md:hidden" />
               </button>
             </SignInButton>
@@ -94,7 +90,7 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent>
               <SheetHeader>
-                <SheetTitle>Menu</SheetTitle>
+                <SheetTitle>{t("other.menu")}</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col space-y-4 mt-6">
                 {navLinks.map(({ href, label }) => (

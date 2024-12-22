@@ -1,0 +1,47 @@
+{
+    "events": {
+      "title": "Veranstaltungen",
+      "viewPastEvents": "Veranstaltungen ansehen",
+      "loading": "Veranstaltungen werden geladen..."
+    },
+    "pastEvents": {
+      "title": "Veranstaltungen",
+      "viewUpcomingEvents": "Veranstaltungen ansehen",
+      "noEvents": "Keine Veranstaltungen gefunden"
+    },
+    "eventCard": {
+      "signUp": "Anmelden",
+      "eventEnded": "Veranstaltung beendet",
+      "readMore": "Mehr lesen",
+      "date": "Datum",
+      "time": "Zeit",
+      "location": "Ort",
+      "online": "Online",
+      "hybrid": "Hybrid",
+      "inPerson": "In Person"
+    },
+    "signUp": {
+      "title": "Sign up for",
+      "fullName": {
+        "label": "Name",
+        "error": "Name muss mindestens 3 Zeichen lang sein"
+      },
+      "email": {
+        "label": "Email",
+        "error": "Ungültige E-Mail-Adresse"
+      },
+      "motivation": {
+        "label": "Motivation",
+        "error": "Bitte erklären Sie in mindestens 50 Zeichen, warum Sie an dieser Veranstaltung teilnehmen möchten..."
+      },
+      "submit": "Anmelden",
+      "submitting": "Anmelden...",
+      "cancel": "Abbrechen",
+      "success": "Erfolgreich",
+      "successMessage": "Sie haben sich erfolgreich für die Veranstaltung angemeldet.",
+      "error": "Fehler",
+      "errorMessage": "Fehler beim Anmelden. Bitte versuchen Sie es erneut.",
+      "eventEnded": "Veranstaltung beendet"
+    }
+  }
+  

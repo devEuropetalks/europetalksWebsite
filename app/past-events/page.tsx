@@ -1,11 +1,14 @@
 "use client";
 
+import ContentWrapper from "@/components/ContentWrapper";
 import { EventCard } from "@/components/events/EventCard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function PastEventsPage() {
+  const { t } = useTranslation("events");
   const [events, setEvents] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -26,22 +29,24 @@ export default function PastEventsPage() {
   }, []);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>{t("loading")}</div>;
   }
 
   return (
-    <div className="container py-8">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-4xl font-bold">Past Events</h1>
+    <ContentWrapper>
+      <div className="container py-8">
+        <div className="flex justify-between items-center mb-8">
+        <h1 className="text-4xl font-bold">{t("pastEvents.title")}</h1>
         <Button variant="outline" asChild>
-          <Link href="/events">View Upcoming Events</Link>
+          <Link href="/events">{t("pastEvents.viewUpcomingEvents")}</Link>
         </Button>
       </div>
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {events.map((event) => (
           <EventCard key={event.id} event={event} />
         ))}
+        </div>
       </div>
-    </div>
+    </ContentWrapper>
   );
 }

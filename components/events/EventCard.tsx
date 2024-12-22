@@ -10,6 +10,7 @@ import { format } from "date-fns";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 interface EventCardProps {
   event: {
     id: string;
@@ -26,6 +27,7 @@ export function EventCard({ event }: EventCardProps) {
   const eventDate = new Date(event.date);
   const isPastEvent = eventDate < new Date();
   console.log(event.imageUrl);
+  const { t } = useTranslation("events");
 
   return (
     <Card className="flex flex-col h-full">
@@ -50,7 +52,7 @@ export function EventCard({ event }: EventCardProps) {
           </div>
           <div className="flex items-center text-muted-foreground">
             <MapPinIcon className="mr-2 h-4 w-4" />
-            {event.location}
+            {event.location || t('eventCard.online')}
           </div>
         </div>
       </CardHeader>
@@ -60,12 +62,12 @@ export function EventCard({ event }: EventCardProps) {
       <CardFooter>
         {!isPastEvent && (
           <Button className="w-full" onClick={() => setShowSignupForm(true)}>
-            Sign Up
+            {t("eventCard.signUp")}
           </Button>
         )}
         {isPastEvent && (
           <Button className="w-full" variant="outline" disabled>
-            Event Ended
+            {t("eventCard.eventEnded")}
           </Button>
         )}
       </CardFooter>

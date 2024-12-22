@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About",
+    "events": "Events",
+    "gallery": "Gallery",
+    "contact": "Contact",
+    "admin": "Admin",
+    "cloud": "Cloud"
+  },
+  "other": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "menu": "Menu"
+  }
+} 

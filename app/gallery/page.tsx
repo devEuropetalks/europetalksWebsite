@@ -12,8 +12,11 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useGallery } from "./GalleryContext";
+import { useTranslation } from "react-i18next";
+
 
 export default function GalleryPage() {
+  const { t } = useTranslation("gallery");
   const events = useGallery();
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
@@ -35,7 +38,7 @@ export default function GalleryPage() {
 
   return (
     <div className="container py-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Gallery</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">{t("title")}</h1>
 
       {events.map((event) => (
         <div key={event.id} className="mb-12">

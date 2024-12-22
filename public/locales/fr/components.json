@@ -1,0 +1,8 @@
+{
+  "languageSelector": {
+    "label": "Select language"
+  },
+  "auth":{
+    "signIn": "Sign in"
+  }
+}

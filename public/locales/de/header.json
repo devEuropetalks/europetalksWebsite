@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "home": "Startseite",
+    "about": "Über uns",
+    "events": "Events",
+    "gallery": "Galerie",
+    "contact": "Kontakt",
+    "admin": "Admin",
+    "cloud": "Cloud"
+  },
+  "other": {
+    "signIn": "Anmelden",
+    "signOut": "Ausloggen",
+    "menu": "Menü"
+  }
+} 

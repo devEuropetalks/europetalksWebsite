@@ -1,7 +1,9 @@
+import ContentWrapper from "@/components/ContentWrapper";
+
 export default function LegalNoticePage() {
   return (
-    <div className="container py-8">
-      <h1 className="text-4xl font-bold mb-8">Legal Notice</h1>
+    <ContentWrapper>
+        <h1 className="text-4xl font-bold mb-8">Legal Notice</h1>
 
       <div className="prose prose-lg dark:prose-invert max-w-none">
         <section className="mb-12">
@@ -68,6 +70,6 @@ export default function LegalNoticePage() {
           </p>
         </section>
       </div>
-    </div>
+    </ContentWrapper> 
   );
 }

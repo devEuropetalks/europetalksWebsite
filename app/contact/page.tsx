@@ -33,14 +33,6 @@ export default function ContactPage() {
             {t("form.submit")}
           </button>
         </form>
-
-        <div className="mt-12">
-          <h2 className="text-2xl font-semibold mb-4">{t("info.title")}</h2>
-          <p className="mb-2">
-            {t("info.email")} <a href="mailto:contact@europetalks.eu">contact@europetalks.eu</a>
-          </p>
-          <p>{t("info.social")}</p>
-        </div>
       </div>
     </ContentWrapper>
   );
