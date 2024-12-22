@@ -29,9 +29,9 @@ const navLinks = [
   { href: "/events", label: t("navigation.events") },
   { href: "/gallery", label: t("navigation.gallery") },
   { href: "/contact", label: t("navigation.contact") },
-  ...(isAdmin ? [{ href: "/admin/events", label: "navigation.admin" }] : []),
+  ...(isAdmin ? [{ href: "/admin/events", label: t("navigation.admin") }] : []),
   ...(isMember || isAdmin
-    ? [{ href: "https://cloud.europetalks.eu", label: "navigation.cloud" }]
+    ? [{ href: "https://cloud.europetalks.eu", label: t("navigation.cloud") }]
     : []),
 ];
 
