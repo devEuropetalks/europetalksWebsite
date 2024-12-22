@@ -17,19 +17,40 @@ export async function GET(request: Request) {
       );
     }
 
-    const translation = await db.translation.findUnique({
-      where: { language },
-    });
+    // Add fallback to file system if database fails
+    try {
+      const translation = await db.translation.findUnique({
+        where: { language },
+      });
 
-    if (!translation) {
+      if (translation) {
+        const content = translation.content as Record<string, unknown>;
+        return NextResponse.json(content[namespace] || {});
+      }
+    } catch (dbError) {
+      console.error("Database error:", dbError);
+      // Continue to file system fallback
+    }
+
+    // Fallback to file system
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "locales",
+      language,
+      `${namespace}.json`
+    );
+    
+    try {
+      const fileContent = await fs.readFile(filePath, 'utf-8');
+      return NextResponse.json(JSON.parse(fileContent));
+    } catch (fsError) {
+      console.error("File system error:", fsError);
       return NextResponse.json(
         { error: "Translation not found" },
         { status: 404 }
       );
     }
-
-    const content = translation.content as Record<string, unknown>;
-    return NextResponse.json(content[namespace] || {});
   } catch (error) {
     console.error("Translation fetch error:", error);
     return NextResponse.json(
