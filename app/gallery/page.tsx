@@ -74,19 +74,21 @@ export default function GalleryPage() {
         open={selectedImage !== null}
         onOpenChange={() => setSelectedImage(null)}
       >
-        <DialogContent className="max-w-[95vw] w-full h-[90vh] p-0">
-          <DialogHeader>
+        <DialogContent className="max-w-[95vw] w-full h-[90vh] p-6">
+          <DialogHeader className="absolute top-4 right-4 z-20">
             <DialogTitle className="sr-only">Gallery Image Viewer</DialogTitle>
           </DialogHeader>
-          <div className="relative w-full h-[calc(90vh-2rem)] flex items-center justify-center bg-black">
+          
+          <div className="relative w-full h-full flex items-center justify-center bg-background rounded-lg">
             <Button
               variant="ghost"
               size="icon"
-              className="absolute left-4 z-10 hover:bg-black/20"
+              className="absolute left-4 z-10 hover:bg-black/10"
               onClick={previousImage}
             >
-              <ChevronLeft className="h-8 w-8 text-white" />
+              <ChevronLeft className="h-8 w-8" />
             </Button>
+            
             {selectedImage && currentImages[currentEventIndex] && (
               <div className="relative w-full h-full flex items-center justify-center">
                 <Image
@@ -99,13 +101,14 @@ export default function GalleryPage() {
                 />
               </div>
             )}
+            
             <Button
               variant="ghost"
               size="icon"
-              className="absolute right-4 z-10 hover:bg-black/20"
+              className="absolute right-4 z-10 hover:bg-black/10"
               onClick={nextImage}
             >
-              <ChevronRight className="h-8 w-8 text-white" />
+              <ChevronRight className="h-8 w-8" />
             </Button>
           </div>
         </DialogContent>

@@ -52,26 +52,61 @@ export default async function HomePage() {
       <ContentWrapper>
         {/* Features Section */}
         <section className="py-16 grid md:grid-cols-3 gap-8">
-          <div className="text-center p-6">
-            <h2 className="text-2xl font-semibold mb-4">Cultural Exchange</h2>
-            <p className="text-muted-foreground">
-              Experience diverse European cultures through our events and
-              workshops.
-            </p>
+          <div className="text-center p-6 relative overflow-hidden rounded-lg">
+            {/* Background Image */}
+            <div className="absolute inset-0 -z-10">
+              <Image
+                src="/images/flags.jpg"
+                alt="European flags"
+                fill
+                className="object-cover brightness-[0.4]"
+                quality={100}
+              />
+            </div>
+            <div className="relative z-10 text-white">
+              <h2 className="text-2xl font-semibold mb-4">Cultural Exchange</h2>
+              <p className="text-gray-200">
+                Experience diverse European cultures through our events and
+                workshops.
+              </p>
+            </div>
           </div>
-          <div className="text-center p-6">
-            <h2 className="text-2xl font-semibold mb-4">Community</h2>
-            <p className="text-muted-foreground">
-              Connect with like-minded Europeans and build lasting
-              relationships.
-            </p>
+
+          <div className="text-center p-6 relative overflow-hidden rounded-lg">
+            <div className="absolute inset-0 -z-10">
+              <Image
+                src="/images/community.jpg"
+                alt="European community"
+                fill
+                className="object-cover brightness-[0.4]"
+                quality={100}
+              />
+            </div>
+            <div className="relative z-10 text-white">
+              <h2 className="text-2xl font-semibold mb-4">Community</h2>
+              <p className="text-gray-200">
+                Connect with like-minded Europeans and build lasting
+                relationships.
+              </p>
+            </div>
           </div>
-          <div className="text-center p-6">
-            <h2 className="text-2xl font-semibold mb-4">Learning</h2>
-            <p className="text-muted-foreground">
-              Expand your knowledge through interactive discussions and
-              workshops.
-            </p>
+
+          <div className="text-center p-6 relative overflow-hidden rounded-lg">
+            <div className="absolute inset-0 -z-10">
+              <Image
+                src="/images/learning.jpg"
+                alt="Learning together"
+                fill
+                className="object-cover brightness-[0.4]"
+                quality={100}
+              />
+            </div>
+            <div className="relative z-10 text-white">
+              <h2 className="text-2xl font-semibold mb-4">Share knowledge</h2>
+              <p className="text-gray-200">
+                Share and expand your knowledge through interactive discussions, workshops and learn from others.
+              </p>
+            </div>
           </div>
         </section>
 

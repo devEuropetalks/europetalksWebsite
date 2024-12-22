@@ -1,5 +1,6 @@
 import { getGalleryEvents } from "@/lib/gallery";
 import { GalleryProvider } from "./GalleryContext";
+import ContentWrapper from "@/components/ContentWrapper";
 
 export default async function GalleryLayout({
   children,
@@ -10,7 +11,9 @@ export default async function GalleryLayout({
 
   return (
     <div className="min-h-screen">
-      <GalleryProvider events={events}>{children}</GalleryProvider>
+      <ContentWrapper>
+        <GalleryProvider events={events}>{children}</GalleryProvider>
+      </ContentWrapper>
     </div>
   );
 }
