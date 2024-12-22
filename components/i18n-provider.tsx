@@ -38,67 +38,78 @@ import aboutIT from '@/public/locales/it/about.json'
 import contactIT from '@/public/locales/it/contact.json'
 import eventsIT from '@/public/locales/it/events.json'
 import galleryIT from '@/public/locales/it/gallery.json'
+import { InitOptions } from 'i18next';
+
+export const i18n = i18next;
 
 // Initialize i18next
+const config: InitOptions = {
+  resources: {
+    en: {
+      home: homeEN,
+      about: aboutEN,
+      contact: contactEN,
+      header: headerEN,
+      components: componentsEN,
+      events: eventsEN,
+      gallery: galleryEN
+    },
+    fr: {
+      home: homeFR,
+      about: aboutFR,
+      contact: contactFR,
+      header: headerFR,
+      components: componentsFR,
+      events: eventsFR,
+      gallery: galleryFR
+    },
+    de: {
+      home: homeDE,
+      about: aboutDE,
+      contact: contactDE,
+      header: headerDE,
+      components: componentsDE,
+      events: eventsDE,
+      gallery: galleryDE
+    },
+    es: {
+      home: homeES,
+      about: aboutES,
+      contact: contactES,
+      header: headerES,
+      components: componentsES,
+      events: eventsES,
+      gallery: galleryES
+    },
+    it: {
+      home: homeIT,
+      about: aboutIT,
+      contact: contactIT,
+      header: headerIT,
+      components: componentsIT,
+      events: eventsIT,
+      gallery: galleryIT
+    },
+    // Add other languages here
+  },
+  lng: "en", // Default language
+  fallbackLng: "en",
+  defaultNS: "home",
+  interpolation: {
+    escapeValue: false
+  },
+  react: {
+    useSuspense: false
+  },
+  load: 'languageOnly',
+  returnNull: false,
+  returnEmptyString: false
+};
+
 i18next
   .use(initReactI18next)
-  .init({
-    resources: {
-      en: {
-        home: homeEN,
-        about: aboutEN,
-        contact: contactEN,
-        header: headerEN,
-        components: componentsEN,
-        events: eventsEN,
-        gallery: galleryEN
-      },
-      fr: {
-        home: homeFR,
-        about: aboutFR,
-        contact: contactFR,
-        header: headerFR,
-        components: componentsFR,
-        events: eventsFR,
-        gallery: galleryFR
-      },
-      de: {
-        home: homeDE,
-        about: aboutDE,
-        contact: contactDE,
-        header: headerDE,
-        components: componentsDE,
-        events: eventsDE,
-        gallery: galleryDE
-      },
-      es: {
-        home: homeES,
-        about: aboutES,
-        contact: contactES,
-        header: headerES,
-        components: componentsES,
-        events: eventsES,
-        gallery: galleryES
-      },
-      it: {
-        home: homeIT,
-        about: aboutIT,
-        contact: contactIT,
-        header: headerIT,
-        components: componentsIT,
-        events: eventsIT,
-        gallery: galleryIT
-      },
-      // Add other languages here
-    },
-    lng: "en", // Default language
-    fallbackLng: "en",
-    defaultNS: "home",
-    interpolation: {
-      escapeValue: false
-    }
-  })
+  .init(config);
 
 export function I18nextProvider({ children }: { children: React.ReactNode }) {
-  return <Provider i18n={i18next}>{children}</Provider>
+  return <Provider i18n={i18n}>{children}</Provider>
 } 

@@ -10,6 +10,8 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { TranslationTree } from "@/components/translations/TranslationTree";
+import { i18n } from "@/components/i18n-provider";
+import { TranslationObject } from "@/types/translations";
 
 export function TranslationEditor() {
   const { toast } = useToast();
@@ -26,7 +28,7 @@ export function TranslationEditor() {
 
   const namespaces = ["home", "about", "contact", "events", "gallery", "header", "components"];
 
-  const handleSave = async (translations: Record<string, string>) => {
+  const handleSave = async (translations: TranslationObject) => {
     try {
       const response = await fetch("/api/translations", {
         method: "POST",
@@ -41,6 +43,8 @@ export function TranslationEditor() {
       });
 
       if (!response.ok) throw new Error("Failed to save translations");
+
+      await i18n.reloadResources(selectedLanguage, selectedNamespace);
 
       toast({
         title: "Success",
