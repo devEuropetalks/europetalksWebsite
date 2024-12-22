@@ -48,3 +48,7 @@ next-env.d.ts
 
 # app/translations-data
 app/translations-data/**
+
+seed
+
+scripts/seed-translations.ts
