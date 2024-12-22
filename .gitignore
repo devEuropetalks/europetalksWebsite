@@ -45,3 +45,6 @@ next-env.d.ts
 
 # vscode settings
 .vscode
+
+# app/translations-data
+app/translations-data/**
