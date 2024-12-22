@@ -49,15 +49,15 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-blue-900">
       <div className="container flex h-14 items-center justify-between max-w-6xl mx-auto px-4">
-        <Link href="/" className="mr-4 h-full">
+        <Link href="/" className="mr-4 flex items-center h-full">
           <Image
             src="/images/etlogo.png"
             alt="Logo"
             width={768}
             height={182}
             className="h-full w-auto object-contain"
-            priority
             quality={100}
+            priority={true}
           />
         </Link>
 
