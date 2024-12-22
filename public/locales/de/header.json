@@ -1,16 +1,16 @@
 {
   "navigation": {
-    "home": "Heim",
-    "about": "Um",
-    "events": "Veranstaltungen",
+    "home": "Start",
+    "about": "Über",
+    "events": "Events",
     "gallery": "Galerie",
     "contact": "Kontakt",
     "admin": "Verwaltung",
-    "cloud": "Wolke"
+    "cloud": "Cloud"
   },
   "other": {
     "signIn": "Anmelden",
     "signOut": "Abmelden",
-    "menu": "Speisekarte"
+    "menu": "Menü"
   }
 }
