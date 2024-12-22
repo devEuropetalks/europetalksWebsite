@@ -42,6 +42,21 @@ import { InitOptions } from 'i18next';
 
 export const i18n = i18next;
 
+// Add this function to reload resources
+i18n.reloadResources = async (language: string, namespace: string) => {
+  try {
+    const response = await fetch(
+      `/api/translations?language=${language}&namespace=${namespace}`
+    );
+    if (!response.ok) throw new Error("Failed to reload translations");
+    const data = await response.json();
+    
+    i18n.addResourceBundle(language, namespace, data, true, true);
+  } catch (error) {
+    console.error("Error reloading translations:", error);
+  }
+};
+
 // Initialize i18next
 const config: InitOptions = {
   resources: {

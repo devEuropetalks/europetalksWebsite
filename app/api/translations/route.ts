@@ -42,13 +42,10 @@ export async function POST(request: Request) {
   try {
     const { language, namespace, translations } = await request.json();
     
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "locales",
-      language,
-      `${namespace}.json`
-    );
+    const localesDir = path.join(process.cwd(), "public", "locales", language);
+    await fs.mkdir(localesDir, { recursive: true });
+    
+    const filePath = path.join(localesDir, `${namespace}.json`);
     
     await fs.writeFile(
       filePath,

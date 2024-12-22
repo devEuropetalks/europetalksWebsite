@@ -17,6 +17,7 @@ export function TranslationEditor() {
   const { toast } = useToast();
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [selectedNamespace, setSelectedNamespace] = useState("home");
+  const [isSaving, setIsSaving] = useState(false);
 
   const languages = [
     { code: "en", name: "English" },
@@ -30,6 +31,7 @@ export function TranslationEditor() {
 
   const handleSave = async (translations: TranslationObject) => {
     try {
+      setIsSaving(true);
       const response = await fetch("/api/translations", {
         method: "POST",
         headers: {
@@ -42,7 +44,10 @@ export function TranslationEditor() {
         }),
       });
 
-      if (!response.ok) throw new Error("Failed to save translations");
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Failed to save translations");
+      }
 
       await i18n.reloadResources(selectedLanguage, selectedNamespace);
 
@@ -51,11 +56,14 @@ export function TranslationEditor() {
         description: "Translations saved successfully",
       });
     } catch (error: unknown) {
+      console.error("Translation save error:", error);
       toast({
         title: "Error",
         description: error instanceof Error ? error.message : "Failed to save translations",
         variant: "destructive",
       });
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -102,6 +110,7 @@ export function TranslationEditor() {
         language={selectedLanguage}
         namespace={selectedNamespace}
         onSave={handleSave}
+        isSaving={isSaving}
       />
     </div>
   );

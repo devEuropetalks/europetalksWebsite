@@ -12,9 +12,10 @@ interface TranslationTreeProps {
   language: string;
   namespace: string;
   onSave: (translations: TranslationObject) => void;
+  isSaving?: boolean;
 }
 
-export function TranslationTree({ language, namespace, onSave }: TranslationTreeProps) {
+export function TranslationTree({ language, namespace, onSave, isSaving }: TranslationTreeProps) {
   const [translations, setTranslations] = useState<TranslationObject>({});
   const [loading, setLoading] = useState(true);
 
@@ -90,7 +91,9 @@ export function TranslationTree({ language, namespace, onSave }: TranslationTree
       <div className="border rounded-lg p-6">
         {renderTranslationTree(translations)}
       </div>
-      <Button onClick={() => onSave(translations)}>Save Changes</Button>
+      <Button onClick={() => onSave(translations)} disabled={isSaving}>
+        {isSaving ? "Saving..." : "Save Changes"}
+      </Button>
     </div>
   );
 } 
