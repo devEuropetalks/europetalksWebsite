@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 type TranslationObject = {
   [key: string]: string | TranslationObject;
@@ -18,19 +19,25 @@ interface TranslationTreeProps {
 export function TranslationTree({ language, namespace, onSave, isSaving }: TranslationTreeProps) {
   const [translations, setTranslations] = useState<TranslationObject>({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const loadTranslations = async () => {
       try {
         setLoading(true);
+        setError(null);
         const response = await fetch(
           `/api/translations?language=${language}&namespace=${namespace}`
         );
-        if (!response.ok) throw new Error("Failed to load translations");
+        if (!response.ok) {
+          const data = await response.json();
+          throw new Error(data.error || "Failed to load translations");
+        }
         const data = await response.json();
         setTranslations(data);
       } catch (error) {
         console.error("Error loading translations:", error);
+        setError(error instanceof Error ? error.message : "Failed to load translations");
       } finally {
         setLoading(false);
       }
@@ -83,7 +90,15 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
   };
 
   if (loading) {
-    return <div>Loading translations...</div>;
+    return <div className="flex items-center justify-center p-8">Loading translations...</div>;
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    );
   }
 
   return (

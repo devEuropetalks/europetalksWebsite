@@ -60,7 +60,7 @@ export async function GET(request: Request) {
       `${namespace}.json`
     );
     const content = await fs.readFile(filePath, "utf-8");
-    return NextResponse.json(JSON.parse(content) as TranslationObject);
+    return NextResponse.json(JSON.parse(content));
   } catch (error: unknown) {
     console.error("Translation load error:", error);
     return NextResponse.json(
@@ -85,6 +85,7 @@ export async function POST(request: Request) {
       throw new Error(`Invalid namespace: ${namespace}`);
     }
 
+    // Update in database
     await model.upsert({
       where: { language },
       create: {
@@ -95,6 +96,16 @@ export async function POST(request: Request) {
         content: translations,
       },
     });
+
+    // Also update the file system for fallback
+    const filePath = path.join(
+      process.cwd(),
+      "public",
+      "locales",
+      language,
+      `${namespace}.json`
+    );
+    await fs.writeFile(filePath, JSON.stringify(translations, null, 2));
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
