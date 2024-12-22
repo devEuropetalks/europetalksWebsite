@@ -18,6 +18,7 @@ export function LanguageSelector() {
     { code: "fr", name: "Français", flag: "🇫🇷" },
     { code: "de", name: "Deutsch", flag: "🇩🇪" },
     { code: "es", name: "Español", flag: "🇪🇸" },
+    { code: "it", name: "Italiano", flag: "🇮🇹" },
   ];
 
   return (
