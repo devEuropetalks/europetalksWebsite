@@ -12,7 +12,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LanguageSelector } from "./LanguageSelector";
 import { ThemeToggle } from "./ThemeToggle";
-import { Sheet,  SheetContent,  SheetHeader,  SheetTitle,  SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Menu, LogIn } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -23,18 +29,22 @@ export default function Header() {
   const isMember = user?.publicMetadata?.role === "member";
   const { t } = useTranslation("header");
 
-const navLinks = [
-  { href: "/", label: t("navigation.home") },
-  { href: "/about", label: t("navigation.about") },
-  { href: "/events", label: t("navigation.events") },
-  { href: "/gallery", label: t("navigation.gallery") },
-  { href: "/contact", label: t("navigation.contact") },
-  ...(isAdmin ? [{ href: "/admin/events", label: t("navigation.admin") }] : []),
-  ...(isMember || isAdmin
-    ? [{ href: "https://cloud.europetalks.eu", label: t("navigation.cloud") }]
-    : []),
-];
-
+  const navLinks = [
+    { href: "/", label: t("navigation.home") },
+    { href: "/about", label: t("navigation.about") },
+    { href: "/events", label: t("navigation.events") },
+    { href: "/gallery", label: t("navigation.gallery") },
+    { href: "/contact", label: t("navigation.contact") },
+    ...(isAdmin
+      ? [{ href: "/admin/events", label: t("navigation.admin") }]
+      : []),
+    ...(isMember || isAdmin
+      ? [{ href: "/translations", label: t("navigation.translations") }]
+      : []),
+    ...(isMember || isAdmin
+      ? [{ href: "https://cloud.europetalks.eu", label: t("navigation.cloud") }]
+      : []),
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full bg-blue-900">

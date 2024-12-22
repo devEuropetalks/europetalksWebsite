@@ -6,7 +6,8 @@
     "gallery": "Gallery",
     "contact": "Contact",
     "admin": "Admin",
-    "cloud": "Cloud"
+    "cloud": "Cloud",
+    "translations": "Translations"
   },
   "other": {
     "signIn": "Sign In",

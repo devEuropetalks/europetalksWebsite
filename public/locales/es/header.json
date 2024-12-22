@@ -6,7 +6,8 @@
     "gallery": "Galería",
     "contact": "Contacto",
     "admin": "Administración",
-    "cloud": "Nube"
+    "cloud": "Nube",
+    "translations": "Traducciones"
   },
   "other": {
     "signIn": "Iniciar sesión",
