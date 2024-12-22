@@ -5,15 +5,26 @@ import fs from "fs/promises";
 import path from "path";
 import { TranslationObject } from "@/types/translations";
 
-const namespaceToModel: Record<string, any> = {
-  home: db.homeTranslation,
-  header: db.headerTranslation,
-  about: db.aboutTranslation,
-  contact: db.contactTranslation,
-  events: db.eventsTranslation,
-  gallery: db.galleryTranslation,
-  components: db.componentsTranslation,
-  other: db.otherTranslation,
+type BaseTranslationModel = {
+  findUnique: (args: {
+    where: { language: string };
+  }) => Promise<{ content: TranslationObject } | null>;
+  upsert: (args: {
+    where: { language: string };
+    create: { language: string; content: TranslationObject };
+    update: { content: TranslationObject };
+  }) => Promise<{ content: TranslationObject }>;
+};
+
+const namespaceToModel: Record<string, BaseTranslationModel> = {
+  home: db.homeTranslation as unknown as BaseTranslationModel,
+  header: db.headerTranslation as unknown as BaseTranslationModel,
+  about: db.aboutTranslation as unknown as BaseTranslationModel,
+  contact: db.contactTranslation as unknown as BaseTranslationModel,
+  events: db.eventsTranslation as unknown as BaseTranslationModel,
+  gallery: db.galleryTranslation as unknown as BaseTranslationModel,
+  components: db.componentsTranslation as unknown as BaseTranslationModel,
+  other: db.otherTranslation as unknown as BaseTranslationModel,
 };
 
 export async function GET(request: Request) {
@@ -61,14 +72,14 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   const { userId } = await auth();
-  
+
   if (!userId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   try {
     const { language, namespace, translations } = await request.json();
-    
+
     const model = namespaceToModel[namespace];
     if (!model) {
       throw new Error(`Invalid namespace: ${namespace}`);
