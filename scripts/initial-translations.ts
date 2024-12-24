@@ -68,6 +68,13 @@ export const initialTranslations: Record<
         menu: "Menu",
       },
     },
+    admin: {
+      dashboard: {
+        title: "Dashboard",
+        manageEvents: "Manage Events",
+        manageTranslations: "Manage Translations",
+      },
+    },
     components: {
       languageSelector: {
         label: "Select language",

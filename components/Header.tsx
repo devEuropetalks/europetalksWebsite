@@ -35,11 +35,14 @@ export default function Header() {
     { href: "/events", label: t("navigation.events") },
     { href: "/gallery", label: t("navigation.gallery") },
     { href: "/contact", label: t("navigation.contact") },
-    ...(isAdmin
-      ? [{ href: "/admin/events", label: t("navigation.admin") }]
-      : []),
-    ...(isMember || isAdmin
-      ? [{ href: "/translations", label: t("navigation.translations") }]
+    ...(isAdmin ? [{ href: "/admin", label: t("navigation.admin") }] : []),
+    ...(isMember
+      ? [
+          {
+            href: "/member/translations",
+            label: t("navigation.translations"),
+          },
+        ]
       : []),
     ...(isMember || isAdmin
       ? [{ href: "https://cloud.europetalks.eu", label: t("navigation.cloud") }]
