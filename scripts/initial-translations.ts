@@ -153,28 +153,30 @@ export const initialTranslations: Record<
         inPerson: "In Person",
       },
       signUp: {
-        title: "Sign up for",
+        title: "Sign Up for",
         fullName: {
-          label: "Name",
-          error: "Name must be at least 3 characters",
+          label: "Full Name",
+          error: "Full name must be at least 3 characters"
         },
         email: {
           label: "Email",
-          error: "Invalid email address",
+          error: "Please enter a valid email address"
+        },
+        phone: {
+          label: "Phone Number (Optional)",
+          placeholder: "Enter your phone number"
         },
         motivation: {
-          label: "Motivation",
-          error:
-            "Please explain in at least 50 characters why you would like to join this event...",
+          label: "Why do you want to attend this event?",
+          placeholder: "Please tell us why you're interested in attending...",
+          error: "Please provide at least 50 characters explaining your motivation"
         },
-        submit: "Sign up",
+        submit: "Sign Up",
         submitting: "Signing up...",
-        cancel: "Cancel",
-        success: "Success",
+        success: "Success!",
         successMessage: "You have successfully signed up for the event.",
         error: "Error",
-        errorMessage: "Error signing up. Please try again.",
-        eventEnded: "Event ended",
+        errorMessage: "Failed to sign up. Please try again."
       },
     },
     contact: {

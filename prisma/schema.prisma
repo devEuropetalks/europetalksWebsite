@@ -25,8 +25,9 @@ model EventSignup {
   fullName  String
   email     String
   phone     String?
+  motivation String?
   createdAt DateTime @default(now())
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  event     Event    @relation(fields: [eventId], references: [id])
 
   @@index([eventId])
 }

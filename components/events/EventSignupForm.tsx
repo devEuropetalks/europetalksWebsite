@@ -158,7 +158,7 @@ export default function EventSignupForm({
                 <FormItem>
                   <FormLabel>{t("events.signUp.email.label")}</FormLabel>
                   <FormControl>
-                    <Input {...field} type="email" />
+                    <Input type="email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -172,7 +172,10 @@ export default function EventSignupForm({
                 <FormItem>
                   <FormLabel>{t("events.signUp.phone.label")}</FormLabel>
                   <FormControl>
-                    <Input {...field} type="tel" />
+                    <Input 
+                      {...field} 
+                      placeholder={t("events.signUp.phone.placeholder")}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -187,9 +190,9 @@ export default function EventSignupForm({
                   <FormItem>
                     <FormLabel>{t("events.signUp.motivation.label")}</FormLabel>
                     <FormControl>
-                      <Textarea
-                        {...field}
-                        className="min-h-[100px]"
+                      <Textarea 
+                        {...field} 
+                        rows={4}
                         placeholder={t("events.signUp.motivation.placeholder")}
                       />
                     </FormControl>
@@ -199,14 +202,12 @@ export default function EventSignupForm({
               />
             )}
 
-            <div className="flex justify-end gap-4">
-              <Button type="button" variant="outline" onClick={onClose}>
-                {t("events.signUp.cancel")}
-              </Button>
-              <Button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? t("events.signUp.submitting") : t("events.signUp.submit")}
-              </Button>
-            </div>
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting 
+                ? t("events.signUp.submitting")
+                : t("events.signUp.submit")
+              }
+            </Button>
           </form>
         </Form>
       </DialogContent>

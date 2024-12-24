@@ -2,7 +2,29 @@
   "events": {
     "title": "Events",
     "viewPastEvents": "View Past Events",
-    "loading": "Loading events..."
+    "loading": "Loading events...",
+    "signUp": {
+      "title": "Sign Up for",
+      "fullName": {
+        "label": "Full Name",
+        "error": "Full name must be at least 3 characters"
+      },
+      "email": {
+        "label": "Email",
+        "error": "Please enter a valid email address"
+      },
+      "phone": {
+        "label": "Phone Number (Optional)",
+        "placeholder": "Enter your phone number"
+      },
+      "motivation": {
+        "label": "Why do you want to attend this event?",
+        "placeholder": "Please tell us why you're interested in attending...",
+        "error": "Please provide at least 50 characters explaining your motivation"
+      },
+      "submit": "Sign Up",
+      "submitting": "Signing up..."
+    }
   },
   "pastEvents": {
     "title": "Past Events",

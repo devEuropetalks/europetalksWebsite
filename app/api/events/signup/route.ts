@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { db } from "@/lib/db";
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_SERVER_HOST,
@@ -8,13 +9,38 @@ const transporter = nodemailer.createTransport({
     user: process.env.EVENT_SIGNUP_EMAIL_SERVER_USER,
     pass: process.env.EVENT_SIGNUP_EMAIL_SERVER_PASSWORD,
   },
-  secure: true,
+  secure: false,
+  requireTLS: true,
+  tls: {
+    minVersion: 'TLSv1.2',
+    rejectUnauthorized: false
+  }
+});
+
+// Add verification
+transporter.verify(function(error, success) {
+  if (error) {
+    console.log('Event signup server connection failed:', error);
+  } else {
+    console.log('Event signup server is ready to take messages', success);
+  }
 });
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { eventId, fullName, email, phone, motivation } = body;
+
+    // Save to database using the existing db connection
+    await db.eventSignup.create({
+      data: {
+        eventId,
+        fullName,
+        email,
+        phone,
+        motivation: motivation || "",
+      },
+    });
 
     // Send confirmation email to user
     await transporter.sendMail({
