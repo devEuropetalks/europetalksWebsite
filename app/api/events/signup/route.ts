@@ -29,7 +29,7 @@ transporter.verify(function(error, success) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { eventId, fullName, email, phone, motivation } = body;
+    const { eventId, fullName, email, phone, motivation, eventTitle } = body;
 
     // Save to database using the existing db connection
     await db.eventSignup.create({
@@ -44,24 +44,25 @@ export async function POST(request: Request) {
 
     // Send confirmation email to user
     await transporter.sendMail({
-      from: process.env.EVENT_SIGNUP_EMAIL_FROM,
+      from: `"EuropeTalks" <${process.env.EVENT_SIGNUP_EMAIL_FROM}>`,
       to: email,
       subject: "Event Registration Confirmation",
       html: `
         <h1>Thank you for registering!</h1>
         <p>Dear ${fullName},</p>
-        <p>Your registration has been received. We'll send you more details soon.</p>
+        <p>Your registration for our EuropeTalks event ${eventTitle} has been received. We'll send you more details soon.</p>
       `,
     });
 
     // Send notification to admin with motivation included
     await transporter.sendMail({
-      from: process.env.EVENT_SIGNUP_EMAIL_FROM,
+      from: `"EuropeTalks" <${process.env.EVENT_SIGNUP_EMAIL_FROM}>`,
       to: process.env.SEND_TO_EMAIL,
       subject: "New Event Registration",
       html: `
         <h1>New Registration</h1>
         <p>Event ID: ${eventId}</p>
+        <p>Event Title: ${eventTitle}</p>
         <p>Name: ${fullName}</p>
         <p>Email: ${email}</p>
         <p>Phone: ${phone || "Not provided"}</p>

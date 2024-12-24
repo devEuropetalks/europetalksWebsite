@@ -67,7 +67,7 @@ export async function POST(request: Request) {
 
     // Send confirmation email to user
     await transporter.sendMail({
-      from: `"Your Organization Name" <${process.env.CONTACT_FORM_EMAIL_FROM}>`,
+      from: `"EuropeTalks" <${process.env.CONTACT_FORM_EMAIL_FROM}>`,
       to: email,
       subject: "We've received your message",
       html: `
