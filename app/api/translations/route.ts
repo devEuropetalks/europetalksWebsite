@@ -1,6 +1,13 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { z } from "zod";
+
+const translationSchema = z.object({
+  language: z.string(),
+  namespace: z.string(),
+  translations: z.record(z.unknown()),
+});
 
 export async function GET(request: Request) {
   try {
@@ -9,28 +16,25 @@ export async function GET(request: Request) {
     const namespace = searchParams.get("namespace");
 
     if (!language || !namespace) {
-      return NextResponse.json(
-        { error: "Language and namespace are required" },
-        { status: 400 }
-      );
+      return new NextResponse("Language and namespace are required", { status: 400 });
     }
 
     const translation = await db.translation.findUnique({
       where: { language },
+      select: {
+        content: true,
+      },
     });
 
-    if (translation) {
-      const content = translation.content as Record<string, unknown>;
-      return NextResponse.json(content[namespace] || {});
+    if (!translation) {
+      return NextResponse.json({});
     }
 
-    return NextResponse.json({});
+    const content = translation.content as Record<string, unknown>;
+    return NextResponse.json(content[namespace] || {});
   } catch (error) {
     console.error("Translation fetch error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch translations" },
-      { status: 500 }
-    );
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
 
@@ -38,23 +42,27 @@ export async function POST(request: Request) {
   const { userId } = await auth();
 
   if (!userId) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    return new NextResponse("Unauthorized", { status: 401 });
   }
 
   try {
-    const { language, namespace, translations } = await request.json();
+    const body = await request.json();
+    const validatedData = translationSchema.parse(body);
 
     const existing = await db.translation.findUnique({
-      where: { language },
+      where: { language: validatedData.language },
+      select: {
+        content: true,
+      },
     });
 
     const content = existing ? { ...(existing.content as object) } : {};
-    content[namespace] = translations;
+    content[validatedData.namespace] = validatedData.translations;
 
     await db.translation.upsert({
-      where: { language },
+      where: { language: validatedData.language },
       create: {
-        language,
+        language: validatedData.language,
         content,
       },
       update: {
@@ -65,9 +73,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("Translation save error:", error);
-    return NextResponse.json(
-      { error: "Failed to save translations" },
-      { status: 500 }
-    );
+    if (error instanceof z.ZodError) {
+      return new NextResponse("Invalid request data", { status: 400 });
+    }
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

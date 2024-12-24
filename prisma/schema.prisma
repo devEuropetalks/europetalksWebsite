@@ -1,32 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
 model Event {
-  id          String       @id @default(cuid())
+  id          String        @id @default(cuid())
   title       String
   description String
   date        DateTime
   location    String
   imageUrl    String?
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
   signups     EventSignup[]
 }
 
 model EventSignup {
   id        String   @id @default(cuid())
   eventId   String
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   fullName  String
   email     String
   phone     String?
   createdAt DateTime @default(now())
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@index([eventId])
 }
@@ -34,7 +34,7 @@ model EventSignup {
 model Translation {
   id        String   @id @default(cuid())
   language  String   @unique
-  content   Json     // Will contain all translations in a nested structure
+  content   Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

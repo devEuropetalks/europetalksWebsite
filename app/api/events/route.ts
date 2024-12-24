@@ -15,6 +15,14 @@ export async function GET() {
       orderBy: {
         date: "asc",
       },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        date: true,
+        location: true,
+        imageUrl: true,
+      },
     });
 
     // Get past events
@@ -27,6 +35,14 @@ export async function GET() {
       orderBy: {
         date: "desc",
       },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        date: true,
+        location: true,
+        imageUrl: true,
+      },
     });
 
     return NextResponse.json({
@@ -35,9 +51,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Error fetching events:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch events" },
-      { status: 500 }
-    );
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

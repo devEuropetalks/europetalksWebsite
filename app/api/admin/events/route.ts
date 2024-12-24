@@ -1,37 +1,72 @@
 import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
+
+const eventSchema = z.object({
+  title: z.string().min(1),
+  description: z.string().min(1),
+  date: z.string(),
+  location: z.string().min(1),
+  imageUrl: z.string().url().optional(),
+}).required();
 
 export async function GET() {
+  const { userId } = await auth();
+  
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
   try {
     const events = await db.event.findMany({
       orderBy: {
         date: "desc",
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        date: true,
+        location: true,
+        imageUrl: true,
       },
     });
 
     return NextResponse.json(events);
   } catch (error) {
     console.error("Error fetching events:", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(request: Request) {
+  const { userId } = await auth();
+  
+  if (!userId) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
+
   try {
-    const body = await req.json();
+    const body = await request.json();
+    const validatedData = eventSchema.parse(body);
+
     const event = await db.event.create({
       data: {
-        title: body.title,
-        description: body.description,
-        date: new Date(body.date),
-        location: body.location,
-        imageUrl: body.imageUrl,
+        title: validatedData.title,
+        description: validatedData.description,
+        date: new Date(validatedData.date),
+        location: validatedData.location,
+        imageUrl: validatedData.imageUrl,
       },
     });
 
     return NextResponse.json(event);
   } catch (error) {
     console.error("Error creating event:", error);
-    return new NextResponse("Internal Error", { status: 500 });
+    if (error instanceof z.ZodError) {
+      return new NextResponse("Invalid request data", { status: 400 });
+    }
+    return new NextResponse("Internal Server Error", { status: 500 });
   }
 }

@@ -11,12 +11,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
-import { eventSchema, type EventFormData } from "@/lib/validations/event";
+import { eventFormSchema, type EventFormData } from "@/lib/validations/event";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { UploadButton } from "@/utils/uploadthing";
+import { useState } from "react";
 
 interface EventFormProps {
   onSubmit: (data: EventFormData & { imageUrl?: string }) => void;
@@ -24,9 +24,7 @@ interface EventFormProps {
 }
 
 export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
-  const [isUploading, setIsUploading] = useState(false);
-  const [imageUrl, setImageUrl] = useState(defaultValues?.imageUrl || "");
-  const { toast } = useToast();
+  const [imageUrl, setImageUrl] = useState<string | undefined>(defaultValues?.imageUrl);
 
   const formatDateForInput = (date: Date | string | undefined) => {
     if (!date) return "";
@@ -36,7 +34,7 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
   };
 
   const form = useForm<EventFormData>({
-    resolver: zodResolver(eventSchema),
+    resolver: zodResolver(eventFormSchema),
     defaultValues: {
       title: defaultValues?.title || "",
       description: defaultValues?.description || "",
@@ -45,55 +43,16 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
     },
   });
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-
+  const handleSubmit = async (values: EventFormData) => {
     onSubmit({
-      title: formData.get("title") as string,
-      description: formData.get("description") as string,
-      date: formData.get("date") as string,
-      location: formData.get("location") as string,
+      ...values,
       imageUrl: imageUrl,
     });
   };
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return;
-
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
-
-    try {
-      const response = await fetch("/api/admin/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error("Upload failed");
-
-      const data = await response.json();
-      setImageUrl(data.url);
-      toast({
-        title: "Success",
-        description: "Image uploaded successfully",
-      });
-    } catch (error) {
-      console.error(error);
-      toast({
-        title: "Error",
-        description: "Failed to upload image",
-        variant: "destructive",
-      });
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
   return (
     <Form {...form}>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
         <FormField
           control={form.control}
           name="title"
@@ -157,22 +116,24 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
         <div>
           <FormLabel>Thumbnail Image</FormLabel>
           <div className="flex items-center gap-4">
-            <FormControl>
-              <Input
-                type="file"
-                accept="image/*"
-                onChange={handleImageUpload}
-                disabled={isUploading}
-              />
-            </FormControl>
+            <UploadButton
+              endpoint="imageUploader"
+              onClientUploadComplete={(res) => {
+                if (res?.[0]) {
+                  setImageUrl(res[0].url);
+                }
+              }}
+              onUploadError={(error: Error) => {
+                alert(`ERROR! ${error.message}`);
+              }}
+            />
             {imageUrl && (
               <div className="relative w-16 h-16">
                 <Image
                   src={imageUrl}
                   alt="Preview"
-                  className="object-cover rounded-md w-full h-full"
-                  width={100}
-                  height={100}
+                  className="object-cover rounded-md"
+                  fill
                 />
               </div>
             )}
@@ -180,8 +141,8 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
         </div>
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={isUploading}>
-            {isUploading ? "Uploading..." : "Save Event"}
+          <Button type="submit" disabled={form.formState.isSubmitting}>
+            {form.formState.isSubmitting ? "Saving..." : "Save Event"}
           </Button>
         </div>
       </form>
