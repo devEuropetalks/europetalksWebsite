@@ -40,7 +40,7 @@ export default function HomePage() {
                   onInit={(typewriter) => {
                     typewriter
                       .typeString(heroTitle)
-                      .pauseFor(2500)
+                      .pauseFor(5000)
                       .deleteAll()
                       .start();
                   }}
