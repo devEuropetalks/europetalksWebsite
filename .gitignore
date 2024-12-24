@@ -45,8 +45,5 @@ next-env.d.ts
 # app/translations-data
 app/translations-data/**
 
-# scripts
-/scripts
-
 # translations
 *.py
