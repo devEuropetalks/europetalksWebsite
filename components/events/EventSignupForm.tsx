@@ -22,7 +22,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Textarea } from "../ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 import { useTranslation } from "react-i18next";
 
 interface EventSignupFormProps {
@@ -44,8 +44,8 @@ export default function EventSignupForm({
   const { user } = useUser();
 
   const signupSchema = z.object({
-    fullName: z.string().min(3, t("events.signUp.fullName.error")),
-    email: z.string().email(t("events.signUp.email.error")),
+    fullName: z.string().min(3, t("signUp.fullName.error")),
+    email: z.string().email(t("signUp.email.error")),
     phone: z.string().optional(),
     motivation: z
       .string()
@@ -61,7 +61,7 @@ export default function EventSignupForm({
             minimum: 50,
             type: "string",
             inclusive: true,
-            message: t("events.signUp.motivation.error"),
+            message: t("signUp.motivation.error"),
           });
         }
       }),
@@ -128,7 +128,7 @@ export default function EventSignupForm({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            {t("events.signUp.title")} {eventTitle}
+            {t("signUp.title")} {eventTitle}
           </DialogTitle>
         </DialogHeader>
 
@@ -142,7 +142,7 @@ export default function EventSignupForm({
               name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("events.signUp.fullName.label")}</FormLabel>
+                  <FormLabel>{t("signUp.fullName.label")}</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -156,7 +156,7 @@ export default function EventSignupForm({
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("events.signUp.email.label")}</FormLabel>
+                  <FormLabel>{t("signUp.email.label")}</FormLabel>
                   <FormControl>
                     <Input type="email" {...field} />
                   </FormControl>
@@ -170,11 +170,11 @@ export default function EventSignupForm({
               name="phone"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t("events.signUp.phone.label")}</FormLabel>
+                  <FormLabel>{t("signUp.phone.label")}</FormLabel>
                   <FormControl>
                     <Input 
                       {...field} 
-                      placeholder={t("events.signUp.phone.placeholder")}
+                      placeholder={t("signUp.phone.placeholder")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -188,12 +188,12 @@ export default function EventSignupForm({
                 name="motivation"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>{t("events.signUp.motivation.label")}</FormLabel>
+                    <FormLabel>{t("signUp.motivation.label")}</FormLabel>
                     <FormControl>
                       <Textarea 
                         {...field} 
                         rows={4}
-                        placeholder={t("events.signUp.motivation.placeholder")}
+                        placeholder={t("signUp.motivation.placeholder")}
                       />
                     </FormControl>
                     <FormMessage />
@@ -204,8 +204,8 @@ export default function EventSignupForm({
 
             <Button type="submit" disabled={isSubmitting} className="w-full">
               {isSubmitting 
-                ? t("events.signUp.submitting")
-                : t("events.signUp.submit")
+                ? t("signUp.submitting")
+                : t("signUp.submit")
               }
             </Button>
           </form>
