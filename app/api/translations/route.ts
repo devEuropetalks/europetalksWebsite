@@ -1,8 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import fs from "fs/promises";
-import path from "path";
 
 export async function GET(request: Request) {
   try {
@@ -17,40 +15,16 @@ export async function GET(request: Request) {
       );
     }
 
-    // Add fallback to file system if database fails
-    try {
-      const translation = await db.translation.findUnique({
-        where: { language },
-      });
+    const translation = await db.translation.findUnique({
+      where: { language },
+    });
 
-      if (translation) {
-        const content = translation.content as Record<string, unknown>;
-        return NextResponse.json(content[namespace] || {});
-      }
-    } catch (dbError) {
-      console.error("Database error:", dbError);
-      // Continue to file system fallback
+    if (translation) {
+      const content = translation.content as Record<string, unknown>;
+      return NextResponse.json(content[namespace] || {});
     }
 
-    // Fallback to file system
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "locales",
-      language,
-      `${namespace}.json`
-    );
-    
-    try {
-      const fileContent = await fs.readFile(filePath, 'utf-8');
-      return NextResponse.json(JSON.parse(fileContent));
-    } catch (fsError) {
-      console.error("File system error:", fsError);
-      return NextResponse.json(
-        { error: "Translation not found" },
-        { status: 404 }
-      );
-    }
+    return NextResponse.json({});
   } catch (error) {
     console.error("Translation fetch error:", error);
     return NextResponse.json(
@@ -87,16 +61,6 @@ export async function POST(request: Request) {
         content,
       },
     });
-
-    // Update file system for fallback
-    const filePath = path.join(
-      process.cwd(),
-      "public",
-      "locales",
-      language,
-      `${namespace}.json`
-    );
-    await fs.writeFile(filePath, JSON.stringify(translations, null, 2));
 
     return NextResponse.json({ success: true });
   } catch (error) {

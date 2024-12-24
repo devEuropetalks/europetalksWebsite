@@ -5,9 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import ContentWrapper from "@/components/ContentWrapper";
 import { useTranslation } from "react-i18next";
+import Typewriter from "typewriter-effect";
 
 export default function HomePage() {
   const { t } = useTranslation("home");
+
+  const heroTitle = t("hero.title");
 
   return (
     <div>
@@ -28,7 +31,20 @@ export default function HomePage() {
           <div className="relative z-10 w-full min-h-[60vh] flex items-center">
             <div className="text-center text-white w-full">
               <h1 className="text-4xl md:text-6xl font-bold mb-6">
-                {t("hero.title")}
+                <Typewriter
+                  options={{
+                    strings: [heroTitle],
+                    autoStart: true,
+                    loop: true,
+                  }}
+                  onInit={(typewriter) => {
+                    typewriter
+                      .typeString(heroTitle)
+                      .pauseFor(2500)
+                      .deleteAll()
+                      .start();
+                  }}
+                />
               </h1>
               <p className="text-xl text-gray-200 mb-8 max-w-2xl mx-auto text-center">
                 {t("hero.subtitle")}
@@ -65,8 +81,12 @@ export default function HomePage() {
               />
             </div>
             <div className="relative z-10 text-white">
-              <h2 className="text-2xl font-semibold mb-4">{t("features.cultural.title")}</h2>
-              <p className="text-gray-200">{t("features.cultural.description")}</p>
+              <h2 className="text-2xl font-semibold mb-4">
+                {t("features.cultural.title")}
+              </h2>
+              <p className="text-gray-200">
+                {t("features.cultural.description")}
+              </p>
             </div>
           </div>
 
@@ -81,8 +101,12 @@ export default function HomePage() {
               />
             </div>
             <div className="relative z-10 text-white">
-              <h2 className="text-2xl font-semibold mb-4">{t("features.community.title")}</h2>
-              <p className="text-gray-200">{t("features.community.description")}</p>
+              <h2 className="text-2xl font-semibold mb-4">
+                {t("features.community.title")}
+              </h2>
+              <p className="text-gray-200">
+                {t("features.community.description")}
+              </p>
             </div>
           </div>
 
@@ -97,8 +121,12 @@ export default function HomePage() {
               />
             </div>
             <div className="relative z-10 text-white">
-              <h2 className="text-2xl font-semibold mb-4">{t("features.knowledge.title")}</h2>
-              <p className="text-gray-200">{t("features.knowledge.description")}</p>
+              <h2 className="text-2xl font-semibold mb-4">
+                {t("features.knowledge.title")}
+              </h2>
+              <p className="text-gray-200">
+                {t("features.knowledge.description")}
+              </p>
             </div>
           </div>
         </section>
