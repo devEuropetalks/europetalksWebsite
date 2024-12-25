@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { OptimizedImage } from "../OptimizedImage";
+import Image from "next/image";
 
 interface EventCardProps {
   event: {
@@ -26,19 +26,26 @@ interface EventCardProps {
 export function EventCard({ event }: EventCardProps) {
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const { t } = useTranslation();
+  const [isImageLoading, setIsImageLoading] = useState(true);
 
   return (
     <Card className="overflow-hidden">
       {event.imageUrl && (
         <div className="relative h-48 w-full">
-          <OptimizedImage
+          <Image
             src={event.imageUrl}
             alt={event.title}
             fill
-            className="object-cover"
+            className={`object-cover transition-opacity duration-300 ${
+              isImageLoading ? "opacity-0" : "opacity-100"
+            }`}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            lowQuality={!isSignupOpen} // Load high quality when form is open
+            quality={90}
+            onLoadingComplete={() => setIsImageLoading(false)}
           />
+          {isImageLoading && (
+            <div className="absolute inset-0 bg-muted animate-pulse" />
+          )}
         </div>
       )}
       <CardHeader>
