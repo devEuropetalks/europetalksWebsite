@@ -43,7 +43,7 @@ export function TranslationEditor() {
     try {
       setIsSaving(true);
       const response = await fetch("/api/translations", {
-        method: "POST",
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },

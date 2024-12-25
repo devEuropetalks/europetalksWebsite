@@ -37,7 +37,9 @@ export async function GET(request: Request) {
         return NextResponse.json({});
       }
 
-      return NextResponse.json(translation.content);
+      // Return only the namespace-specific translations
+      const namespaceTranslations = translation.content[namespace] || {};
+      return NextResponse.json(namespaceTranslations);
     } catch (dbError) {
       // If database error (e.g., table doesn't exist), fallback to English translations
       console.warn("Database error, falling back to English:", dbError);
@@ -52,7 +54,7 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+export async function PATCH(request: Request) {
   const { userId } = await auth();
 
   if (!userId) {
@@ -63,16 +65,44 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validatedData = translationSchema.parse(body);
 
-    await db.translation.upsert({
+    // Get existing translations
+    const existingTranslation = await db.translation.findUnique({
       where: { language: validatedData.language },
-      create: {
-        language: validatedData.language,
-        content: validatedData.translations,
-      },
-      update: {
-        content: validatedData.translations,
+      select: {
+        content: true,
       },
     });
+
+    if (existingTranslation) {
+      // Create updated content by merging existing content with new translations
+      const updatedContent = {
+        ...(existingTranslation.content as Prisma.JsonObject),
+        [validatedData.namespace]: validatedData.translations
+      };
+
+      // Update using Prisma's update method
+      await db.translation.update({
+        where: { 
+          language: validatedData.language 
+        },
+        data: {
+          content: updatedContent
+        }
+      });
+    } else {
+      // Create new translation
+      const initialContent = {
+        [validatedData.namespace]: validatedData.translations
+      };
+
+      await db.translation.create({
+        data: {
+          id: `cm${Math.random().toString(36).slice(2)}`,
+          language: validatedData.language,
+          content: initialContent,
+        }
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -80,6 +110,6 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return new NextResponse("Invalid request data", { status: 400 });
     }
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse(error instanceof Error ? error.message : "Internal Server Error", { status: 500 });
   }
 }

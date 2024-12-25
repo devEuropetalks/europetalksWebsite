@@ -19,6 +19,9 @@
           "description": "Share and expand your knowledge through interactive discussions, workshops and learn from others."
         }
       },
+      "getToKnowUs": {
+        "title": "Get to know us"
+      },
       "cta": {
         "title": "Ready to join?",
         "buttons": {

@@ -6,6 +6,7 @@ import Image from "next/image";
 import ContentWrapper from "@/components/ContentWrapper";
 import { useTranslation } from "react-i18next";
 import Typewriter from "typewriter-effect";
+import { Slideshow } from "@/components/Slideshow";
 
 export default function HomePage() {
   const { t } = useTranslation("home");
@@ -130,7 +131,10 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
+        <section className="mb-12">
+          <h2 className="text-3xl font-bold mb-4 text-center">{t("getToKnowUs.title")}</h2>
+          <Slideshow interval={5000} />
+        </section>
         {/* CTA Section */}
         <section className="py-16 text-center bg-muted rounded-lg">
           <h2 className="text-3xl font-bold mb-4">{t("cta.title")}</h2>

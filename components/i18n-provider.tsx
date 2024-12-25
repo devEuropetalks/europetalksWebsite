@@ -48,7 +48,8 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
       }
       
       const data = await response.json();
-      i18n.addResourceBundle(language, ns, data[ns], true, true);
+      // The response is now already namespace-specific
+      i18n.addResourceBundle(language, ns, data, true, true);
     }
   } catch (error) {
     console.warn("Warning: Error reloading translations:", error);
