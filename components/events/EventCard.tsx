@@ -23,7 +23,7 @@ interface EventCardProps {
   };
 }
 
-export default function EventCard({ event }: EventCardProps) {
+export function EventCard({ event }: EventCardProps) {
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const { t } = useTranslation();
 
@@ -76,3 +76,6 @@ export default function EventCard({ event }: EventCardProps) {
     </Card>
   );
 }
+
+// Add default export that references the named export
+export default EventCard;
