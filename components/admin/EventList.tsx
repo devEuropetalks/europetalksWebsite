@@ -18,7 +18,8 @@ type Event = {
   id: string;
   title: string;
   description: string;
-  date: Date;
+  startDate: Date;
+  endDate?: Date;
   location: string | null;
 };
 
@@ -45,6 +46,13 @@ export function EventList() {
     }
   };
 
+  const formatEventDate = (startDate: Date, endDate?: Date) => {
+    if (!endDate) {
+      return format(startDate, "PPp");
+    }
+    return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -64,7 +72,7 @@ export function EventList() {
           {events.map((event) => (
             <TableRow key={event.id}>
               <TableCell>{event.title}</TableCell>
-              <TableCell>{format(new Date(event.date), "PPP")}</TableCell>
+              <TableCell>{formatEventDate(event.startDate, event.endDate)}</TableCell>
               <TableCell>{event.location || "N/A"}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">

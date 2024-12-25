@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { format, isSameDay } from "date-fns";
+import { format } from "date-fns";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -29,15 +29,16 @@ export function EventCard({ event }: EventCardProps) {
   const { t } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(true);
 
-  const formatDateRange = (start: Date | string, end: Date | string) => {
+  const formatDateRange = (start: Date | string, end: Date | string | undefined) => {
     const startDate = new Date(start);
-    const endDate = new Date(end);
-
-    if (isSameDay(startDate, endDate)) {
-      return format(startDate, "PPP");
+    if (!end) {
+      // Single day event with time
+      return format(startDate, "PPp");
     }
-
-    return `${format(startDate, "PPP")} - ${format(endDate, "PPP")}`;
+    const endDate = new Date(end);
+    
+    // If start and end dates are provided, it's a multi-day event
+    return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
   };
 
   return (

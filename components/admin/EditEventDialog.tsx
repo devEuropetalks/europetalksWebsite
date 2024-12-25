@@ -15,7 +15,8 @@ interface EditEventDialogProps {
     id: string;
     title: string;
     description: string;
-    date: Date;
+    startDate: Date;
+    endDate?: Date;
     location: string | null;
   } | null;
   open: boolean;
@@ -40,10 +41,7 @@ export function EditEventDialog({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          ...data,
-          date: new Date(data.date).toISOString(),
-        }),
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) throw new Error("Failed to update event");
@@ -78,11 +76,9 @@ export function EditEventDialog({
           defaultValues={{
             title: event.title,
             description: event.description,
-            date: (event.date instanceof Date
-              ? event.date
-              : new Date(event.date)
-            ).toISOString(),
-            location: event.location || undefined,
+            startDate: event.startDate.toISOString(),
+            endDate: event.endDate?.toISOString(),
+            location: event.location || "",
           }}
         />
       </DialogContent>

@@ -17,6 +17,12 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { UploadButton } from "@/utils/uploadthing";
 import { useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon, Clock } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
 
 interface EventFormProps {
   onSubmit: (data: EventFormData & { imageUrl?: string }) => void;
@@ -25,21 +31,15 @@ interface EventFormProps {
 
 export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
   const [imageUrl, setImageUrl] = useState<string | undefined>(defaultValues?.imageUrl);
-
-  const formatDateForInput = (date: Date | string | undefined) => {
-    if (!date) return "";
-    const d = new Date(date);
-    if (isNaN(d.getTime())) return "";
-    return d.toISOString().slice(0, 16);
-  };
+  const [isMultiDay, setIsMultiDay] = useState(false);
 
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
       title: defaultValues?.title || "",
       description: defaultValues?.description || "",
-      startDate: formatDateForInput(defaultValues?.startDate),
-      endDate: formatDateForInput(defaultValues?.endDate),
+      startDate: defaultValues?.startDate || "",
+      endDate: defaultValues?.endDate || "",
       location: defaultValues?.location || "",
     },
   });
@@ -82,42 +82,135 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
           )}
         />
 
+        <div className="flex items-center space-x-2">
+          <Switch
+            checked={isMultiDay}
+            onCheckedChange={setIsMultiDay}
+            id="multi-day"
+          />
+          <label htmlFor="multi-day" className="text-sm font-medium">
+            Multi-day event
+          </label>
+        </div>
+
         <div className="grid grid-cols-2 gap-4">
           <FormField
             control={form.control}
             name="startDate"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Start Date and Time</FormLabel>
-                <FormControl>
-                  <Input
-                    type="datetime-local"
-                    {...field}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                </FormControl>
+              <FormItem className="flex flex-col">
+                <FormLabel>
+                  {isMultiDay ? "Start Date" : "Date and Time"}
+                </FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        className={cn(
+                          "pl-3 text-left font-normal",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value ? (
+                          format(new Date(field.value), isMultiDay ? "PPP" : "PPP p")
+                        ) : (
+                          <span>Pick a date</span>
+                        )}
+                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={field.value ? new Date(field.value) : undefined}
+                      onSelect={(date) => {
+                        if (date) {
+                          if (isMultiDay) {
+                            // For multi-day events, set time to midnight
+                            date.setHours(0, 0, 0, 0);
+                          } else {
+                            // For single-day events, default to current time if not set
+                            const currentDate = new Date();
+                            date.setHours(currentDate.getHours(), currentDate.getMinutes());
+                          }
+                          field.onChange(date.toISOString());
+                        }
+                      }}
+                      disabled={(date) => date < new Date()}
+                    />
+                    {!isMultiDay && (
+                      <div className="p-3 border-t flex items-center gap-2">
+                        <Clock className="h-4 w-4 opacity-50" />
+                        <input
+                          type="time"
+                          className="w-full"
+                          onChange={(e) => {
+                            const date = field.value ? new Date(field.value) : new Date();
+                            const [hours, minutes] = e.target.value.split(':');
+                            date.setHours(parseInt(hours), parseInt(minutes));
+                            field.onChange(date.toISOString());
+                          }}
+                          value={field.value ? format(new Date(field.value), "HH:mm") : ""}
+                        />
+                      </div>
+                    )}
+                  </PopoverContent>
+                </Popover>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <FormField
-            control={form.control}
-            name="endDate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>End Date and Time</FormLabel>
-                <FormControl>
-                  <Input
-                    type="datetime-local"
-                    {...field}
-                    onChange={(e) => field.onChange(e.target.value)}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {isMultiDay && (
+            <FormField
+              control={form.control}
+              name="endDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col">
+                  <FormLabel>End Date</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "pl-3 text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          {field.value ? (
+                            format(new Date(field.value), "PPP")
+                          ) : (
+                            <span>Pick a date</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={field.value ? new Date(field.value) : undefined}
+                        onSelect={(date) => {
+                          if (date) {
+                            date.setHours(0, 0, 0, 0);
+                            field.onChange(date.toISOString());
+                          }
+                        }}
+                        disabled={(date) => {
+                          const startDate = form.getValues("startDate");
+                          return date < new Date() || (startDate && date <= new Date(startDate));
+                        }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
 
         <FormField

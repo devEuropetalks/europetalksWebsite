@@ -30,7 +30,8 @@ export function CreateEventButton() {
         body: JSON.stringify({
           title: data.title,
           description: data.description,
-          date: data.date,
+          startDate: data.startDate,
+          endDate: data.endDate,
           location: data.location,
           imageUrl: data.imageUrl || null, // Ensure imageUrl is included
         }),
