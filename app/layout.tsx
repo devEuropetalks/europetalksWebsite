@@ -6,6 +6,7 @@ import { I18nextProvider } from "@/components/i18n-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Metadata } from "next";
 import { Inter, Rock_Salt } from "next/font/google";
+import { TranslationsProvider } from '@/components/providers/TranslationsProvider';
 
 const inter = Inter({ subsets: ["latin"] });
 const rockSalt = Rock_Salt({
@@ -49,11 +50,13 @@ export default function RootLayout({
         <ThemeProvider>
           <ClerkThemeProvider>
             <I18nextProvider>
-              <Header />
-              <main className="min-h-screen">
+              <TranslationsProvider>
+                <Header />
+                <main className="min-h-screen">
                   {children}
-              </main>
-              <Footer />
+                </main>
+                <Footer />
+              </TranslationsProvider>
             </I18nextProvider>
           </ClerkThemeProvider>
         </ThemeProvider>
