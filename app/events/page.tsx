@@ -1,6 +1,6 @@
 "use client";
 
-import { EventCard } from "@/components/events/EventCard";
+import EventCard from "@/components/events/EventCard";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useEffect, useState } from "react";

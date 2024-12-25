@@ -79,6 +79,8 @@ export default function HomePage() {
                 fill
                 className="object-cover brightness-[0.4]"
                 quality={100}
+                priority
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
             <div className="relative z-10 text-white">
@@ -99,6 +101,7 @@ export default function HomePage() {
                 fill
                 className="object-cover brightness-[0.4]"
                 quality={100}
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
             <div className="relative z-10 text-white">
@@ -119,6 +122,7 @@ export default function HomePage() {
                 fill
                 className="object-cover brightness-[0.4]"
                 quality={100}
+                sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
             <div className="relative z-10 text-white">

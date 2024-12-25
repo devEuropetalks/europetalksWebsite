@@ -32,21 +32,46 @@ export async function GET(request: Request) {
       if (!translation) {
         // If translation not found and it's not English, return English as fallback
         if (language !== 'en') {
-          return NextResponse.json(initialTranslations.en[namespace] || {});
+          return new NextResponse(JSON.stringify(initialTranslations.en[namespace] || {}), {
+            headers: {
+              'Content-Type': 'application/json',
+              'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+            },
+          });
         }
-        return NextResponse.json({});
+        return new NextResponse(JSON.stringify({}), {
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+          },
+        });
       }
 
       // Return only the namespace-specific translations
       const namespaceTranslations = translation.content[namespace] || {};
-      return NextResponse.json(namespaceTranslations);
+      return new NextResponse(JSON.stringify(namespaceTranslations), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+        },
+      });
     } catch (dbError) {
       // If database error (e.g., table doesn't exist), fallback to English translations
       console.warn("Database error, falling back to English:", dbError);
       if (language !== 'en') {
-        return NextResponse.json(initialTranslations.en[namespace] || {});
+        return new NextResponse(JSON.stringify(initialTranslations.en[namespace] || {}), {
+          headers: {
+            'Content-Type': 'application/json',
+            'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+          },
+        });
       }
-      return NextResponse.json({});
+      return new NextResponse(JSON.stringify({}), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+        },
+      });
     }
   } catch (error) {
     console.error("Translation fetch error:", error);

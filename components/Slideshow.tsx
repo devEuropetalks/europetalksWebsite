@@ -1,67 +1,82 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "./ui/button";
+import Image from "next/image";
 
 interface SlideshowProps {
   interval?: number;
 }
 
+// Simple blur data URL for loading placeholder
+const blurDataURL = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjAyMDIwIi8+PC9zdmc+";
+
+// Generate array of images from 26 to 1 (newest first)
+const images = Array.from({ length: 26 }, (_, i) => {
+  const num = 26 - i; // Start from 26 and count down
+  const fileExtension = num === 1 ? '.jpeg' : num === 13 || num === 17 || num === 19 ? '.png' : '.jpg';
+  const imagePath = `/images/slideshow/quotes${num}${fileExtension}`;
+  
+  return {
+    src: imagePath,
+    alt: `Europe Talks Quote ${num}`,
+  };
+});
+
 export function Slideshow({ interval = 5000 }: SlideshowProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [images, setImages] = useState<Array<{
-    src: string;
-    alt: string;
-  }>>([]);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
+  // Preload the next few images
   useEffect(() => {
-    // Fetch the list of images from the API
-    async function fetchImages() {
-      try {
-        const response = await fetch('/api/slideshow-images');
-        const data = await response.json();
-        setImages(data);
-      } catch (error) {
-        console.error('Error fetching slideshow images:', error);
-      }
+    const preloadCount = 3; // Number of images to preload
+    for (let i = 1; i <= preloadCount; i++) {
+      const nextIndex = (currentIndex + i) % images.length;
+      const preloadImage = document.createElement('img');
+      preloadImage.src = images[nextIndex].src;
     }
-
-    fetchImages();
-  }, []);
+  }, [currentIndex]);
 
   useEffect(() => {
-    if (images.length === 0) return;
+    if (!isAutoPlaying) return;
 
     const timer = setInterval(() => {
       setCurrentIndex((current) => (current + 1) % images.length);
     }, interval);
 
     return () => clearInterval(timer);
-  }, [images.length, interval]);
-
-  if (images.length === 0) {
-    return null; // or a loading state
-  }
+  }, [interval, isAutoPlaying]);
 
   const goToNext = () => {
+    setIsAutoPlaying(false);
+    setIsLoading(true);
     setCurrentIndex((current) => (current + 1) % images.length);
   };
 
   const goToPrevious = () => {
+    setIsAutoPlaying(false);
+    setIsLoading(true);
     setCurrentIndex((current) => (current - 1 + images.length) % images.length);
   };
 
   return (
     <div className="max-w-md mx-auto">
-      <div className="relative aspect-square rounded-lg overflow-hidden group">
+      <div className="aspect-square relative rounded-lg overflow-hidden group">
         <Image
           src={images[currentIndex].src}
           alt={images[currentIndex].alt}
           fill
-          className="object-cover transition-transform duration-500"
-          quality={100}
+          className={`object-cover transition-opacity duration-300 ${
+            isLoading ? 'opacity-0' : 'opacity-100'
+          }`}
+          quality={90}
+          priority={currentIndex === 0}
+          sizes="(max-width: 768px) 90vw, (max-width: 1200px) 448px, 448px"
+          placeholder="blur"
+          blurDataURL={blurDataURL}
+          onLoadingComplete={() => setIsLoading(false)}
         />
         
         {/* Navigation Buttons */}
@@ -85,7 +100,7 @@ export function Slideshow({ interval = 5000 }: SlideshowProps) {
         </div>
 
         {/* Dots */}
-        <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1">
+        <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1 flex-wrap px-4">
           {images.map((_, index) => (
             <button
               key={index}
@@ -94,7 +109,11 @@ export function Slideshow({ interval = 5000 }: SlideshowProps) {
                   ? "bg-white scale-125"
                   : "bg-white/50 hover:bg-white/75"
               }`}
-              onClick={() => setCurrentIndex(index)}
+              onClick={() => {
+                setIsAutoPlaying(false);
+                setIsLoading(true);
+                setCurrentIndex(index);
+              }}
             />
           ))}
         </div>

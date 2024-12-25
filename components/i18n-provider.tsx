@@ -5,6 +5,9 @@ import i18next, { TFunction } from "i18next"
 import { initReactI18next } from "react-i18next"
 import { InitOptions } from 'i18next';
 import { initialTranslations } from "@/translations/initial-translations";
+import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
+import { X } from "lucide-react";
 
 export const i18n = i18next;
 
@@ -92,5 +95,64 @@ i18next
   .init(config);
 
 export function I18nextProvider({ children }: { children: React.ReactNode }) {
-  return <Provider i18n={i18n}>{children}</Provider>
+  const [showLanguageHint, setShowLanguageHint] = useState(false);
+  const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const detectAndPrefetchLanguage = async () => {
+      // Get browser language (first 2 characters only)
+      const browserLang = navigator.language.slice(0, 2).toLowerCase();
+      
+      // Skip if browser language is English (already loaded) or already using detected language
+      if (browserLang === 'en' || browserLang === i18n.language) {
+        return;
+      }
+
+      try {
+        // Try to fetch one namespace to check if language exists
+        const response = await fetch(`/api/translations?language=${browserLang}&namespace=home`);
+        if (response.ok) {
+          // Language exists, prefetch all namespaces
+          await i18n.reloadResources(browserLang);
+          setDetectedLanguage(browserLang);
+          setShowLanguageHint(true);
+        }
+      } catch (error) {
+        console.warn("Language detection error:", error);
+      }
+    };
+
+    detectAndPrefetchLanguage();
+  }, []);
+
+  const handleLanguageSwitch = () => {
+    if (detectedLanguage) {
+      i18n.changeLanguage(detectedLanguage);
+      setShowLanguageHint(false);
+    }
+  };
+
+  return (
+    <Provider i18n={i18n}>
+      {showLanguageHint && (
+        <div className="fixed bottom-4 right-4 p-4 bg-primary text-primary-foreground rounded-lg shadow-lg z-50 max-w-sm">
+          <button 
+            onClick={() => setShowLanguageHint(false)}
+            className="absolute top-2 right-2 text-primary-foreground/80 hover:text-primary-foreground"
+          >
+            <X size={16} />
+          </button>
+          <p className="mb-3">This website is available in your language!</p>
+          <Button 
+            onClick={handleLanguageSwitch}
+            variant="secondary"
+            className="w-full"
+          >
+            Switch to {detectedLanguage}
+          </Button>
+        </div>
+      )}
+      {children}
+    </Provider>
+  );
 } 

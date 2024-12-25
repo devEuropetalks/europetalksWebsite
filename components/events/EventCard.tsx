@@ -8,9 +8,10 @@ import {
 } from "@/components/ui/card";
 import { format } from "date-fns";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { OptimizedImage } from "../OptimizedImage";
+
 interface EventCardProps {
   event: {
     id: string;
@@ -22,61 +23,55 @@ interface EventCardProps {
   };
 }
 
-export function EventCard({ event }: EventCardProps) {
-  const [showSignupForm, setShowSignupForm] = useState(false);
-  const eventDate = new Date(event.date);
-  const isPastEvent = eventDate < new Date();
-  console.log(event.imageUrl);
-  const { t } = useTranslation("events");
+export default function EventCard({ event }: EventCardProps) {
+  const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const { t } = useTranslation();
 
   return (
-    <Card className="flex flex-col h-full">
+    <Card className="overflow-hidden">
       {event.imageUrl && (
-        <div className="relative w-full h-48">
-          <Image
+        <div className="relative h-48 w-full">
+          <OptimizedImage
             src={event.imageUrl}
             alt={event.title}
             fill
-            className="object-cover rounded-t-xl"
+            className="object-cover"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            priority
+            lowQuality={!isSignupOpen} // Load high quality when form is open
           />
         </div>
       )}
       <CardHeader>
-        <div className="flex flex-col space-y-1.5">
-          <h3 className="text-2xl font-semibold">{event.title}</h3>
-          <div className="flex items-center text-muted-foreground">
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {format(eventDate, "PPP")}
+        <h3 className="text-lg font-semibold">{event.title}</h3>
+        <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+          <div className="flex items-center gap-1">
+            <CalendarIcon className="h-4 w-4" />
+            <time dateTime={new Date(event.date).toISOString()}>
+              {format(new Date(event.date), "PPP")}
+            </time>
           </div>
-          <div className="flex items-center text-muted-foreground">
-            <MapPinIcon className="mr-2 h-4 w-4" />
-            {event.location || t('eventCard.online')}
+          <div className="flex items-center gap-1">
+            <MapPinIcon className="h-4 w-4" />
+            <span>{event.location}</span>
           </div>
         </div>
       </CardHeader>
-      <CardContent className="flex-grow">
-        <p className="text-muted-foreground">{event.description}</p>
+      <CardContent>
+        <p className="text-sm">{event.description}</p>
       </CardContent>
       <CardFooter>
-        {!isPastEvent && (
-          <Button className="w-full" onClick={() => setShowSignupForm(true)}>
-            {t("eventCard.signUp")}
-          </Button>
-        )}
-        {isPastEvent && (
-          <Button className="w-full" variant="outline" disabled>
-            {t("eventCard.eventEnded")}
-          </Button>
-        )}
+        <Button
+          className="w-full"
+          onClick={() => setIsSignupOpen(true)}
+        >
+          {t("events.signUp")}
+        </Button>
       </CardFooter>
-
       <EventSignupForm
         eventId={event.id}
         eventTitle={event.title}
-        isOpen={showSignupForm}
-        onClose={() => setShowSignupForm(false)}
+        isOpen={isSignupOpen}
+        onClose={() => setIsSignupOpen(false)}
       />
     </Card>
   );

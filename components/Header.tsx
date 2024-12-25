@@ -8,7 +8,6 @@ import {
   useUser,
 } from "@clerk/nextjs";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { LanguageSelector } from "./LanguageSelector";
 import { ThemeToggle } from "./ThemeToggle";
@@ -22,6 +21,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Menu, LogIn } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { PrefetchLink } from "./PrefetchLink";
+
 export default function Header() {
   const pathname = usePathname();
   const { user } = useUser();
@@ -52,7 +53,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-blue-900">
       <div className="container flex h-14 items-center justify-between max-w-6xl mx-auto px-4">
-        <Link href="/" className="mr-4 flex items-center h-full">
+        <PrefetchLink href="/" className="mr-4 flex items-center h-full">
           <Image
             src="/images/etlogo.png"
             alt="Logo"
@@ -62,20 +63,32 @@ export default function Header() {
             quality={100}
             priority={true}
           />
-        </Link>
+        </PrefetchLink>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
           {navLinks.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`text-white hover:text-accent transition-colors ${
-                pathname === href ? "text-accent" : ""
-              }`}
-            >
-              {label}
-            </Link>
+            href.startsWith("http") ? (
+              <a
+                key={href}
+                href={href}
+                className="text-white hover:text-accent transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {label}
+              </a>
+            ) : (
+              <PrefetchLink
+                key={href}
+                href={href}
+                className={`text-white hover:text-accent transition-colors ${
+                  pathname === href ? "text-accent" : ""
+                }`}
+              >
+                {label}
+              </PrefetchLink>
+            )
           ))}
         </nav>
 
@@ -107,15 +120,27 @@ export default function Header() {
               </SheetHeader>
               <nav className="flex flex-col space-y-4 mt-6">
                 {navLinks.map(({ href, label }) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={`text-foreground hover:text-accent transition-colors ${
-                      pathname === href ? "text-accent" : ""
-                    }`}
-                  >
-                    {label}
-                  </Link>
+                  href.startsWith("http") ? (
+                    <a
+                      key={href}
+                      href={href}
+                      className="text-foreground hover:text-accent transition-colors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {label}
+                    </a>
+                  ) : (
+                    <PrefetchLink
+                      key={href}
+                      href={href}
+                      className={`text-foreground hover:text-accent transition-colors ${
+                        pathname === href ? "text-accent" : ""
+                      }`}
+                    >
+                      {label}
+                    </PrefetchLink>
+                  )
                 ))}
               </nav>
             </SheetContent>
