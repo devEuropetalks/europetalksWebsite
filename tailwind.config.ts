@@ -57,7 +57,11 @@ export default withUt({
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
-  		}
+  		},
+  		opacity: {
+  			'15': '0.15',
+            '25': '0.25',
+  		},
   	}
   },
   plugins: [animate],
