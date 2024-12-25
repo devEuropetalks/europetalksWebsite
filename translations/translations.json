@@ -29,18 +29,6 @@
         "description": "Become a member and get access to exclusive events and features."
       }
     },
-    "auth": {
-      "signIn": {
-        "title": "Sign In",
-        "subtitle": "Welcome back",
-        "success": "Successfully signed in",
-        "error": "Failed to sign in"
-      },
-      "signOut": {
-        "success": "Successfully signed out",
-        "error": "Failed to sign out"
-      }
-    },
     "header": {
       "navigation": {
         "home": "Home",
@@ -56,6 +44,18 @@
         "signIn": "Sign In",
         "signOut": "Sign Out",
         "menu": "Menu"
+      }
+    },
+    "auth": {
+      "signIn": {
+        "title": "Sign In",
+        "subtitle": "Welcome back",
+        "success": "Successfully signed in",
+        "error": "Failed to sign in"
+      },
+      "signOut": {
+        "success": "Successfully signed out",
+        "error": "Failed to sign out"
       }
     },
     "admin": {
@@ -112,10 +112,6 @@
         "title": "Get to know us"
       }
     },
-    "gallery": {
-      "title": "Gallery"
-    },
-    "other": {},
     "events": {
       "events": {
         "title": "Events",
@@ -165,6 +161,9 @@
         "errorMessage": "Failed to sign up. Please try again."
       }
     },
+    "gallery": {
+      "title": "Gallery"
+    },
     "contact": {
       "title": "Contact Us",
       "description": "Get in touch with us for any questions or inquiries.",
@@ -180,6 +179,8 @@
         "email": "Email us at:",
         "social": "Follow us on social media:"
       }
-    }
+    },
+    "other": {}
   }
 }
+

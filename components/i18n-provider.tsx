@@ -1,41 +1,69 @@
 "use client"
 
 import { I18nextProvider as Provider } from "react-i18next"
-import i18next from "i18next"
+import i18next, { TFunction } from "i18next"
 import { initReactI18next } from "react-i18next"
 import { InitOptions } from 'i18next';
 import { initialTranslations } from "@/translations/initial-translations";
 
 export const i18n = i18next;
 
+const namespaces = [
+  "home",
+  "about",
+  "contact",
+  "events",
+  "gallery",
+  "header",
+  "components",
+  "auth",
+  "other"
+];
+
 // Add this function to reload resources
-i18n.reloadResources = async (language: string, namespace: string) => {
+i18n.reloadResources = async (language: string, namespace?: string) => {
   // Skip fetching for English - use default translations
   if (language === 'en') {
-    const defaultTranslations = initialTranslations.en[namespace];
-    i18n.addResourceBundle('en', namespace, defaultTranslations, true, true);
+    Object.entries(initialTranslations.en).forEach(([ns, translations]) => {
+      i18n.addResourceBundle('en', ns, translations, true, true);
+    });
     return;
   }
 
   try {
-    const response = await fetch(
-      `/api/translations?language=${language}&namespace=${namespace}`
-    );
-    if (!response.ok) {
-      console.warn(`Warning: Failed to reload translations for ${language}/${namespace}`);
-      // Fallback to English if other language fails
-      const defaultTranslations = initialTranslations.en[namespace];
-      i18n.addResourceBundle(language, namespace, defaultTranslations, true, true);
-      return;
+    // If no specific namespace is provided, load all namespaces
+    const namespacesToLoad = namespace ? [namespace] : namespaces;
+    
+    for (const ns of namespacesToLoad) {
+      const response = await fetch(
+        `/api/translations?language=${language}&namespace=${ns}`
+      );
+      
+      if (!response.ok) {
+        console.warn(`Warning: Failed to reload translations for ${language}/${ns}`);
+        // Fallback to English if other language fails
+        const defaultTranslations = initialTranslations.en[ns];
+        i18n.addResourceBundle(language, ns, defaultTranslations, true, true);
+        continue;
+      }
+      
+      const data = await response.json();
+      i18n.addResourceBundle(language, ns, data[ns], true, true);
     }
-    const data = await response.json();
-    i18n.addResourceBundle(language, namespace, data, true, true);
   } catch (error) {
     console.warn("Warning: Error reloading translations:", error);
     // Fallback to English on error
-    const defaultTranslations = initialTranslations.en[namespace];
-    i18n.addResourceBundle(language, namespace, defaultTranslations, true, true);
+    Object.entries(initialTranslations.en).forEach(([ns, translations]) => {
+      i18n.addResourceBundle(language, ns, translations, true, true);
+    });
   }
+};
+
+// Extend i18next to load all resources when changing language
+const originalChangeLanguage = i18n.changeLanguage.bind(i18n);
+i18n.changeLanguage = async (lng: string | undefined, callback?: (error: unknown, t: TFunction) => void) => {
+  await i18n.reloadResources(lng as string);
+  return originalChangeLanguage(lng, callback);
 };
 
 // Initialize i18next

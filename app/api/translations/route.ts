@@ -2,11 +2,13 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { z } from "zod";
+import { Prisma } from "@prisma/client";
+import { initialTranslations } from "@/translations/initial-translations";
 
 const translationSchema = z.object({
   language: z.string(),
   namespace: z.string(),
-  translations: z.record(z.unknown()),
+  translations: z.record(z.unknown()) as z.ZodType<Prisma.JsonValue>,
 });
 
 export async function GET(request: Request) {
@@ -19,19 +21,31 @@ export async function GET(request: Request) {
       return new NextResponse("Language and namespace are required", { status: 400 });
     }
 
-    const translation = await db.translation.findUnique({
-      where: { language },
-      select: {
-        content: true,
-      },
-    });
+    try {
+      const translation = await db.translation.findUnique({
+        where: { language },
+        select: {
+          content: true,
+        },
+      });
 
-    if (!translation) {
+      if (!translation) {
+        // If translation not found and it's not English, return English as fallback
+        if (language !== 'en') {
+          return NextResponse.json(initialTranslations.en[namespace] || {});
+        }
+        return NextResponse.json({});
+      }
+
+      return NextResponse.json(translation.content);
+    } catch (dbError) {
+      // If database error (e.g., table doesn't exist), fallback to English translations
+      console.warn("Database error, falling back to English:", dbError);
+      if (language !== 'en') {
+        return NextResponse.json(initialTranslations.en[namespace] || {});
+      }
       return NextResponse.json({});
     }
-
-    const content = translation.content as Record<string, unknown>;
-    return NextResponse.json(content[namespace] || {});
   } catch (error) {
     console.error("Translation fetch error:", error);
     return new NextResponse("Internal Server Error", { status: 500 });
@@ -49,24 +63,14 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validatedData = translationSchema.parse(body);
 
-    const existing = await db.translation.findUnique({
-      where: { language: validatedData.language },
-      select: {
-        content: true,
-      },
-    });
-
-    const content = existing ? { ...(existing.content as object) } : {};
-    content[validatedData.namespace] = validatedData.translations;
-
     await db.translation.upsert({
       where: { language: validatedData.language },
       create: {
         language: validatedData.language,
-        content,
+        content: validatedData.translations,
       },
       update: {
-        content,
+        content: validatedData.translations,
       },
     });
 
