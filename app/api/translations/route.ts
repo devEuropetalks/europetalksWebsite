@@ -3,75 +3,58 @@ import { NextResponse } from "next/server";
 
 export const revalidate = 3600; // Revalidate every hour
 
+type TranslationContent = Record<string, Record<string, unknown>>;
+
+function ensureValidContent(content: unknown): TranslationContent {
+  // If content is already a valid object, return it
+  if (typeof content === 'object' && content !== null && !Array.isArray(content)) {
+    return content as TranslationContent;
+  }
+
+  // If content is a string, try to parse it
+  if (typeof content === 'string') {
+    try {
+      const parsed = JSON.parse(content);
+      if (typeof parsed === 'object' && !Array.isArray(parsed)) {
+        return parsed as TranslationContent;
+      }
+    } catch {
+      // If parsing fails, log it
+      console.error('Failed to parse content string');
+    }
+  }
+
+  throw new Error('Invalid content format');
+}
+
 export async function GET() {
   try {
     console.log('Fetching translations from database...');
     const translations = await prisma.translation.findMany();
-    console.log('Raw database response:', JSON.stringify(translations, null, 2));
-
-    if (translations.length === 0) {
-      console.warn('No translations found in database');
-      return NextResponse.json(
-        { error: 'No translations available' },
-        { status: 404 }
-      );
-    }
     
     // Transform the data into a more usable format
-    const formattedTranslations = translations.reduce((acc, { language, content }) => {
-      console.log(`Processing ${language} translation:`, {
-        contentType: typeof content,
-        contentSample: content ? JSON.stringify(content).slice(0, 100) + '...' : 'empty'
-      });
-
-      if (!content) {
-        console.warn(`Empty content for language: ${language}`);
-        return acc;
-      }
-
+    const formattedTranslations: Record<string, TranslationContent> = {};
+    
+    for (const { language, content } of translations) {
       try {
-        // Handle different content formats
-        let parsedContent;
-        if (typeof content === 'string') {
-          console.log(`Parsing string content for ${language}`);
-          parsedContent = JSON.parse(content);
-        } else if (typeof content === 'object') {
-          console.log(`Using object content for ${language}`);
-          parsedContent = content;
-        } else {
-          throw new Error(`Unexpected content type: ${typeof content}`);
-        }
-
-        // Validate the parsed content
-        if (!parsedContent || typeof parsedContent !== 'object') {
-          throw new Error('Invalid content structure');
-        }
-
-        acc[language] = parsedContent;
-        console.log(`Successfully processed ${language} translation with keys:`, Object.keys(parsedContent));
+        console.log(`Processing ${language} translation, content type:`, typeof content);
+        formattedTranslations[language] = ensureValidContent(content);
+        console.log(`✓ Successfully processed ${language} translation`);
       } catch (err) {
-        console.error(`Error processing ${language} translation:`, err);
-        console.error('Problematic content:', content);
+        console.error(`✗ Failed to process ${language} translation:`, err);
+        // Don't add invalid translations to the response
       }
-      return acc;
-    }, {} as Record<string, Record<string, string>>);
+    }
 
-    // Validate we have at least some translations
-    if (Object.keys(formattedTranslations).length === 0) {
-      console.error('No valid translations after processing');
+    const availableLanguages = Object.keys(formattedTranslations);
+    console.log('Available languages:', availableLanguages);
+
+    if (availableLanguages.length === 0) {
       return NextResponse.json(
         { error: 'No valid translations available' },
         { status: 500 }
       );
     }
-
-    console.log('Final formatted translations:', {
-      languages: Object.keys(formattedTranslations),
-      sampleStructure: Object.entries(formattedTranslations).map(([lang, content]) => ({
-        language: lang,
-        keys: Object.keys(content)
-      }))
-    });
 
     // Set cache headers
     const headers = {
