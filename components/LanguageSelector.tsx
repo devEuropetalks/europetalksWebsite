@@ -10,10 +10,11 @@ import {
 import { Globe } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-
+import { useState } from "react";
 
 export function LanguageSelector() {
   const { t, i18n } = useTranslation("components");
+  const [isChanging, setIsChanging] = useState(false);
 
   const languages = [
     { code: "en", name: "English", flag: "/images/languageFlags/en.png" },
@@ -23,6 +24,17 @@ export function LanguageSelector() {
     { code: "it", name: "Italiano", flag: "/images/languageFlags/it.png" },
   ];
 
+  const handleLanguageChange = async (langCode: string) => {
+    try {
+      setIsChanging(true);
+      await i18n.changeLanguage(langCode);
+    } catch (error) {
+      console.error("Failed to change language:", error);
+    } finally {
+      setIsChanging(false);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -30,6 +42,7 @@ export function LanguageSelector() {
           variant="ghost"
           size="icon"
           className="hover:text-primary-foreground"
+          disabled={isChanging}
         >
           <Globe className="h-5 w-5 text-accent hover:text-primary-foreground" />
           <span className="sr-only">{t("languageSelector.label")}</span>
@@ -39,8 +52,9 @@ export function LanguageSelector() {
         {languages.map((lang) => (
           <DropdownMenuItem
             key={lang.code}
-            onClick={() => i18n.changeLanguage(lang.code)}
+            onClick={() => handleLanguageChange(lang.code)}
             className="flex items-center gap-2"
+            disabled={isChanging || i18n.language === lang.code}
           >
             <div className="relative w-6 h-4">
               <Image

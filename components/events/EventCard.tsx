@@ -6,7 +6,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +17,8 @@ interface EventCardProps {
     id: string;
     title: string;
     description: string;
-    date: Date | string;
+    startDate: Date | string;
+    endDate: Date | string;
     location: string;
     imageUrl?: string;
   };
@@ -27,6 +28,17 @@ export function EventCard({ event }: EventCardProps) {
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const { t } = useTranslation();
   const [isImageLoading, setIsImageLoading] = useState(true);
+
+  const formatDateRange = (start: Date | string, end: Date | string) => {
+    const startDate = new Date(start);
+    const endDate = new Date(end);
+
+    if (isSameDay(startDate, endDate)) {
+      return format(startDate, "PPP");
+    }
+
+    return `${format(startDate, "PPP")} - ${format(endDate, "PPP")}`;
+  };
 
   return (
     <Card className="overflow-hidden">
@@ -53,8 +65,8 @@ export function EventCard({ event }: EventCardProps) {
         <div className="flex flex-col gap-1 text-sm text-muted-foreground">
           <div className="flex items-center gap-1">
             <CalendarIcon className="h-4 w-4" />
-            <time dateTime={new Date(event.date).toISOString()}>
-              {format(new Date(event.date), "PPP")}
+            <time dateTime={new Date(event.startDate).toISOString()}>
+              {formatDateRange(event.startDate, event.endDate)}
             </time>
           </div>
           <div className="flex items-center gap-1">

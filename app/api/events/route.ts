@@ -5,41 +5,43 @@ export async function GET() {
   try {
     const now = new Date();
 
-    // Get upcoming events
+    // Get upcoming events (where end date is in the future)
     const upcomingEvents = await db.event.findMany({
       where: {
-        date: {
+        endDate: {
           gte: now,
         },
       },
       orderBy: {
-        date: "asc",
+        startDate: "asc",
       },
       select: {
         id: true,
         title: true,
         description: true,
-        date: true,
+        startDate: true,
+        endDate: true,
         location: true,
         imageUrl: true,
       },
     });
 
-    // Get past events
+    // Get past events (where end date is in the past)
     const pastEvents = await db.event.findMany({
       where: {
-        date: {
+        endDate: {
           lt: now,
         },
       },
       orderBy: {
-        date: "desc",
+        startDate: "desc",
       },
       select: {
         id: true,
         title: true,
         description: true,
-        date: true,
+        startDate: true,
+        endDate: true,
         location: true,
         imageUrl: true,
       },

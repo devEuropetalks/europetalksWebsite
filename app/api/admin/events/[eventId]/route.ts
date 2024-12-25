@@ -30,8 +30,10 @@ export async function PATCH(req: Request, { params }: RouteContext) {
       data: {
         title: body.title,
         description: body.description,
-        date: new Date(body.date),
+        startDate: new Date(body.startDate),
+        endDate: new Date(body.endDate),
         location: body.location,
+        imageUrl: body.imageUrl,
       },
     });
 

@@ -11,7 +11,8 @@ model Event {
   id          String        @id @default(cuid())
   title       String
   description String
-  date        DateTime
+  startDate   DateTime
+  endDate     DateTime?
   location    String
   imageUrl    String?
   createdAt   DateTime      @default(now())

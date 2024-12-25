@@ -6,7 +6,8 @@ import { z } from "zod";
 const eventSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
-  date: z.string(),
+  startDate: z.string(),
+  endDate: z.string(),
   location: z.string().min(1),
   imageUrl: z.string().url().optional(),
 }).required();
@@ -21,13 +22,14 @@ export async function GET() {
   try {
     const events = await db.event.findMany({
       orderBy: {
-        date: "desc",
+        startDate: "desc",
       },
       select: {
         id: true,
         title: true,
         description: true,
-        date: true,
+        startDate: true,
+        endDate: true,
         location: true,
         imageUrl: true,
       },
@@ -55,7 +57,8 @@ export async function POST(request: Request) {
       data: {
         title: validatedData.title,
         description: validatedData.description,
-        date: new Date(validatedData.date),
+        startDate: new Date(validatedData.startDate),
+        endDate: new Date(validatedData.endDate),
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
       },

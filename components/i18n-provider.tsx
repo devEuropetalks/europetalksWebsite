@@ -8,6 +8,7 @@ import { initialTranslations } from "@/translations/initial-translations";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export const i18n = i18next;
 
@@ -97,6 +98,15 @@ i18next
 export function I18nextProvider({ children }: { children: React.ReactNode }) {
   const [showLanguageHint, setShowLanguageHint] = useState(false);
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null);
+  const { t } = useTranslation("components");
+
+  const languageNames = {
+    en: "English",
+    de: "Deutsch",
+    fr: "Français",
+    es: "Español",
+    it: "Italiano",
+  } as const;
 
   useEffect(() => {
     const detectAndPrefetchLanguage = async () => {
@@ -134,7 +144,7 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <Provider i18n={i18n}>
-      {showLanguageHint && (
+      {showLanguageHint && detectedLanguage && (
         <div className="fixed bottom-4 right-4 p-4 bg-primary text-primary-foreground rounded-lg shadow-lg z-50 max-w-sm">
           <button 
             onClick={() => setShowLanguageHint(false)}
@@ -142,13 +152,13 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
           >
             <X size={16} />
           </button>
-          <p className="mb-3">This website is available in your language!</p>
+          <p className="mb-3">{t("languageDetection.available")}</p>
           <Button 
             onClick={handleLanguageSwitch}
             variant="secondary"
             className="w-full"
           >
-            Switch to {detectedLanguage}
+            {t("languageDetection.switchTo", { language: languageNames[detectedLanguage as keyof typeof languageNames] || detectedLanguage })}
           </Button>
         </div>
       )}

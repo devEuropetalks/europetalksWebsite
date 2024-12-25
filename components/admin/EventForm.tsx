@@ -38,7 +38,8 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
     defaultValues: {
       title: defaultValues?.title || "",
       description: defaultValues?.description || "",
-      date: formatDateForInput(defaultValues?.date),
+      startDate: formatDateForInput(defaultValues?.startDate),
+      endDate: formatDateForInput(defaultValues?.endDate),
       location: defaultValues?.location || "",
     },
   });
@@ -81,23 +82,43 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Date and Time</FormLabel>
-              <FormControl>
-                <Input
-                  type="datetime-local"
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value)}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="grid grid-cols-2 gap-4">
+          <FormField
+            control={form.control}
+            name="startDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Start Date and Time</FormLabel>
+                <FormControl>
+                  <Input
+                    type="datetime-local"
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="endDate"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>End Date and Time</FormLabel>
+                <FormControl>
+                  <Input
+                    type="datetime-local"
+                    {...field}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
 
         <FormField
           control={form.control}
