@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 import { create } from 'zustand';
 
 interface TranslationsStore {
@@ -11,30 +11,26 @@ const useTranslationsStore = create<TranslationsStore>((set) => ({
   setTranslations: (translations) => set({ translations }),
 }));
 
+const fetcher = async (url: string) => {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error('Failed to fetch translations');
+  return res.json();
+};
+
 export function useTranslations() {
-  const { translations, setTranslations } = useTranslationsStore();
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
+  const { setTranslations } = useTranslationsStore();
+  const { data, error, isLoading } = useSWR('/api/translations', fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false,
+    dedupingInterval: 3600000, // 1 hour
+    onSuccess: (data) => {
+      setTranslations(data);
+    },
+  });
 
-  useEffect(() => {
-    async function fetchTranslations() {
-      try {
-        // Only fetch if we haven't already
-        if (Object.keys(translations).length === 0) {
-          const response = await fetch('/api/translations');
-          if (!response.ok) throw new Error('Failed to fetch translations');
-          const data = await response.json();
-          setTranslations(data);
-        }
-      } catch (err) {
-        setError(err instanceof Error ? err : new Error('Unknown error'));
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    fetchTranslations();
-  }, [translations, setTranslations]);
-
-  return { translations, isLoading, error };
+  return {
+    translations: data,
+    isLoading,
+    error: error as Error | null,
+  };
 } 
