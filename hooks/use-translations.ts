@@ -12,23 +12,46 @@ const useTranslationsStore = create<TranslationsStore>((set) => ({
 }));
 
 const fetcher = async (url: string) => {
+  console.log('Fetching translations...');
   const res = await fetch(url);
-  if (!res.ok) {
-    const error = await res.json();
-    console.error('Translation fetch error:', error);
-    throw new Error(error.details || error.error || 'Failed to fetch translations');
-  }
-  const data = await res.json();
+  const contentType = res.headers.get('content-type');
+  console.log('Response content type:', contentType);
   
+  if (!res.ok) {
+    let errorData;
+    try {
+      errorData = await res.json();
+    } catch {
+      errorData = await res.text();
+    }
+    console.error('Translation fetch error:', errorData);
+    throw new Error(typeof errorData === 'object' ? errorData.error : errorData);
+  }
+
+  let data;
+  try {
+    data = await res.json();
+    console.log('Raw translation data:', data);
+  } catch (e) {
+    console.error('Failed to parse response as JSON:', e);
+    throw new Error('Invalid JSON response');
+  }
+
   // Validate the data structure
   if (!data || typeof data !== 'object') {
     console.error('Invalid translation data structure:', data);
     throw new Error('Invalid translation data structure');
   }
 
-  // Log available languages
-  console.log('Fetched translations for languages:', Object.keys(data));
-  
+  // Log each language's content structure
+  Object.entries(data).forEach(([lang, content]) => {
+    console.log(`Language ${lang} content structure:`, {
+      type: typeof content,
+      keys: content ? Object.keys(content) : 'no content',
+      sample: content ? JSON.stringify(content).slice(0, 100) + '...' : 'empty'
+    });
+  });
+
   return data;
 };
 
@@ -39,7 +62,7 @@ export function useTranslations() {
     revalidateOnReconnect: false,
     dedupingInterval: 3600000, // 1 hour
     onSuccess: (data) => {
-      console.log('Successfully loaded translations');
+      console.log('Successfully loaded translations:', Object.keys(data));
       setTranslations(data);
     },
     onError: (err) => {

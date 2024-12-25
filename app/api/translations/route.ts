@@ -7,7 +7,7 @@ export async function GET() {
   try {
     console.log('Fetching translations from database...');
     const translations = await prisma.translation.findMany();
-    console.log('Found translations:', translations.map(t => t.language));
+    console.log('Raw database response:', JSON.stringify(translations, null, 2));
 
     if (translations.length === 0) {
       console.warn('No translations found in database');
@@ -19,18 +19,39 @@ export async function GET() {
     
     // Transform the data into a more usable format
     const formattedTranslations = translations.reduce((acc, { language, content }) => {
+      console.log(`Processing ${language} translation:`, {
+        contentType: typeof content,
+        contentSample: content ? JSON.stringify(content).slice(0, 100) + '...' : 'empty'
+      });
+
       if (!content) {
         console.warn(`Empty content for language: ${language}`);
         return acc;
       }
 
       try {
-        // Ensure content is properly structured
-        const parsedContent = typeof content === 'string' ? JSON.parse(content) : content;
+        // Handle different content formats
+        let parsedContent;
+        if (typeof content === 'string') {
+          console.log(`Parsing string content for ${language}`);
+          parsedContent = JSON.parse(content);
+        } else if (typeof content === 'object') {
+          console.log(`Using object content for ${language}`);
+          parsedContent = content;
+        } else {
+          throw new Error(`Unexpected content type: ${typeof content}`);
+        }
+
+        // Validate the parsed content
+        if (!parsedContent || typeof parsedContent !== 'object') {
+          throw new Error('Invalid content structure');
+        }
+
         acc[language] = parsedContent;
         console.log(`Successfully processed ${language} translation with keys:`, Object.keys(parsedContent));
       } catch (err) {
         console.error(`Error processing ${language} translation:`, err);
+        console.error('Problematic content:', content);
       }
       return acc;
     }, {} as Record<string, Record<string, string>>);
@@ -44,7 +65,13 @@ export async function GET() {
       );
     }
 
-    console.log('Available languages:', Object.keys(formattedTranslations));
+    console.log('Final formatted translations:', {
+      languages: Object.keys(formattedTranslations),
+      sampleStructure: Object.entries(formattedTranslations).map(([lang, content]) => ({
+        language: lang,
+        keys: Object.keys(content)
+      }))
+    });
 
     // Set cache headers
     const headers = {
