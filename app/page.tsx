@@ -136,9 +136,6 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold mb-4">{t("cta.title")}</h2>
           <p className="text-muted-foreground mb-8">{t("cta.description")}</p>
           <div className="flex gap-4 justify-center">
-            <Button asChild>
-              <Link href="/events">{t("cta.buttons.explore")}</Link>
-            </Button>
             <Button variant="outline" asChild>
               <Link href="/contact">{t("cta.buttons.contact")}</Link>
             </Button>

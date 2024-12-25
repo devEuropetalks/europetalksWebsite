@@ -4,7 +4,7 @@ import { I18nextProvider as Provider } from "react-i18next"
 import i18next from "i18next"
 import { initReactI18next } from "react-i18next"
 import { InitOptions } from 'i18next';
-import { initialTranslations } from "@/scripts/initial-translations";
+import { initialTranslations } from "@/translations/initial-translations";
 
 export const i18n = i18next;
 

@@ -10,7 +10,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { initialTranslations } from "@/scripts/initial-translations";
+import { initialTranslations } from "@/translations/initial-translations";
 import { TranslationObject } from "@/types/translations";
 
 interface TranslationTreeProps {
