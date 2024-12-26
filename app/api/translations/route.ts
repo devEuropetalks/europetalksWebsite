@@ -1,25 +1,28 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import { Translations, LanguageTranslations, TranslationNamespace } from "@/types/translations";
 
 export const revalidate = 3600; // Revalidate every hour
 
-type TranslationContent = Record<string, Record<string, unknown>>;
-
-function ensureValidContent(content: unknown): TranslationContent {
-  // If content is already a valid object, return it
+function ensureValidContent(content: unknown): LanguageTranslations {
   if (typeof content === 'object' && content !== null && !Array.isArray(content)) {
-    return content as TranslationContent;
+    // Validate each namespace
+    const contentObj = content as Record<string, unknown>;
+    Object.entries(contentObj).forEach(([namespace, translations]) => {
+      if (typeof translations !== 'object' || translations === null) {
+        throw new Error(`Invalid translations for namespace ${namespace}`);
+      }
+    });
+    return content as LanguageTranslations;
   }
 
-  // If content is a string, try to parse it
   if (typeof content === 'string') {
     try {
       const parsed = JSON.parse(content);
       if (typeof parsed === 'object' && !Array.isArray(parsed)) {
-        return parsed as TranslationContent;
+        return ensureValidContent(parsed);
       }
     } catch {
-      // If parsing fails, log it
       console.error('Failed to parse content string');
     }
   }
@@ -27,41 +30,63 @@ function ensureValidContent(content: unknown): TranslationContent {
   throw new Error('Invalid content format');
 }
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
-    console.log('Fetching translations from database...');
-    const translations = await prisma.translation.findMany();
+    const { searchParams } = new URL(request.url);
+    const language = searchParams.get('language');
+    const namespace = searchParams.get('namespace');
+
+    console.log(`Fetching translations for language: ${language}, namespace: ${namespace}`);
+
+    const translations = await prisma.translation.findMany({
+      where: language ? { language } : undefined
+    });
     
-    // Transform the data into a more usable format
-    const formattedTranslations: Record<string, TranslationContent> = {};
+    // If no translations found, return 404
+    if (translations.length === 0) {
+      return NextResponse.json(
+        { error: 'No translations found' },
+        { status: 404 }
+      );
+    }
+
+    // Transform the data into the correct format
+    const formattedTranslations: Translations = {};
     
     for (const { language, content } of translations) {
       try {
-        console.log(`Processing ${language} translation, content type:`, typeof content);
-        formattedTranslations[language] = ensureValidContent(content);
+        const parsedContent = ensureValidContent(content);
+        
+        // If a specific namespace is requested, only return that namespace's content directly
+        if (namespace) {
+          if (parsedContent[namespace]) {
+            formattedTranslations[language] = {
+              [namespace]: parsedContent[namespace]
+            };
+          }
+        } else {
+          formattedTranslations[language] = parsedContent;
+        }
+        
         console.log(`✓ Successfully processed ${language} translation`);
       } catch (err) {
         console.error(`✗ Failed to process ${language} translation:`, err);
-        // Don't add invalid translations to the response
       }
     }
 
-    const availableLanguages = Object.keys(formattedTranslations);
-    console.log('Available languages:', availableLanguages);
-
-    if (availableLanguages.length === 0) {
-      return NextResponse.json(
-        { error: 'No valid translations available' },
-        { status: 500 }
-      );
-    }
+    // If we're requesting a specific language and namespace, return just that content
+    const responseData = language 
+      ? namespace 
+        ? formattedTranslations[language][namespace] as TranslationNamespace
+        : formattedTranslations[language]
+      : formattedTranslations;
 
     // Set cache headers
     const headers = {
       'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
     };
 
-    return NextResponse.json(formattedTranslations, { headers });
+    return NextResponse.json(responseData, { headers });
   } catch (error) {
     console.error('Error fetching translations:', error);
     return NextResponse.json(

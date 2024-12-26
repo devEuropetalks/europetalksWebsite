@@ -26,14 +26,6 @@ const namespaces = [
 
 // Add this function to reload resources
 i18n.reloadResources = async (language: string, namespace?: string) => {
-  // Skip fetching for English - use default translations
-  if (language === 'en') {
-    Object.entries(initialTranslations.en).forEach(([ns, translations]) => {
-      i18n.addResourceBundle('en', ns, translations, true, true);
-    });
-    return;
-  }
-
   try {
     // If no specific namespace is provided, load all namespaces
     const namespacesToLoad = namespace ? [namespace] : namespaces;
@@ -52,8 +44,12 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
       }
       
       const data = await response.json();
-      // The response is now already namespace-specific
-      i18n.addResourceBundle(language, ns, data, true, true);
+      // The response is now the namespace content directly when requesting a specific namespace
+      const content = namespace ? data : data[ns];
+      if (content) {
+        console.log(`Adding ${language}/${ns} translations:`, content);
+        i18n.addResourceBundle(language, ns, content, true, true);
+      }
     }
   } catch (error) {
     console.warn("Warning: Error reloading translations:", error);
@@ -88,7 +84,8 @@ const config: InitOptions = {
   load: 'languageOnly',
   returnNull: false,
   returnEmptyString: false,
-  fallbackNS: "other"
+  fallbackNS: "other",
+  ns: namespaces,
 };
 
 i18next
@@ -119,14 +116,10 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
       }
 
       try {
-        // Try to fetch one namespace to check if language exists
-        const response = await fetch(`/api/translations?language=${browserLang}&namespace=home`);
-        if (response.ok) {
-          // Language exists, prefetch all namespaces
-          await i18n.reloadResources(browserLang);
-          setDetectedLanguage(browserLang);
-          setShowLanguageHint(true);
-        }
+        // Try to fetch translations for the browser language
+        await i18n.reloadResources(browserLang);
+        setDetectedLanguage(browserLang);
+        setShowLanguageHint(true);
       } catch (error) {
         console.warn("Language detection error:", error);
       }

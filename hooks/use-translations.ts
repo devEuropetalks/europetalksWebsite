@@ -1,9 +1,10 @@
 import useSWR from 'swr';
 import { create } from 'zustand';
+import { Translations } from '@/types/translations';
 
 interface TranslationsStore {
-  translations: Record<string, Record<string, string>>;
-  setTranslations: (translations: Record<string, Record<string, string>>) => void;
+  translations: Translations;
+  setTranslations: (translations: Translations) => void;
 }
 
 const useTranslationsStore = create<TranslationsStore>((set) => ({
@@ -45,19 +46,32 @@ const fetcher = async (url: string) => {
 
   // Log each language's content structure
   Object.entries(data).forEach(([lang, content]) => {
+    if (typeof content !== 'object' || content === null) {
+      console.error(`Invalid content structure for language ${lang}:`, content);
+      throw new Error(`Invalid content structure for language ${lang}`);
+    }
+
     console.log(`Language ${lang} content structure:`, {
       type: typeof content,
-      keys: content ? Object.keys(content) : 'no content',
-      sample: content ? JSON.stringify(content).slice(0, 100) + '...' : 'empty'
+      keys: Object.keys(content),
+      sample: JSON.stringify(content).slice(0, 100) + '...'
+    });
+
+    // Validate each namespace's content
+    Object.entries(content as Record<string, unknown>).forEach(([namespace, translations]) => {
+      if (typeof translations !== 'object' || translations === null) {
+        console.error(`Invalid translations for ${lang}/${namespace}:`, translations);
+        throw new Error(`Invalid translations for ${lang}/${namespace}`);
+      }
     });
   });
 
-  return data;
+  return data as Translations;
 };
 
 export function useTranslations() {
   const { setTranslations } = useTranslationsStore();
-  const { data, error, isLoading } = useSWR('/api/translations', fetcher, {
+  const { data, error, isLoading, mutate } = useSWR('/api/translations', fetcher, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
     dedupingInterval: 3600000, // 1 hour
@@ -68,11 +82,14 @@ export function useTranslations() {
     onError: (err) => {
       console.error('Error loading translations:', err);
     },
+    retryCount: 3,
+    retryDelay: (retryCount) => Math.min(1000 * 2 ** retryCount, 30000), // Exponential backoff with max 30s
   });
 
   return {
     translations: data,
     isLoading,
     error: error as Error | null,
+    reload: () => mutate(),
   };
 } 

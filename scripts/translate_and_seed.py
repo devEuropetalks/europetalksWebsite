@@ -106,6 +106,36 @@ async def translate_and_seed():
             # Ensure the Translation table exists (don't drop it)
             await ensure_table_exists(conn)
 
+            # First, ensure English translations are in the database
+            existing_en = await conn.fetchrow(
+                'SELECT id, content FROM "Translation" WHERE language = $1',
+                'en'
+            )
+
+            if not existing_en:
+                await conn.execute(
+                    '''
+                    INSERT INTO "Translation" (id, language, content, "updatedAt")
+                    VALUES ($1, $2, $3::jsonb, CURRENT_TIMESTAMP)
+                    ''',
+                    generate_cuid2(),
+                    'en',
+                    json.dumps(en_content)
+                )
+                print("✓ Created English translations")
+            else:
+                await conn.execute(
+                    '''
+                    UPDATE "Translation" 
+                    SET content = $1::jsonb,
+                        "updatedAt" = CURRENT_TIMESTAMP
+                    WHERE id = $2
+                    ''',
+                    json.dumps(en_content),
+                    existing_en['id']
+                )
+                print("✓ Updated English translations")
+
             # Process each target language
             for lang_code, lang_info in LANGUAGES.items():
                 print(f"\nProcessing {lang_info['name']} ({lang_code})...")
@@ -119,20 +149,27 @@ async def translate_and_seed():
                 translator = Translator(lang_code)
                 
                 if existing:
-                    # Get existing content
+                    # Parse existing content if it's a string
                     existing_content = existing['content']
+                    if isinstance(existing_content, str):
+                        try:
+                            existing_content = json.loads(existing_content)
+                        except json.JSONDecodeError:
+                            print(f"Warning: Invalid JSON content for {lang_code}, treating as empty")
+                            existing_content = {}
+                    
                     print(f"Found existing translations for {lang_code}")
                     
                     # Only translate missing namespaces or keys
-                    updated_content = existing_content.copy()
+                    updated_content = dict(existing_content)
                     for namespace, translations in en_content.items():
-                        if namespace not in existing_content:
+                        if namespace not in updated_content:
                             print(f"Translating missing namespace: {namespace}")
                             updated_content[namespace] = translate_dict(translations, translator)
                         else:
                             # Check for missing keys in existing namespaces
                             for key, value in translations.items():
-                                if key not in existing_content[namespace]:
+                                if key not in updated_content[namespace]:
                                     print(f"Translating missing key: {namespace}.{key}")
                                     updated_content[namespace][key] = translator.translate(value) if isinstance(value, str) else value
 
