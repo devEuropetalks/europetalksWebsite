@@ -96,7 +96,14 @@ export default function Header() {
           <LanguageSelector />
           <ThemeToggle />
           <SignedIn>
-            <UserButton />
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: "h-8 w-8",
+                }
+              }}
+            />
           </SignedIn>
           <SignedOut>
             <SignInButton mode="modal">

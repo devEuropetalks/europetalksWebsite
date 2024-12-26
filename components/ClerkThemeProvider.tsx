@@ -16,6 +16,7 @@ export default function ClerkThemeProvider({
       appearance={{
         baseTheme: theme === "dark" ? dark : undefined,
       }}
+      afterSignOutUrl="/"
     >
       {children}
     </ClerkProvider>
