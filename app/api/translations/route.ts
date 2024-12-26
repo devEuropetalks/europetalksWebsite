@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { NextResponse } from "next/server";
 import { Translations, LanguageTranslations, TranslationNamespace } from "@/types/translations";
+import { currentUser } from "@clerk/nextjs/server";
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -91,6 +92,77 @@ export async function GET(request: Request) {
     console.error('Error fetching translations:', error);
     return NextResponse.json(
       { error: 'Failed to fetch translations', details: error instanceof Error ? error.message : 'Unknown error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    // Check authentication
+    const user = await currentUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Parse request body
+    const body = await request.json();
+    const { language, namespace, translations } = body;
+
+    if (!language || !namespace || !translations) {
+      return NextResponse.json(
+        { error: 'Missing required fields: language, namespace, translations' },
+        { status: 400 }
+      );
+    }
+
+    // Validate translations object
+    if (typeof translations !== 'object' || translations === null) {
+      return NextResponse.json(
+        { error: 'Invalid translations format' },
+        { status: 400 }
+      );
+    }
+
+    // Get existing translation
+    const existingTranslation = await prisma.translation.findUnique({
+      where: { language }
+    });
+
+    if (!existingTranslation) {
+      return NextResponse.json(
+        { error: 'Translation not found' },
+        { status: 404 }
+      );
+    }
+
+    // Parse existing content
+    let existingContent: Record<string, unknown>;
+    if (typeof existingTranslation.content === 'string') {
+      existingContent = JSON.parse(existingTranslation.content);
+    } else {
+      existingContent = existingTranslation.content as Record<string, unknown>;
+    }
+
+    // Update only the specified namespace
+    const updatedContent = {
+      ...existingContent,
+      [namespace]: translations
+    };
+
+    // Save the updated translation
+    await prisma.translation.update({
+      where: { language },
+      data: {
+        content: updatedContent,
+      }
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error updating translations:', error);
+    return NextResponse.json(
+      { error: 'Failed to update translations', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
