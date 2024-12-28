@@ -148,8 +148,14 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      setDetectedLanguage(browserLang);
-      setShowLanguageHint(true);
+      try {
+        // Preload translations for the detected language
+        await i18n.reloadResources(browserLang);
+        setDetectedLanguage(browserLang);
+        setShowLanguageHint(true);
+      } catch (error) {
+        console.warn("Language detection error:", error);
+      }
     };
 
     detectAndPrefetchLanguage();
