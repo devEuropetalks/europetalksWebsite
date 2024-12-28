@@ -28,6 +28,7 @@ export default function Header() {
   const { user } = useUser();
   const isAdmin = user?.publicMetadata?.role === "admin";
   const isMember = user?.publicMetadata?.role === "member";
+  const memberLanguages = user?.publicMetadata?.languages as string[] | undefined;
   const { t } = useTranslation("header");
 
   const navLinks = [
@@ -37,14 +38,12 @@ export default function Header() {
     { href: "/gallery", label: t("navigation.gallery") },
     { href: "/contact", label: t("navigation.contact") },
     ...(isAdmin ? [{ href: "/admin", label: t("navigation.admin") }] : []),
-    ...(isMember
-      ? [
-          {
-            href: "/member/translations",
-            label: t("navigation.translations"),
-          },
-        ]
-      : []),
+    ...(isMember && memberLanguages?.length ? [
+      {
+        href: "/member/translations",
+        label: t("navigation.translations"),
+      },
+    ] : []),
     ...(isMember || isAdmin
       ? [{ href: "https://cloud.europetalks.eu", label: t("navigation.cloud") }]
       : []),
