@@ -51,6 +51,10 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
         i18n.addResourceBundle(language, ns, content, true, true);
       }
     }
+
+    // Force a re-render by changing the language to itself
+    const currentLanguage = i18n.language;
+    await i18n.changeLanguage(currentLanguage);
   } catch (error) {
     console.warn("Warning: Error reloading translations:", error);
     // Fallback to English on error

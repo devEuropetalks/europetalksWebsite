@@ -3,8 +3,6 @@ import { NextResponse } from "next/server";
 import { Translations, LanguageTranslations, TranslationNamespace } from "@/types/translations";
 import { currentUser } from "@clerk/nextjs/server";
 
-export const revalidate = 3600; // Revalidate every hour
-
 function ensureValidContent(content: unknown): LanguageTranslations {
   if (typeof content === 'object' && content !== null && !Array.isArray(content)) {
     // Validate each namespace
@@ -82,9 +80,9 @@ export async function GET(request: Request) {
         : formattedTranslations[language]
       : formattedTranslations;
 
-    // Set cache headers
+    // Set cache-control header to prevent caching
     const headers = {
-      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
     };
 
     return NextResponse.json(responseData, { headers });

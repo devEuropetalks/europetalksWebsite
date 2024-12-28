@@ -10,6 +10,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { i18n } from "@/components/i18n-provider";
 
 interface MemberTranslationEditorProps {
   allowedLanguages: string[];
@@ -60,6 +61,9 @@ export function MemberTranslationEditor({ allowedLanguages }: MemberTranslationE
       if (!response.ok) {
         throw new Error("Failed to save translations");
       }
+
+      // Reload i18n resources after saving
+      await i18n.reloadResources(selectedLanguage, selectedNamespace);
 
       toast({
         title: "Success",
