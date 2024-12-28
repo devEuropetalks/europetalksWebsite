@@ -26,7 +26,7 @@ interface EventCardProps {
 
 export function EventCard({ event }: EventCardProps) {
   const [isSignupOpen, setIsSignupOpen] = useState(false);
-  const { t } = useTranslation();
+  const { t } = useTranslation("events");
   const [isImageLoading, setIsImageLoading] = useState(true);
 
   const formatDateRange = (start: Date | string, end: Date | string | undefined) => {
@@ -39,6 +39,12 @@ export function EventCard({ event }: EventCardProps) {
     
     // If start and end dates are provided, it's a multi-day event
     return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
+  };
+
+  const isEventEnded = () => {
+    const endDate = new Date(event.endDate);
+    const now = new Date();
+    return endDate < now;
   };
 
   return (
@@ -83,16 +89,19 @@ export function EventCard({ event }: EventCardProps) {
         <Button
           className="w-full"
           onClick={() => setIsSignupOpen(true)}
+          disabled={isEventEnded()}
         >
-          {t("events.signUp")}
+          {isEventEnded() ? t("eventCard.eventEnded") : t("eventCard.signUp")}
         </Button>
       </CardFooter>
-      <EventSignupForm
-        eventId={event.id}
-        eventTitle={event.title}
-        isOpen={isSignupOpen}
-        onClose={() => setIsSignupOpen(false)}
-      />
+      {!isEventEnded() && (
+        <EventSignupForm
+          eventId={event.id}
+          eventTitle={event.title}
+          isOpen={isSignupOpen}
+          onClose={() => setIsSignupOpen(false)}
+        />
+      )}
     </Card>
   );
 }
