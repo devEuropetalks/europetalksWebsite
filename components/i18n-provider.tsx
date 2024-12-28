@@ -52,22 +52,20 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
   try {
     // If no specific namespace is provided, load all namespaces
     const namespacesToLoad = namespace ? [namespace] : namespaces;
-
+    
     for (const ns of namespacesToLoad) {
       const response = await fetch(
-        `/api/translations?language=${language}&namespace=${ns}`
+        `${window.location.origin}/api/translations?language=${language}&namespace=${ns}`
       );
-
+      
       if (!response.ok) {
-        console.warn(
-          `Warning: Failed to reload translations for ${language}/${ns}`
-        );
+        console.warn(`Warning: Failed to reload translations for ${language}/${ns}`);
         // Fallback to English if other language fails
         const defaultTranslations = initialTranslations.en[ns];
         i18n.addResourceBundle(language, ns, defaultTranslations, true, true);
         continue;
       }
-
+      
       const data = await response.json();
       // The response is now the namespace content directly when requesting a specific namespace
       const content = namespace ? data : data[ns];
