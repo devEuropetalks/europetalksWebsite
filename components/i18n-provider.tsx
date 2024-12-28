@@ -8,6 +8,7 @@ import { initialTranslations } from "@/translations/initial-translations";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
+import { useTranslations } from "@/hooks/use-translations";
 
 export const i18n = i18next;
 
@@ -123,6 +124,7 @@ i18next.use(initReactI18next).init(config);
 export function I18nextProvider({ children }: { children: React.ReactNode }) {
   const [showLanguageHint, setShowLanguageHint] = useState(false);
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null);
+  const { reload: reloadTranslations } = useTranslations();
 
   const languageNames = {
     en: "English",
@@ -159,10 +161,19 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
     detectAndPrefetchLanguage();
   }, []);
 
-  const handleLanguageSwitch = () => {
+  const handleLanguageSwitch = async () => {
     if (detectedLanguage) {
-      i18n.changeLanguage(detectedLanguage);
-      setShowLanguageHint(false);
+      try {
+        // Load translations for all namespaces
+        await i18n.reloadResources(detectedLanguage);
+        // Change the language
+        await i18n.changeLanguage(detectedLanguage);
+        // Reload translations to ensure everything is updated
+        await reloadTranslations();
+        setShowLanguageHint(false);
+      } catch (error) {
+        console.error("Failed to switch language:", error);
+      }
     }
   };
 
