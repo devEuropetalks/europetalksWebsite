@@ -7,7 +7,7 @@ const eventSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   startDate: z.string(),
-  endDate: z.string(),
+  endDate: z.string().optional(),
   location: z.string().min(1),
   imageUrl: z.string().url().optional(),
 }).required();
@@ -58,7 +58,7 @@ export async function POST(request: Request) {
         title: validatedData.title,
         description: validatedData.description,
         startDate: new Date(validatedData.startDate),
-        endDate: new Date(validatedData.endDate),
+        endDate: validatedData.endDate ? new Date(validatedData.endDate) : new Date(validatedData.startDate),
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
       },

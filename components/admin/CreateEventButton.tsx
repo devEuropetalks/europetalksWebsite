@@ -31,9 +31,9 @@ export function CreateEventButton() {
           title: data.title,
           description: data.description,
           startDate: data.startDate,
-          endDate: data.endDate,
+          endDate: data.endDate || data.startDate,
           location: data.location,
-          imageUrl: data.imageUrl || null, // Ensure imageUrl is included
+          imageUrl: data.imageUrl || null,
         }),
       });
 
