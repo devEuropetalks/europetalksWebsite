@@ -138,7 +138,6 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
                           field.onChange(date.toISOString());
                         }
                       }}
-                      disabled={(date) => date < new Date()}
                     />
                     {!isMultiDay && (
                       <div className="p-3 border-t flex items-center gap-2">
@@ -201,7 +200,7 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
                         }}
                         disabled={(date) => {
                           const startDate = form.getValues("startDate");
-                          return date < new Date() || (startDate && date <= new Date(startDate));
+                          return startDate && date <= new Date(startDate);
                         }}
                       />
                     </PopoverContent>
@@ -254,11 +253,7 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
           </div>
         </div>
 
-        <div className="flex justify-end">
-          <Button type="submit" disabled={form.formState.isSubmitting}>
-            {form.formState.isSubmitting ? "Saving..." : "Save Event"}
-          </Button>
-        </div>
+        <Button type="submit">Save Event</Button>
       </form>
     </Form>
   );

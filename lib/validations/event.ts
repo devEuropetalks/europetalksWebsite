@@ -13,14 +13,14 @@ export const eventFormSchema = z.object({
     return start.getHours() !== 0 || start.getMinutes() !== 0;
   }
   const end = new Date(data.endDate);
-  // If both dates are provided, they should be different days and time should be midnight
+  // If both dates are provided, end date should be after start date and both should be at midnight
   return end > start && 
          start.getHours() === 0 && 
          start.getMinutes() === 0 &&
          end.getHours() === 0 && 
          end.getMinutes() === 0;
 }, {
-  message: "For single day events, time must be specified. For multi-day events, only dates should be specified.",
+  message: "For single day events, time must be specified. For multi-day events, end date must be after start date.",
   path: ["startDate"],
 });
 
