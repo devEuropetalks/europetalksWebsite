@@ -138,6 +138,10 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
                           field.onChange(date.toISOString());
                         }
                       }}
+                      initialFocus
+                      showOutsideDays={false}
+                      fromYear={2018}
+                      toYear={2038}
                     />
                     {!isMultiDay && (
                       <div className="p-3 border-t flex items-center gap-2">
@@ -202,6 +206,10 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
                           const startDate = form.getValues("startDate");
                           return startDate && date <= new Date(startDate);
                         }}
+                        initialFocus
+                        showOutsideDays={false}
+                        fromYear={2018}
+                        toYear={2038}
                       />
                     </PopoverContent>
                   </Popover>

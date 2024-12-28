@@ -8,19 +8,17 @@ export const eventFormSchema = z.object({
   location: z.string().min(1, "Location is required"),
 }).refine((data) => {
   const start = new Date(data.startDate);
+  
   if (!data.endDate) {
-    // If no end date, start date must include time (not be midnight)
-    return start.getHours() !== 0 || start.getMinutes() !== 0;
+    // For single-day events, any time is valid
+    return true;
   }
+  
   const end = new Date(data.endDate);
-  // If both dates are provided, end date should be after start date and both should be at midnight
-  return end > start && 
-         start.getHours() === 0 && 
-         start.getMinutes() === 0 &&
-         end.getHours() === 0 && 
-         end.getMinutes() === 0;
+  // For multi-day events, end date must be after start date
+  return end > start;
 }, {
-  message: "For single day events, time must be specified. For multi-day events, end date must be after start date.",
+  message: "For multi-day events, end date must be after start date.",
   path: ["startDate"],
 });
 
