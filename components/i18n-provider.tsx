@@ -121,14 +121,10 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
 
       try {
         // Try to fetch translations for the browser language
-        await i18n.reloadResources(browserLang);
-        // Switch to browser language temporarily to get translated strings
-        const currentLang = i18n.language;
-        await i18n.changeLanguage(browserLang);
+        await i18n.reloadResources(browserLang, "components");
+        // Add the translations directly without changing language
         setDetectedLanguage(browserLang);
         setShowLanguageHint(true);
-        // Switch back to original language
-        await i18n.changeLanguage(currentLang);
       } catch (error) {
         console.warn("Language detection error:", error);
       }
