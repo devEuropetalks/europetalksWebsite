@@ -51,12 +51,17 @@ const namespaces = [
 // Add this function to reload resources
 i18n.reloadResources = async (language: string, namespace?: string) => {
   try {
+    // Skip on server-side
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     // If no specific namespace is provided, load all namespaces
     const namespacesToLoad = namespace ? [namespace] : namespaces;
     
     for (const ns of namespacesToLoad) {
       const response = await fetch(
-        `${window.location.origin}/api/translations?language=${language}&namespace=${ns}`
+        `/api/translations?language=${language}&namespace=${ns}`
       );
       
       if (!response.ok) {
@@ -75,10 +80,6 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
         i18n.addResourceBundle(language, ns, content, true, true);
       }
     }
-
-    // Force a re-render by changing the language to itself
-    const currentLanguage = i18n.language;
-    await i18n.changeLanguage(currentLanguage);
   } catch (error) {
     console.warn("Warning: Error reloading translations:", error);
     // Fallback to English on error
@@ -148,14 +149,8 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      try {
-        // Preload translations for the detected language
-        await i18n.reloadResources(browserLang);
-        setDetectedLanguage(browserLang);
-        setShowLanguageHint(true);
-      } catch (error) {
-        console.warn("Language detection error:", error);
-      }
+      setDetectedLanguage(browserLang);
+      setShowLanguageHint(true);
     };
 
     detectAndPrefetchLanguage();
@@ -164,11 +159,19 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
   const handleLanguageSwitch = async () => {
     if (detectedLanguage) {
       try {
-        // Load translations for all namespaces
-        await i18n.reloadResources(detectedLanguage);
-        // Change the language
+        // First, fetch all translations for the new language
+        const response = await fetch(`/api/translations?language=${detectedLanguage}`);
+        if (!response.ok) throw new Error('Failed to fetch translations');
+        
+        const data = await response.json();
+        
+        // Add all resources to i18next
+        Object.entries(data).forEach(([namespace, content]) => {
+          i18n.addResourceBundle(detectedLanguage, namespace, content, true, true);
+        });
+
+        // Change the language after resources are loaded
         await i18n.changeLanguage(detectedLanguage);
-        // Reload translations to ensure everything is updated
         await reloadTranslations();
         setShowLanguageHint(false);
       } catch (error) {
