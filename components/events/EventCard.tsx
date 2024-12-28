@@ -31,13 +31,14 @@ export function EventCard({ event }: EventCardProps) {
 
   const formatDateRange = (start: Date | string, end: Date | string | undefined) => {
     const startDate = new Date(start);
-    if (!end) {
-      // Single day event with time
-      return format(startDate, "PPp");
-    }
-    const endDate = new Date(end);
+    const endDate = end ? new Date(end) : undefined;
     
-    // If start and end dates are provided, it's a multi-day event
+    // For single-day events (no end date or same as start date)
+    if (!endDate || startDate.toDateString() === endDate.toDateString()) {
+      return format(startDate, "PPp"); // This will show date and time
+    }
+    
+    // For multi-day events
     return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
   };
 
