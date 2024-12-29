@@ -31,7 +31,12 @@ interface EventFormProps {
 
 export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
   const [imageUrl, setImageUrl] = useState<string | undefined>(defaultValues?.imageUrl);
-  const [isMultiDay, setIsMultiDay] = useState(false);
+  const [isMultiDay, setIsMultiDay] = useState(() => {
+    if (!defaultValues?.startDate || !defaultValues?.endDate) return false;
+    const startDate = new Date(defaultValues.startDate);
+    const endDate = new Date(defaultValues.endDate);
+    return startDate.toDateString() !== endDate.toDateString();
+  });
 
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
@@ -47,6 +52,7 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
   const handleSubmit = async (values: EventFormData) => {
     onSubmit({
       ...values,
+      endDate: isMultiDay ? values.endDate : values.startDate,
       imageUrl: imageUrl,
     });
   };
@@ -85,7 +91,13 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
         <div className="flex items-center space-x-2">
           <Switch
             checked={isMultiDay}
-            onCheckedChange={setIsMultiDay}
+            onCheckedChange={(checked) => {
+              setIsMultiDay(checked);
+              if (!checked) {
+                // Clear end date when switching to single-day mode
+                form.setValue("endDate", "");
+              }
+            }}
             id="multi-day"
           />
           <label htmlFor="multi-day" className="text-sm font-medium">
