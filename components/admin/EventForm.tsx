@@ -148,7 +148,7 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
                         <Clock className="h-4 w-4 opacity-50" />
                         <input
                           type="time"
-                          className="w-full"
+                          className="w-full min-w-[150px]"
                           onChange={(e) => {
                             const date = field.value ? new Date(field.value) : new Date();
                             const [hours, minutes] = e.target.value.split(':');
