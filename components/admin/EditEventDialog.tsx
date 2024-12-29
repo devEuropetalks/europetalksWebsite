@@ -76,8 +76,8 @@ export function EditEventDialog({
           defaultValues={{
             title: event.title,
             description: event.description,
-            startDate: event.startDate.toISOString(),
-            endDate: event.endDate?.toISOString(),
+            startDate: typeof event.startDate === 'string' ? event.startDate : event.startDate.toISOString(),
+            endDate: event.endDate ? (typeof event.endDate === 'string' ? event.endDate : event.endDate.toISOString()) : undefined,
             location: event.location || "",
           }}
         />
