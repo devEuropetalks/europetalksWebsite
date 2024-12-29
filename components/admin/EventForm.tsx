@@ -44,7 +44,7 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
       title: defaultValues?.title || "",
       description: defaultValues?.description || "",
       startDate: defaultValues?.startDate || "",
-      endDate: defaultValues?.endDate || "",
+      endDate: defaultValues?.endDate || defaultValues?.startDate || "",
       location: defaultValues?.location || "",
     },
   });
@@ -94,8 +94,9 @@ export function EventForm({ onSubmit, defaultValues }: EventFormProps) {
             onCheckedChange={(checked) => {
               setIsMultiDay(checked);
               if (!checked) {
-                // Clear end date when switching to single-day mode
-                form.setValue("endDate", "");
+                // When switching to single-day mode, set end date to match start date
+                const startDate = form.getValues("startDate");
+                form.setValue("endDate", startDate);
               }
             }}
             id="multi-day"
