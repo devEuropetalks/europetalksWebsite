@@ -14,7 +14,7 @@ export default function TranslationsPage() {
 
   return (
     <ContentWrapper>
-      <div className="container mx-auto py-8">
+      <div className="container mx-auto py-8 mt-8">
         <h1 className="text-4xl font-bold mb-8">Translation Management</h1>
         <TranslationEditor />
       </div>

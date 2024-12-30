@@ -10,7 +10,7 @@ export default function AdminDashboardPage() {
   
   return (
     <ContentWrapper>
-      <div className="container py-8">
+      <div className="container py-8 mt-8">
         <h1 className="text-4xl font-bold mb-8">{t("dashboard.title")}</h1>
         
         <div className="grid gap-6 md:grid-cols-2">
