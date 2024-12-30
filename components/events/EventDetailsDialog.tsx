@@ -51,16 +51,16 @@ export default function EventDetailsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[900px] p-0 gap-0 h-[80vh]">
+      <DialogContent className="sm:max-w-[1100px] p-0 gap-0 h-[90vh]">
         <div className="grid grid-cols-1 md:grid-cols-2 h-full">
-          {/* Image Section - Fixed height, preserve aspect ratio */}
-          <div className="relative h-[300px] md:h-full">
+          {/* Image Section - Full height with object-contain for proper scaling */}
+          <div className="relative h-[300px] md:h-full bg-muted">
             {event.imageUrl ? (
               <Image
                 src={event.imageUrl}
                 alt={event.title}
                 fill
-                className={`object-cover transition-opacity duration-300 ${
+                className={`object-contain transition-opacity duration-300 ${
                   isImageLoading ? "opacity-0" : "opacity-100"
                 }`}
                 quality={90}
@@ -77,7 +77,7 @@ export default function EventDetailsDialog({
           </div>
 
           {/* Content Section - Scrollable */}
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col h-full max-h-[90vh]">
             <ScrollArea className="flex-grow">
               <div className="p-6 space-y-4">
                 <h2 className="text-2xl font-semibold">{event.title}</h2>
