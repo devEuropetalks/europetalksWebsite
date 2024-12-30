@@ -31,7 +31,7 @@ export async function PATCH(req: Request, { params }: RouteContext) {
         title: body.title,
         description: body.description,
         startDate: new Date(body.startDate),
-        endDate: new Date(body.endDate),
+        endDate: body.endDate ? new Date(body.endDate) : new Date(body.startDate),
         location: body.location,
         imageUrl: body.imageUrl,
       },
