@@ -9,6 +9,7 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import type { EventFormData } from "@/lib/validations/event";
 import { EventForm } from "./EventForm";
+import { useState } from "react";
 
 interface EditEventDialogProps {
   event: {
@@ -18,6 +19,7 @@ interface EditEventDialogProps {
     startDate: Date;
     endDate?: Date;
     location: string | null;
+    imageUrl?: string;
   } | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -31,9 +33,11 @@ export function EditEventDialog({
   onEventUpdated,
 }: EditEventDialogProps) {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleUpdateEvent = async (data: EventFormData) => {
+  const handleUpdateEvent = async (data: EventFormData & { imageUrl?: string }) => {
     if (!event) return;
+    setIsSubmitting(true);
 
     try {
       const response = await fetch(`/api/admin/events/${event.id}`, {
@@ -60,6 +64,8 @@ export function EditEventDialog({
         description: "Failed to update event. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -67,7 +73,7 @@ export function EditEventDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Edit Event</DialogTitle>
         </DialogHeader>
@@ -79,7 +85,9 @@ export function EditEventDialog({
             startDate: typeof event.startDate === 'string' ? event.startDate : event.startDate.toISOString(),
             endDate: event.endDate ? (typeof event.endDate === 'string' ? event.endDate : event.endDate.toISOString()) : undefined,
             location: event.location || "",
+            imageUrl: event.imageUrl,
           }}
+          isSubmitting={isSubmitting}
         />
       </DialogContent>
     </Dialog>
