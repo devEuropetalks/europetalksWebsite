@@ -74,7 +74,7 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter event title" className="max-w-xl" />
+                    <Input {...field} placeholder="Enter event title" className="max-w-3xl" />
                   </FormControl>
                   <FormDescription>
                     Choose a clear and descriptive title for your event
@@ -94,7 +94,7 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                     <Textarea 
                       {...field} 
                       placeholder="Describe your event..."
-                      className="min-h-[150px] max-w-xl"
+                      className="min-h-[150px] max-w-3xl"
                     />
                   </FormControl>
                   <FormDescription>
@@ -257,7 +257,7 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter event location" className="max-w-xl" />
+                    <Input {...field} placeholder="Enter event location" className="max-w-3xl" />
                   </FormControl>
                   <FormDescription>
                     Specify where the event will take place

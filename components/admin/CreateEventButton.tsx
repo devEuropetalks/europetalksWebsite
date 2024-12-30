@@ -15,40 +15,30 @@ import { Plus } from "lucide-react";
 import { useState } from "react";
 
 export function CreateEventButton() {
-  const [open, setOpen] = useState(false);
   const { toast } = useToast();
+  const [isOpen, setIsOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleCreateEvent = async (
-    data: EventFormData & { imageUrl?: string }
-  ) => {
+  const handleCreateEvent = async (data: EventFormData & { imageUrl?: string }) => {
+    setIsSubmitting(true);
+
     try {
       const response = await fetch("/api/admin/events", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          title: data.title,
-          description: data.description,
-          startDate: data.startDate,
-          endDate: data.endDate || data.startDate,
-          location: data.location,
-          imageUrl: data.imageUrl || null,
-        }),
+        body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(error);
-      }
+      if (!response.ok) throw new Error("Failed to create event");
 
       toast({
         title: "Success",
         description: "Event created successfully",
       });
 
-      setOpen(false);
-      window.location.reload();
+      setIsOpen(false);
     } catch (error) {
       console.error("Error creating event:", error);
       toast({
@@ -56,22 +46,24 @@ export function CreateEventButton() {
         description: "Failed to create event. Please try again.",
         variant: "destructive",
       });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
           Create Event
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Create New Event</DialogTitle>
+          <DialogTitle>Create Event</DialogTitle>
         </DialogHeader>
-        <EventForm onSubmit={handleCreateEvent} />
+        <EventForm onSubmit={handleCreateEvent} isSubmitting={isSubmitting} />
       </DialogContent>
     </Dialog>
   );
