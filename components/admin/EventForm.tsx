@@ -57,7 +57,7 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
   const handleSubmit = async (values: EventFormData) => {
     onSubmit({
       ...values,
-      endDate: isMultiDay ? values.endDate : values.startDate,
+      endDate: isMultiDay ? values.endDate : undefined,
       imageUrl: imageUrl,
     });
   };
