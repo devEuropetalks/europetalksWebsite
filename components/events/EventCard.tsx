@@ -1,4 +1,5 @@
 import EventSignupForm from "@/components/events/EventSignupForm";
+import EventDetailsDialog from "@/components/events/EventDetailsDialog";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,6 +27,7 @@ interface EventCardProps {
 
 export function EventCard({ event }: EventCardProps) {
   const [isSignupOpen, setIsSignupOpen] = useState(false);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const { t } = useTranslation("events");
   const [isImageLoading, setIsImageLoading] = useState(true);
 
@@ -33,12 +35,10 @@ export function EventCard({ event }: EventCardProps) {
     const startDate = new Date(start);
     const endDate = end ? new Date(end) : undefined;
     
-    // For single-day events (no end date or same as start date)
     if (!endDate || startDate.toDateString() === endDate.toDateString()) {
-      return format(startDate, "PPp"); // This will show date and time
+      return format(startDate, "PPp");
     }
     
-    // For multi-day events
     return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
   };
 
@@ -49,52 +49,67 @@ export function EventCard({ event }: EventCardProps) {
   };
 
   return (
-    <Card className="overflow-hidden">
-      {event.imageUrl && (
-        <div className="relative h-48 w-full">
-          <Image
-            src={event.imageUrl}
-            alt={event.title}
-            fill
-            className={`object-cover transition-opacity duration-300 ${
-              isImageLoading ? "opacity-0" : "opacity-100"
-            }`}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            quality={90}
-            onLoadingComplete={() => setIsImageLoading(false)}
-          />
-          {isImageLoading && (
-            <div className="absolute inset-0 bg-muted animate-pulse" />
-          )}
-        </div>
-      )}
-      <CardHeader>
-        <h3 className="text-lg font-semibold">{event.title}</h3>
-        <div className="flex flex-col gap-1 text-sm text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <CalendarIcon className="h-4 w-4" />
-            <time dateTime={new Date(event.startDate).toISOString()}>
-              {formatDateRange(event.startDate, event.endDate)}
-            </time>
+    <>
+      <Card 
+        className="overflow-hidden cursor-pointer transition-shadow hover:shadow-lg"
+        onClick={() => setIsDetailsOpen(true)}
+      >
+        {event.imageUrl && (
+          <div className="relative h-48 w-full">
+            <Image
+              src={event.imageUrl}
+              alt={event.title}
+              fill
+              className={`object-cover transition-opacity duration-300 ${
+                isImageLoading ? "opacity-0" : "opacity-100"
+              }`}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              quality={90}
+              onLoadingComplete={() => setIsImageLoading(false)}
+            />
+            {isImageLoading && (
+              <div className="absolute inset-0 bg-muted animate-pulse" />
+            )}
           </div>
-          <div className="flex items-center gap-1">
-            <MapPinIcon className="h-4 w-4" />
-            <span>{event.location}</span>
+        )}
+        <CardHeader>
+          <h3 className="text-lg font-semibold">{event.title}</h3>
+          <div className="flex flex-col gap-1 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <CalendarIcon className="h-4 w-4" />
+              <time dateTime={new Date(event.startDate).toISOString()}>
+                {formatDateRange(event.startDate, event.endDate)}
+              </time>
+            </div>
+            <div className="flex items-center gap-1">
+              <MapPinIcon className="h-4 w-4" />
+              <span>{event.location}</span>
+            </div>
           </div>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <p className="text-sm">{event.description}</p>
-      </CardContent>
-      <CardFooter>
-        <Button
-          className="w-full"
-          onClick={() => setIsSignupOpen(true)}
-          disabled={isEventEnded()}
-        >
-          {isEventEnded() ? t("eventCard.eventEnded") : t("eventCard.signUp")}
-        </Button>
-      </CardFooter>
+        </CardHeader>
+        <CardContent>
+          <p className="text-sm line-clamp-3">{event.description}</p>
+        </CardContent>
+        <CardFooter>
+          <Button
+            className="w-full"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsSignupOpen(true);
+            }}
+            disabled={isEventEnded()}
+          >
+            {isEventEnded() ? t("eventCard.eventEnded") : t("eventCard.signUp")}
+          </Button>
+        </CardFooter>
+      </Card>
+
+      <EventDetailsDialog
+        event={event}
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+      />
+
       {!isEventEnded() && (
         <EventSignupForm
           eventId={event.id}
@@ -103,9 +118,8 @@ export function EventCard({ event }: EventCardProps) {
           onClose={() => setIsSignupOpen(false)}
         />
       )}
-    </Card>
+    </>
   );
 }
 
-// Add default export that references the named export
 export default EventCard;
