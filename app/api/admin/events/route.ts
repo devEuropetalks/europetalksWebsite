@@ -10,6 +10,9 @@ const eventSchema = z.object({
   endDate: z.string().optional(),
   location: z.string().min(1),
   imageUrl: z.string().url().optional(),
+  formFields: z.object({
+    fields: z.array(z.any())
+  }).optional(),
 }).required();
 
 export async function GET() {
@@ -61,6 +64,7 @@ export async function POST(request: Request) {
         endDate: validatedData.endDate ? new Date(validatedData.endDate) : new Date(validatedData.startDate),
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
+        formFields: validatedData.formFields || { fields: [] },
       },
     });
 
