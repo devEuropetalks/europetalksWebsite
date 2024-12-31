@@ -1,6 +1,8 @@
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
+  DialogTitle,
 } from "@/components/ui/dialog";
 import { format } from "date-fns";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
@@ -53,35 +55,38 @@ export default function EventDetailsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[1100px] p-0 gap-0 h-[90vh] overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-2 h-full">
-          {/* Image Section - Full height with object-contain for proper scaling */}
-          <div className="relative h-[300px] md:h-full bg-muted">
-            {event.imageUrl ? (
-              <Image
-                src={event.imageUrl}
-                alt={event.title}
-                fill
-                className={`object-contain transition-opacity duration-300 ${
-                  isImageLoading ? "opacity-0" : "opacity-100"
-                }`}
-                quality={90}
-                onLoadingComplete={() => setIsImageLoading(false)}
-              />
-            ) : (
-              <div className="w-full h-full bg-muted flex items-center justify-center">
-                <span className="text-muted-foreground">No image available</span>
-              </div>
-            )}
-            {isImageLoading && event.imageUrl && (
-              <div className="absolute inset-0 bg-muted animate-pulse" />
-            )}
-          </div>
+      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[1100px]">
+        <DialogHeader className="sr-only">
+          <DialogTitle>{event.title}</DialogTitle>
+        </DialogHeader>
+        <ScrollArea className="h-full max-h-[90vh]">
+          <div className="grid grid-cols-1 md:grid-cols-2">
+            {/* Image Section */}
+            <div className="relative h-[300px] md:h-[600px] bg-muted">
+              {event.imageUrl ? (
+                <Image
+                  src={event.imageUrl}
+                  alt={event.title}
+                  fill
+                  className={`object-contain transition-opacity duration-300 ${
+                    isImageLoading ? "opacity-0" : "opacity-100"
+                  }`}
+                  quality={90}
+                  onLoadingComplete={() => setIsImageLoading(false)}
+                />
+              ) : (
+                <div className="w-full h-full bg-muted flex items-center justify-center">
+                  <span className="text-muted-foreground">No image available</span>
+                </div>
+              )}
+              {isImageLoading && event.imageUrl && (
+                <div className="absolute inset-0 bg-muted animate-pulse" />
+              )}
+            </div>
 
-          {/* Content Section */}
-          <div className="flex flex-col h-full">
-            <ScrollArea className="flex-grow p-6">
-              <div className="space-y-4 pr-4">
+            {/* Content Section */}
+            <div className="flex flex-col p-6">
+              <div className="space-y-4">
                 <h2 className="text-2xl font-semibold">{event.title}</h2>
                 
                 <div className="flex flex-col gap-2 text-muted-foreground">
@@ -101,20 +106,20 @@ export default function EventDetailsDialog({
                   <p className="whitespace-pre-wrap">{event.description}</p>
                 </div>
               </div>
-            </ScrollArea>
 
-            {!isEventEnded() && (
-              <div className="p-6 pt-4 border-t">
-                <Button 
-                  className="w-full" 
-                  onClick={() => setIsSignupOpen(true)}
-                >
-                  Sign Up
-                </Button>
-              </div>
-            )}
+              {!isEventEnded() && (
+                <div className="pt-6 mt-auto border-t">
+                  <Button 
+                    className="w-full" 
+                    onClick={() => setIsSignupOpen(true)}
+                  >
+                    Sign Up
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </ScrollArea>
       </DialogContent>
 
       {!isEventEnded() && (
