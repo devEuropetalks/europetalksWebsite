@@ -38,7 +38,17 @@ interface EventFormProps {
 export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormProps) {
   const [imageUrl, setImageUrl] = useState<string | undefined>(defaultValues?.imageUrl);
   const [formFields, setFormFields] = useState<EventFormConfig>(() => ({
-    fields: defaultValues?.formFields?.fields || [],
+    fields: (defaultValues?.formFields?.fields || []).map(field => ({
+      id: field.id || crypto.randomUUID(),
+      type: field.type || "text",
+      label: field.label || "",
+      name: field.name || "",
+      required: field.required || false,
+      placeholder: field.placeholder,
+      description: field.description,
+      options: field.options,
+      validation: field.validation
+    }))
   }));
   const [isMultiDay, setIsMultiDay] = useState(() => {
     if (!defaultValues?.startDate || !defaultValues?.endDate) return false;
