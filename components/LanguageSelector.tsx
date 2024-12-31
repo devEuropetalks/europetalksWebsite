@@ -28,7 +28,7 @@ export function LanguageSelector() {
     { code: "it", name: "Italiano", flag: "/images/languageFlags/it.png" },
     { code: "nl", name: "Nederlands", flag: "/images/languageFlags/nl.png" },
     { code: "pt", name: "Português", flag: "/images/languageFlags/pt.png" },
-    { code: "ru", name: "Русский", flag: "/images/languageFlags/ru.png" },
+    { code: "uk", name: "Українська", flag: "/images/languageFlags/uk.png" },
     { code: "lv", name: "Latviešu", flag: "/images/languageFlags/lv.png" },
     { code: "hr", name: "Hrvatski", flag: "/images/languageFlags/hr.png" },
   ];

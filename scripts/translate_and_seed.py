@@ -27,10 +27,10 @@ LANGUAGES = {
     "es": {"name": "Español", "model": "Helsinki-NLP/opus-mt-en-es"},
     "it": {"name": "Italiano", "model": "Helsinki-NLP/opus-mt-en-it"},
     "nl": {"name": "Nederlands", "model": "Helsinki-NLP/opus-mt-en-nl"},
-    "pt": {"name": "Português", "model": "Helsinki-NLP/opus-mt-en-pt"},
-    "ru": {"name": "Русский", "model": "Helsinki-NLP/opus-mt-en-ru"},
-    "lv": {"name": "Latviešu", "model": "Helsinki-NLP/opus-mt-en-lv"},
-    "hr": {"name": "Hrvatski", "model": "Helsinki-NLP/opus-mt-en-hr"},
+    "pt": {"name": "Português", "model": "Helsinki-NLP/opus-mt-en-ROMANCE"},
+    "uk": {"name": "Українська", "model": "Helsinki-NLP/opus-mt-en-ukr"},
+    "lv": {"name": "Latviešu", "model": "Helsinki-NLP/opus-mt-en-sla"},
+    "hr": {"name": "Hrvatski", "model": "Helsinki-NLP/opus-mt-en-sla"},
 }
 
 
@@ -59,7 +59,7 @@ class MultiTranslator:
             "it": "ita_Latn",
             "nl": "nld_Latn",
             "pt": "por_Latn",
-            "ru": "rus_Latn",
+            "uk": "ukr_Latn",
             "lv": "lav_Latn",
             "hr": "hrv_Latn",
         }
