@@ -14,20 +14,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, ControllerRenderProps } from "react-hook-form";
 import { z } from "zod";
 import { Textarea } from "@/components/ui/textarea";
 import { useTranslation } from "react-i18next";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { FormField as CustomFormField, createDynamicSchema } from "@/lib/types/event-form";
 
 interface EventSignupFormProps {
   eventId: string;
   eventTitle: string;
+  formFields: CustomFormField[];
   isOpen: boolean;
   onClose: () => void;
 }
@@ -35,6 +41,7 @@ interface EventSignupFormProps {
 export default function EventSignupForm({
   eventId,
   eventTitle,
+  formFields,
   isOpen,
   onClose,
 }: EventSignupFormProps) {
@@ -43,30 +50,7 @@ export default function EventSignupForm({
   const { toast } = useToast();
   const { user } = useUser();
 
-  const signupSchema = z.object({
-    fullName: z.string().min(3, t("signUp.fullName.error")),
-    email: z.string().email(t("signUp.email.error")),
-    phone: z.string().optional(),
-    motivation: z
-      .string()
-      .optional()
-      .superRefine((val, ctx) => {
-        const isAdminOrMember =
-          user?.organizationMemberships?.[0]?.role === "org:admin" ||
-          user?.organizationMemberships?.[0]?.role === "org:member";
-
-        if (!isAdminOrMember && (!val || val.length < 50)) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.too_small,
-            minimum: 50,
-            type: "string",
-            inclusive: true,
-            message: t("signUp.motivation.error"),
-          });
-        }
-      }),
-  });
-
+  const signupSchema = createDynamicSchema(formFields);
   type SignupFormData = z.infer<typeof signupSchema>;
 
   const form = useForm<SignupFormData>({
@@ -74,8 +58,6 @@ export default function EventSignupForm({
     defaultValues: {
       fullName: user?.fullName || "",
       email: user?.primaryEmailAddress?.emailAddress || "",
-      phone: user?.phoneNumbers?.[0]?.phoneNumber || "",
-      motivation: "",
     },
   });
 
@@ -117,11 +99,111 @@ export default function EventSignupForm({
     }
   };
 
-  const showMotivationField =
-    !user?.organizationMemberships?.[0]?.role ||
-    !["org:admin", "org:member"].includes(
-      user?.organizationMemberships?.[0]?.role as string
+  const renderFormField = (field: CustomFormField) => {
+    const commonProps = {
+      control: form.control,
+      name: field.name,
+      key: field.id,
+    };
+
+    const renderField = ({ field: formField }: { field: ControllerRenderProps }) => (
+      <FormItem>
+        <FormLabel>{field.label}</FormLabel>
+        <FormControl>
+          {(() => {
+            switch (field.type) {
+              case "textarea":
+                return (
+                  <Textarea
+                    {...formField}
+                    placeholder={field.placeholder}
+                    rows={4}
+                  />
+                );
+              case "select":
+                return (
+                  <Select
+                    value={formField.value}
+                    onValueChange={formField.onChange}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={field.placeholder} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {field.options?.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                );
+              case "checkbox":
+                return (
+                  <div className="space-y-2">
+                    {field.options?.map((option) => (
+                      <div key={option.value} className="flex items-center space-x-2">
+                        <Checkbox
+                          id={`${field.name}-${option.value}`}
+                          checked={formField.value?.includes(option.value)}
+                          onCheckedChange={(checked) => {
+                            const currentValue = formField.value || [];
+                            const newValue = checked
+                              ? [...currentValue, option.value]
+                              : currentValue.filter((v: string) => v !== option.value);
+                            formField.onChange(newValue);
+                          }}
+                        />
+                        <label
+                          htmlFor={`${field.name}-${option.value}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          {option.label}
+                        </label>
+                      </div>
+                    ))}
+                  </div>
+                );
+              case "radio":
+                return (
+                  <RadioGroup
+                    value={formField.value}
+                    onValueChange={formField.onChange}
+                    className="space-y-2"
+                  >
+                    {field.options?.map((option) => (
+                      <div key={option.value} className="flex items-center space-x-2">
+                        <RadioGroupItem value={option.value} id={`${field.name}-${option.value}`} />
+                        <label
+                          htmlFor={`${field.name}-${option.value}`}
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          {option.label}
+                        </label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                );
+              default:
+                return (
+                  <Input
+                    {...formField}
+                    type={field.type}
+                    placeholder={field.placeholder}
+                  />
+                );
+            }
+          })()}
+        </FormControl>
+        {field.description && <FormDescription>{field.description}</FormDescription>}
+        <FormMessage />
+      </FormItem>
     );
+
+    return <FormField key={field.id} {...commonProps} render={renderField} />;
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -165,42 +247,7 @@ export default function EventSignupForm({
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("signUp.phone.label")}</FormLabel>
-                  <FormControl>
-                    <Input 
-                      {...field} 
-                      placeholder={t("signUp.phone.placeholder")}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {showMotivationField && (
-              <FormField
-                control={form.control}
-                name="motivation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t("signUp.motivation.label")}</FormLabel>
-                    <FormControl>
-                      <Textarea 
-                        {...field} 
-                        rows={4}
-                        placeholder={t("signUp.motivation.placeholder")}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+            {formFields.map(renderFormField)}
 
             <Button type="submit" disabled={isSubmitting} className="w-full">
               {isSubmitting 

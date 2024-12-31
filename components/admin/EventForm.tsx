@@ -26,15 +26,20 @@ import { CalendarIcon, Clock, ImageIcon, Loader2, X } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
+import { FormFieldsEditor } from "./FormFieldsEditor";
+import { EventFormConfig } from "@/lib/types/event-form";
 
 interface EventFormProps {
-  onSubmit: (data: EventFormData & { imageUrl?: string }) => void;
-  defaultValues?: EventFormData & { imageUrl?: string };
+  onSubmit: (data: EventFormData & { imageUrl?: string; formFields?: EventFormConfig }) => void;
+  defaultValues?: EventFormData & { imageUrl?: string; formFields?: EventFormConfig };
   isSubmitting?: boolean;
 }
 
 export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormProps) {
   const [imageUrl, setImageUrl] = useState<string | undefined>(defaultValues?.imageUrl);
+  const [formFields, setFormFields] = useState<EventFormConfig>(() => ({
+    fields: defaultValues?.formFields?.fields || [],
+  }));
   const [isMultiDay, setIsMultiDay] = useState(() => {
     if (!defaultValues?.startDate || !defaultValues?.endDate) return false;
     const startDate = new Date(defaultValues.startDate);
@@ -59,6 +64,7 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
       ...values,
       endDate: isMultiDay ? values.endDate : undefined,
       imageUrl: imageUrl,
+      formFields,
     });
   };
 
@@ -321,6 +327,13 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                   </FormDescription>
                 </div>
               </div>
+            </div>
+
+            <div className="mt-6 pt-6 border-t">
+              <FormFieldsEditor
+                value={formFields.fields}
+                onChange={(fields) => setFormFields({ fields })}
+              />
             </div>
           </div>
         </Card>
