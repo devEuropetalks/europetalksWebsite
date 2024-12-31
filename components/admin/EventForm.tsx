@@ -70,9 +70,16 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
   });
 
   const handleSubmit = async (values: EventFormData) => {
+    let endDate = values.endDate;
+    if (!isMultiDay && values.startDate) {
+      // For single-day events, set endDate to the end of the selected day
+      const date = new Date(values.startDate);
+      date.setHours(23, 59, 59, 999);
+      endDate = date.toISOString();
+    }
     onSubmit({
       ...values,
-      endDate: isMultiDay ? values.endDate : undefined,
+      endDate,
       imageUrl: imageUrl,
       formFields,
     });
