@@ -28,7 +28,7 @@ LANGUAGES = {
     "it": {"name": "Italiano", "model": "Helsinki-NLP/opus-mt-en-it"},
     "nl": {"name": "Nederlands", "model": "Helsinki-NLP/opus-mt-en-nl"},
     "pt": {"name": "Português", "model": "Helsinki-NLP/opus-mt-en-ROMANCE"},
-    "uk": {"name": "Українська", "model": "Helsinki-NLP/opus-mt-en-ukr"},
+    "uk": {"name": "Українська", "model": "Helsinki-NLP/opus-mt-en-uk"},
     "lv": {"name": "Latviešu", "model": "Helsinki-NLP/opus-mt-en-sla"},
     "hr": {"name": "Hrvatski", "model": "Helsinki-NLP/opus-mt-en-sla"},
 }
