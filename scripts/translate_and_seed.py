@@ -1,7 +1,12 @@
 import json
 import asyncio
 import asyncpg
-from transformers import MarianMTModel, MarianTokenizer
+from transformers import (
+    MarianMTModel,
+    MarianTokenizer,
+    AutoModelForSeq2SeqLM,
+    AutoTokenizer,
+)
 from typing import Dict, Any, List, Set, Tuple
 import os
 from dotenv import load_dotenv
@@ -21,11 +26,18 @@ LANGUAGES = {
     "fr": {"name": "Français", "model": "Helsinki-NLP/opus-mt-en-fr"},
     "es": {"name": "Español", "model": "Helsinki-NLP/opus-mt-en-es"},
     "it": {"name": "Italiano", "model": "Helsinki-NLP/opus-mt-en-it"},
+    "nl": {"name": "Nederlands", "model": "Helsinki-NLP/opus-mt-en-nl"},
+    "pt": {"name": "Português", "model": "Helsinki-NLP/opus-mt-en-pt"},
+    "ru": {"name": "Русский", "model": "Helsinki-NLP/opus-mt-en-ru"},
+    "lv": {"name": "Latviešu", "model": "Helsinki-NLP/opus-mt-en-lv"},
+    "hr": {"name": "Hrvatski", "model": "Helsinki-NLP/opus-mt-en-hr"},
 }
+
 
 def string_similarity(a: str, b: str) -> float:
     """Calculate similarity ratio between two strings"""
     return SequenceMatcher(None, a.lower(), b.lower()).ratio()
+
 
 class MultiTranslator:
     def __init__(self, target_lang: str):
@@ -33,24 +45,40 @@ class MultiTranslator:
         model_name = LANGUAGES[target_lang]["model"]
         self.tokenizer = MarianTokenizer.from_pretrained(model_name)
         self.model = MarianMTModel.from_pretrained(model_name)
-        
+
+        # Initialize NLLB
+        self.nllb_model_name = "facebook/nllb-200-distilled-600M"
+        self.nllb_tokenizer = AutoTokenizer.from_pretrained(self.nllb_model_name)
+        self.nllb_model = AutoModelForSeq2SeqLM.from_pretrained(self.nllb_model_name)
+
+        # Language code mapping for NLLB
+        self.nllb_lang_map = {
+            "de": "deu_Latn",
+            "fr": "fra_Latn",
+            "es": "spa_Latn",
+            "it": "ita_Latn",
+            "nl": "nld_Latn",
+            "pt": "por_Latn",
+            "ru": "rus_Latn",
+            "lv": "lav_Latn",
+            "hr": "hrv_Latn",
+        }
+
         # Initialize Google Translate
-        self.google_translator = GoogleTranslator(source='en', target=target_lang)
-        
+        self.google_translator = GoogleTranslator(source="en", target=target_lang)
+
         # Initialize DeepL if API key is available and language is supported
         self.deepl_translator = None
         if os.getenv("DEEPL_API_KEY"):
             try:
                 self.deepl_translator = DeeplTranslator(
-                    api_key=os.getenv("DEEPL_API_KEY"),
-                    source="en",
-                    target=target_lang
+                    api_key=os.getenv("DEEPL_API_KEY"), source="en", target=target_lang
                 )
             except Exception as e:
                 print(f"DeepL not available for {target_lang}: {str(e)}")
                 # Continue without DeepL for this language
                 pass
-        
+
         # Load English NER model
         self.nlp = spacy.load("en_core_web_sm")
         self.target_lang = target_lang
@@ -58,13 +86,18 @@ class MultiTranslator:
     def get_entities(self, text: str) -> Set[str]:
         """Extract named entities from text"""
         doc = self.nlp(text)
-        entities = {ent.text for ent in doc.ents if ent.label_ in {
-            'GPE',     # Countries, cities, states
-            'PERSON',  # People's names
-            'ORG',     # Companies, organizations
-            'LOC'      # Non-GPE locations
-        }}
-        entities.update(token.text for token in doc if token.pos_ == 'PROPN')
+        entities = {
+            ent.text
+            for ent in doc.ents
+            if ent.label_
+            in {
+                "GPE",  # Countries, cities, states
+                "PERSON",  # People's names
+                "ORG",  # Companies, organizations
+                "LOC",  # Non-GPE locations
+            }
+        }
+        entities.update(token.text for token in doc if token.pos_ == "PROPN")
         return entities
 
     def translate_with_marian(self, text: str) -> str:
@@ -95,15 +128,33 @@ class MultiTranslator:
             print(f"DeepL translation error: {e}")
             return None
 
+    def translate_with_nllb(self, text: str) -> str:
+        """Translate using NLLB model"""
+        try:
+            # Get target language code for NLLB
+            target_lang_code = self.nllb_lang_map.get(self.target_lang)
+            if not target_lang_code:
+                return None
+
+            # Add the source language token for English
+            inputs = self.nllb_tokenizer(f"eng_Latn {text}", return_tensors="pt")
+            translated_tokens = self.nllb_model.generate(**inputs, max_length=128)
+            return self.nllb_tokenizer.batch_decode(
+                translated_tokens, skip_special_tokens=True
+            )[0]
+        except Exception as e:
+            print(f"NLLB translation error: {e}")
+            return None
+
     def get_consensus_translation(self, translations: List[str]) -> str:
         """Get the most agreed-upon translation"""
         valid_translations = [t for t in translations if t]
         if not valid_translations:
             return None
-        
+
         if len(valid_translations) == 1:
             return valid_translations[0]
-        
+
         # Calculate similarity scores between all translations
         scores = {}
         for i, t1 in enumerate(valid_translations):
@@ -112,7 +163,7 @@ class MultiTranslator:
                 if i != j:
                     score += string_similarity(t1, t2)
             scores[t1] = score
-        
+
         # Return translation with highest similarity to others
         return max(scores.items(), key=lambda x: x[1])[0]
 
@@ -123,39 +174,57 @@ class MultiTranslator:
         try:
             # Get named entities before translation
             entities = self.get_entities(text)
-            
+
             if text in entities:
                 return text
-            
+
+            # Try DeepL first if available
+            if self.deepl_translator:
+                deepl_result = self.translate_with_deepl(text)
+                if deepl_result:
+                    return self.preserve_entities(deepl_result, entities)
+
             # Get translations from all available services
             translations = [
                 self.translate_with_marian(text),
                 self.translate_with_google(text),
-                self.translate_with_deepl(text)
+                self.translate_with_nllb(text),
             ]
-            
+
             # Get consensus translation
             result = self.get_consensus_translation(translations)
             if not result:
                 return text
-            
-            # Preserve original named entities
-            for entity in entities:
-                entity_lower = entity.lower()
-                result_lower = result.lower()
-                if entity_lower not in result_lower:
-                    # Try to find and replace translated entities
-                    for translator in [self.translate_with_marian, self.translate_with_google, self.translate_with_deepl]:
-                        if translator:
-                            translated_entity = translator(entity)
-                            if translated_entity and translated_entity.lower() in result_lower:
-                                result = result.replace(translated_entity, entity)
-                                break
-            
-            return result
+
+            return self.preserve_entities(result, entities)
+
         except Exception as e:
             print(f"Translation error for '{text}': {e}")
             return text
+
+    def preserve_entities(self, translated_text: str, entities: Set[str]) -> str:
+        """Preserve original named entities in the translated text"""
+        result = translated_text
+        for entity in entities:
+            entity_lower = entity.lower()
+            result_lower = result.lower()
+            if entity_lower not in result_lower:
+                # Try to find and replace translated entities
+                for translator in [
+                    self.translate_with_marian,
+                    self.translate_with_google,
+                    self.translate_with_nllb,
+                ]:
+                    if translator:
+                        translated_entity = translator(entity)
+                        if (
+                            translated_entity
+                            and translated_entity.lower() in result_lower
+                        ):
+                            result = result.replace(translated_entity, entity)
+                            break
+        return result
+
 
 def maintain_json_order(obj: Any) -> Any:
     """Recursively maintain the order of JSON objects"""
@@ -165,18 +234,22 @@ def maintain_json_order(obj: Any) -> Any:
         return [maintain_json_order(item) for item in obj]
     return obj
 
+
 async def ensure_table_exists(conn):
     """Create the Translation table if it doesn't exist with proper JSONB type"""
     # Check if table exists
-    table_exists = await conn.fetchval("""
+    table_exists = await conn.fetchval(
+        """
         SELECT EXISTS (
             SELECT FROM information_schema.tables 
             WHERE table_name = 'Translation'
         );
-    """)
-    
+    """
+    )
+
     if not table_exists:
-        await conn.execute("""
+        await conn.execute(
+            """
             CREATE TABLE "Translation" (
                 id TEXT PRIMARY KEY,
                 language VARCHAR(10) NOT NULL UNIQUE,
@@ -197,14 +270,17 @@ async def ensure_table_exists(conn):
                 BEFORE UPDATE ON "Translation"
                 FOR EACH ROW
                 EXECUTE FUNCTION update_updated_at_column();
-        """)
+        """
+        )
         print("✓ Database table created with proper JSONB type")
     else:
         print("✓ Using existing Translation table")
 
+
 def generate_cuid2() -> str:
     """Generate a CUID2-like ID"""
     return f"cm{uuid.uuid4().hex[:24]}"
+
 
 async def translate_and_seed():
     """Main function to translate and seed the database"""
@@ -212,7 +288,7 @@ async def translate_and_seed():
         # Load source English translations
         with open("translations/translations.json", "r", encoding="utf-8") as f:
             translations = json.load(f, object_pairs_hook=OrderedDict)
-        
+
         # Get English content as source
         en_content = translations.get("en", {})
         if not en_content:
@@ -220,7 +296,7 @@ async def translate_and_seed():
 
         # Connect to database
         conn = await asyncpg.connect(os.getenv("DATABASE_URL"))
-        
+
         try:
             # Ensure the Translation table exists (don't drop it)
             await ensure_table_exists(conn)
@@ -232,40 +308,50 @@ async def translate_and_seed():
                 # Check for existing translation
                 existing = await conn.fetchrow(
                     'SELECT id, content FROM "Translation" WHERE language = $1',
-                    lang_code
+                    lang_code,
                 )
 
                 translator = MultiTranslator(lang_code)
-                
+
                 if existing:
                     # Parse the JSON string into a dictionary
-                    existing_content = json.loads(existing['content']) if isinstance(existing['content'], str) else existing['content']
+                    existing_content = (
+                        json.loads(existing["content"])
+                        if isinstance(existing["content"], str)
+                        else existing["content"]
+                    )
                     print(f"Found existing translations for {lang_code}")
-                    
+
                     # Only translate missing namespaces or keys
                     updated_content = existing_content.copy()
                     for namespace, translations in en_content.items():
                         if namespace not in existing_content:
                             print(f"Translating missing namespace: {namespace}")
-                            updated_content[namespace] = translate_dict(translations, translator)
+                            updated_content[namespace] = translate_dict(
+                                translations, translator
+                            )
                         else:
                             # Check for missing keys in existing namespaces
                             for key, value in translations.items():
                                 if key not in existing_content[namespace]:
                                     print(f"Translating missing key: {namespace}.{key}")
-                                    updated_content[namespace][key] = translator.translate(value) if isinstance(value, str) else value
+                                    updated_content[namespace][key] = (
+                                        translator.translate(value)
+                                        if isinstance(value, str)
+                                        else value
+                                    )
 
                     if updated_content != existing_content:
                         # Update only if there are changes
                         await conn.execute(
-                            '''
+                            """
                             UPDATE "Translation" 
                             SET content = $1::jsonb,
                                 "updatedAt" = CURRENT_TIMESTAMP
                             WHERE id = $2
-                            ''',
+                            """,
                             json.dumps(updated_content),
-                            existing['id']
+                            existing["id"],
                         )
                         print(f"✓ Updated missing translations for {lang_info['name']}")
                     else:
@@ -274,13 +360,13 @@ async def translate_and_seed():
                     # Create new translation for language
                     translated_content = translate_dict(en_content, translator)
                     await conn.execute(
-                        '''
+                        """
                         INSERT INTO "Translation" (id, language, content, "updatedAt")
                         VALUES ($1, $2, $3::jsonb, CURRENT_TIMESTAMP)
-                        ''',
+                        """,
                         generate_cuid2(),
                         lang_code,
-                        json.dumps(translated_content)
+                        json.dumps(translated_content),
                     )
                     print(f"✓ Created new translations for {lang_info['name']}")
 
@@ -290,7 +376,7 @@ async def translate_and_seed():
             rows = await conn.fetch('SELECT language, content FROM "Translation"')
             print("\nVerifying stored translations:")
             for row in rows:
-                content_sample = json.dumps(row['content'])[:100] + "..."
+                content_sample = json.dumps(row["content"])[:100] + "..."
                 print(f"{row['language']}: {content_sample}")
 
         finally:
@@ -299,6 +385,7 @@ async def translate_and_seed():
     except Exception as e:
         print(f"Error during translation and seeding: {e}")
         raise
+
 
 def translate_dict(obj: Any, translator: MultiTranslator) -> Any:
     """Recursively translate all string values in a dictionary"""
@@ -309,6 +396,7 @@ def translate_dict(obj: Any, translator: MultiTranslator) -> Any:
     elif isinstance(obj, list):
         return [translate_dict(item, translator) for item in obj]
     return obj
+
 
 if __name__ == "__main__":
     asyncio.run(translate_and_seed())
