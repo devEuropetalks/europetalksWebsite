@@ -12,6 +12,7 @@ import { CalendarIcon, MapPinIcon } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
+import { FormField } from "@/lib/types/event-form";
 
 interface EventCardProps {
   event: {
@@ -22,6 +23,7 @@ interface EventCardProps {
     endDate: Date | string;
     location: string;
     imageUrl?: string;
+    formFields?: { fields: FormField[] };
   };
 }
 
@@ -114,6 +116,7 @@ export function EventCard({ event }: EventCardProps) {
         <EventSignupForm
           eventId={event.id}
           eventTitle={event.title}
+          formFields={event.formFields?.fields || []}
           isOpen={isSignupOpen}
           onClose={() => setIsSignupOpen(false)}
         />

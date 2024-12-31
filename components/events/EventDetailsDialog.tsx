@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import EventSignupForm from "./EventSignupForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { FormField } from "@/lib/types/event-form";
 
 interface EventDetailsDialogProps {
   event: {
@@ -19,6 +20,7 @@ interface EventDetailsDialogProps {
     endDate: Date | string;
     location: string;
     imageUrl?: string;
+    formFields?: { fields: FormField[] };
   };
   isOpen: boolean;
   onClose: () => void;
@@ -76,10 +78,10 @@ export default function EventDetailsDialog({
             )}
           </div>
 
-          {/* Content Section - Scrollable */}
-          <div className="flex flex-col h-full max-h-[90vh]">
+          {/* Content Section */}
+          <div className="p-6 flex flex-col">
             <ScrollArea className="flex-grow">
-              <div className="p-6 space-y-4">
+              <div className="space-y-4">
                 <h2 className="text-2xl font-semibold">{event.title}</h2>
                 
                 <div className="flex flex-col gap-2 text-muted-foreground">
@@ -95,22 +97,22 @@ export default function EventDetailsDialog({
                   </div>
                 </div>
 
-                <div>
-                  <p className="text-base whitespace-pre-wrap">{event.description}</p>
+                <div className="prose prose-sm max-w-none">
+                  <p>{event.description}</p>
                 </div>
               </div>
             </ScrollArea>
 
-            {/* Button Section - Fixed at bottom */}
-            <div className="p-6 border-t">
-              <Button
-                className="w-full"
-                onClick={() => setIsSignupOpen(true)}
-                disabled={isEventEnded()}
-              >
-                {isEventEnded() ? "Event Ended" : "Sign Up"}
-              </Button>
-            </div>
+            {!isEventEnded() && (
+              <div className="pt-6 mt-auto">
+                <Button 
+                  className="w-full" 
+                  onClick={() => setIsSignupOpen(true)}
+                >
+                  Sign Up
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </DialogContent>
@@ -119,6 +121,7 @@ export default function EventDetailsDialog({
         <EventSignupForm
           eventId={event.id}
           eventTitle={event.title}
+          formFields={event.formFields?.fields || []}
           isOpen={isSignupOpen}
           onClose={() => setIsSignupOpen(false)}
         />
