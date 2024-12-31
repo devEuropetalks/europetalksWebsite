@@ -13,7 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { FormField as CustomFormField, FormFieldType } from "@/lib/types/event-form";
+import { FormFieldType } from "@/lib/types/event-form";
+import type { FormField as CustomFormField } from "@/lib/types/event-form";
 import { PlusCircle, Trash2, GripVertical } from "lucide-react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Card } from "@/components/ui/card";
@@ -48,10 +49,42 @@ export function FormFieldsEditor({ value, onChange }: FormFieldsEditorProps) {
     control: form.control,
   });
 
-  // Update parent component when fields change
+  // Watch for form changes and update parent after a delay
   useEffect(() => {
-    onChange(fields);
-  }, [fields, onChange]);
+    const subscription = form.watch((value) => {
+      const timeoutId = setTimeout(() => {
+        if (value.formFields) {
+          const validFields = value.formFields.map(field => {
+            const baseField = {
+              id: field.id || crypto.randomUUID(),
+              type: field.type || "text" as FormFieldType,
+              label: field.label || "",
+              name: field.name || "",
+              required: field.required || false,
+              placeholder: field.placeholder,
+              description: field.description,
+              validation: field.validation
+            };
+
+            if (field.type === "select" || field.type === "checkbox" || field.type === "radio") {
+              return {
+                ...baseField,
+                options: (field.options || []).map(opt => ({
+                  label: opt.label || opt.value || "",
+                  value: opt.value || opt.label || ""
+                }))
+              };
+            }
+
+            return baseField;
+          });
+          onChange(validFields);
+        }
+      }, 500);
+      return () => clearTimeout(timeoutId);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, onChange]);
 
   const handleDragEnd = (result: DropResult) => {
     if (!result.destination) return;
