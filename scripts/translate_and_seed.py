@@ -98,6 +98,20 @@ def generate_cuid2() -> str:
     """Generate a CUID2-like ID"""
     return f"cm{uuid.uuid4().hex[:24]}"
 
+def translate_dict(obj: Any, translator: Translator) -> Any:
+    """Recursively translate all string values in a dictionary while maintaining order"""
+    if isinstance(obj, str):
+        return translator.translate(obj)
+    elif isinstance(obj, dict):
+        # Create a new OrderedDict with the same order as the source
+        result = OrderedDict()
+        for k in obj.keys():  # This preserves the original order
+            result[k] = translate_dict(obj[k], translator)
+        return result
+    elif isinstance(obj, list):
+        return [translate_dict(item, translator) for item in obj]
+    return obj
+
 async def translate_and_seed():
     """Main function to translate and seed the database"""
     try:
@@ -141,19 +155,21 @@ async def translate_and_seed():
                     
                     print(f"Found existing translations for {lang_code}")
                     
-                    # Only translate missing namespaces or keys while maintaining order
-                    updated_content = OrderedDict(existing_content)
-                    for namespace, translations in en_content.items():
-                        if namespace not in updated_content:
+                    # Create a new OrderedDict with the same order as the source
+                    updated_content = OrderedDict()
+                    for namespace in en_content.keys():  # Use source order
+                        if namespace not in existing_content:
                             print(f"Translating missing namespace: {namespace}")
-                            updated_content[namespace] = translate_dict(translations, translator)
+                            updated_content[namespace] = translate_dict(en_content[namespace], translator)
                         else:
-                            # Check for missing keys in existing namespaces
-                            namespace_content = OrderedDict(updated_content[namespace])
-                            for key, value in translations.items():
-                                if key not in namespace_content:
+                            # Maintain order within each namespace
+                            namespace_content = OrderedDict()
+                            for key in en_content[namespace].keys():  # Use source order for keys
+                                if key not in existing_content[namespace]:
                                     print(f"Translating missing key: {namespace}.{key}")
-                                    namespace_content[key] = translator.translate(value) if isinstance(value, str) else value
+                                    namespace_content[key] = translator.translate(en_content[namespace][key]) if isinstance(en_content[namespace][key], str) else en_content[namespace][key]
+                                else:
+                                    namespace_content[key] = existing_content[namespace][key]
                             updated_content[namespace] = namespace_content
 
                     if updated_content != existing_content:
@@ -202,16 +218,6 @@ async def translate_and_seed():
     except Exception as e:
         print(f"Error during translation and seeding: {e}")
         raise
-
-def translate_dict(obj: Any, translator: Translator) -> Any:
-    """Recursively translate all string values in a dictionary while maintaining order"""
-    if isinstance(obj, str):
-        return translator.translate(obj)
-    elif isinstance(obj, dict):
-        return OrderedDict((k, translate_dict(v, translator)) for k, v in obj.items())
-    elif isinstance(obj, list):
-        return [translate_dict(item, translator) for item in obj]
-    return obj
 
 if __name__ == "__main__":
     asyncio.run(translate_and_seed())
