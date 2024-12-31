@@ -29,6 +29,11 @@ export function MemberTranslationEditor({ allowedLanguages }: MemberTranslationE
     fr: "Français",
     es: "Español",
     it: "Italiano",
+    nl: "Nederlands",
+    pt: "Português",
+    uk: "Українська",
+    lv: "Latviešu",
+    hr: "Hrvatski",
   } as const;
 
   const namespaces = [

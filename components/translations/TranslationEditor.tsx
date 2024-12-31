@@ -25,6 +25,11 @@ export function TranslationEditor() {
     { code: "fr", name: "Français" },
     { code: "es", name: "Español" },
     { code: "it", name: "Italiano" },
+    { code: "nl", name: "Nederlands" },
+    { code: "pt", name: "Português" },
+    { code: "uk", name: "Українська" },
+    { code: "lv", name: "Latviešu" },
+    { code: "hr", name: "Hrvatski" },
   ];
 
   const namespaces = [
