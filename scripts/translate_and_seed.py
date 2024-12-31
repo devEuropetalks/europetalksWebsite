@@ -8,6 +8,17 @@ from dotenv import load_dotenv
 import uuid
 from collections import OrderedDict
 
+class OrderedJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, OrderedDict):
+            return {"__ordered__": True, "items": list(obj.items())}
+        return super().default(obj)
+
+def ordered_json_decoder(dct):
+    if "__ordered__" in dct:
+        return OrderedDict(dct["items"])
+    return dct
+
 # Load environment variables
 load_dotenv()
 
@@ -156,7 +167,7 @@ async def translate_and_seed():
                             ''',
                             existing['id'],
                             lang_code,
-                            json.dumps(updated_content, ensure_ascii=False)
+                            json.dumps(updated_content, ensure_ascii=False, cls=OrderedJsonEncoder)
                         )
                         print(f"✓ Updated missing translations for {lang_info['name']}")
                     else:
@@ -171,7 +182,7 @@ async def translate_and_seed():
                         ''',
                         generate_cuid2(),
                         lang_code,
-                        json.dumps(translated_content, ensure_ascii=False)
+                        json.dumps(translated_content, ensure_ascii=False, cls=OrderedJsonEncoder)
                     )
                     print(f"✓ Created new translations for {lang_info['name']}")
 
@@ -181,7 +192,8 @@ async def translate_and_seed():
             rows = await conn.fetch('SELECT language, content FROM "Translation" ORDER BY language')
             print("\nVerifying stored translations:")
             for row in rows:
-                content_sample = json.dumps(row['content'], ensure_ascii=False)[:100] + "..."
+                content = json.loads(row['content'], object_hook=ordered_json_decoder)
+                content_sample = json.dumps(content, ensure_ascii=False, cls=OrderedJsonEncoder)[:100] + "..."
                 print(f"{row['language']}: {content_sample}")
 
         finally:
