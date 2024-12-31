@@ -182,7 +182,6 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                             }
                           }}
                           initialFocus
-                          disabled={(date) => date < new Date(new Date().setHours(0, 0, 0, 0))}
                           showOutsideDays={false}
                         />
                         {!isMultiDay && (
