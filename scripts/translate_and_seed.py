@@ -12,12 +12,12 @@ from collections import OrderedDict
 load_dotenv()
 
 # Language configurations - easy to extend
-LANGUAGES = {
-    "de": {"name": "Deutsch", "model": "Helsinki-NLP/opus-mt-en-de"},
-    "fr": {"name": "Français", "model": "Helsinki-NLP/opus-mt-en-fr"},
-    "es": {"name": "Español", "model": "Helsinki-NLP/opus-mt-en-es"},
-    "it": {"name": "Italiano", "model": "Helsinki-NLP/opus-mt-en-it"},
-}
+LANGUAGES = OrderedDict([
+    ("de", {"name": "Deutsch", "model": "Helsinki-NLP/opus-mt-en-de"}),
+    ("fr", {"name": "Français", "model": "Helsinki-NLP/opus-mt-en-fr"}),
+    ("es", {"name": "Español", "model": "Helsinki-NLP/opus-mt-en-es"}),
+    ("it", {"name": "Italiano", "model": "Helsinki-NLP/opus-mt-en-it"}),
+])
 
 class Translator:
     def __init__(self, target_lang: str):
@@ -90,12 +90,12 @@ def generate_cuid2() -> str:
 async def translate_and_seed():
     """Main function to translate and seed the database"""
     try:
-        # Load source English translations
+        # Load source English translations with ordered dict
         with open("translations/translations.json", "r", encoding="utf-8") as f:
             translations = json.load(f, object_pairs_hook=OrderedDict)
         
         # Get English content as source
-        en_content = translations.get("en", {})
+        en_content = translations.get("en", OrderedDict())
         if not en_content:
             raise ValueError("English translations not found in translations.json")
 
@@ -105,36 +105,6 @@ async def translate_and_seed():
         try:
             # Ensure the Translation table exists (don't drop it)
             await ensure_table_exists(conn)
-
-            # First, ensure English translations are in the database
-            existing_en = await conn.fetchrow(
-                'SELECT id, content FROM "Translation" WHERE language = $1',
-                'en'
-            )
-
-            if not existing_en:
-                await conn.execute(
-                    '''
-                    INSERT INTO "Translation" (id, language, content, "updatedAt")
-                    VALUES ($1, $2, $3::jsonb, CURRENT_TIMESTAMP)
-                    ''',
-                    generate_cuid2(),
-                    'en',
-                    json.dumps(en_content)
-                )
-                print("✓ Created English translations")
-            else:
-                await conn.execute(
-                    '''
-                    UPDATE "Translation" 
-                    SET content = $1::jsonb,
-                        "updatedAt" = CURRENT_TIMESTAMP
-                    WHERE id = $2
-                    ''',
-                    json.dumps(en_content),
-                    existing_en['id']
-                )
-                print("✓ Updated English translations")
 
             # Process each target language
             for lang_code, lang_info in LANGUAGES.items():
@@ -149,41 +119,44 @@ async def translate_and_seed():
                 translator = Translator(lang_code)
                 
                 if existing:
-                    # Parse existing content if it's a string
+                    # Parse existing content with ordered dict
                     existing_content = existing['content']
                     if isinstance(existing_content, str):
                         try:
-                            existing_content = json.loads(existing_content)
+                            existing_content = json.loads(existing_content, object_pairs_hook=OrderedDict)
                         except json.JSONDecodeError:
                             print(f"Warning: Invalid JSON content for {lang_code}, treating as empty")
-                            existing_content = {}
+                            existing_content = OrderedDict()
                     
                     print(f"Found existing translations for {lang_code}")
                     
-                    # Only translate missing namespaces or keys
-                    updated_content = dict(existing_content)
+                    # Only translate missing namespaces or keys while maintaining order
+                    updated_content = OrderedDict(existing_content)
                     for namespace, translations in en_content.items():
                         if namespace not in updated_content:
                             print(f"Translating missing namespace: {namespace}")
                             updated_content[namespace] = translate_dict(translations, translator)
                         else:
                             # Check for missing keys in existing namespaces
+                            namespace_content = OrderedDict(updated_content[namespace])
                             for key, value in translations.items():
-                                if key not in updated_content[namespace]:
+                                if key not in namespace_content:
                                     print(f"Translating missing key: {namespace}.{key}")
-                                    updated_content[namespace][key] = translator.translate(value) if isinstance(value, str) else value
+                                    namespace_content[key] = translator.translate(value) if isinstance(value, str) else value
+                            updated_content[namespace] = namespace_content
 
                     if updated_content != existing_content:
                         # Update only if there are changes
                         await conn.execute(
                             '''
                             UPDATE "Translation" 
-                            SET content = $1::jsonb,
+                            SET content = $3::jsonb,
                                 "updatedAt" = CURRENT_TIMESTAMP
-                            WHERE id = $2
+                            WHERE id = $1 AND language = $2
                             ''',
-                            json.dumps(updated_content),
-                            existing['id']
+                            existing['id'],
+                            lang_code,
+                            json.dumps(updated_content, ensure_ascii=False)
                         )
                         print(f"✓ Updated missing translations for {lang_info['name']}")
                     else:
@@ -198,17 +171,17 @@ async def translate_and_seed():
                         ''',
                         generate_cuid2(),
                         lang_code,
-                        json.dumps(translated_content)
+                        json.dumps(translated_content, ensure_ascii=False)
                     )
                     print(f"✓ Created new translations for {lang_info['name']}")
 
             print("\n✓ All translations completed successfully!")
 
             # Verify the content is stored correctly
-            rows = await conn.fetch('SELECT language, content FROM "Translation"')
+            rows = await conn.fetch('SELECT language, content FROM "Translation" ORDER BY language')
             print("\nVerifying stored translations:")
             for row in rows:
-                content_sample = json.dumps(row['content'])[:100] + "..."
+                content_sample = json.dumps(row['content'], ensure_ascii=False)[:100] + "..."
                 print(f"{row['language']}: {content_sample}")
 
         finally:
@@ -219,7 +192,7 @@ async def translate_and_seed():
         raise
 
 def translate_dict(obj: Any, translator: Translator) -> Any:
-    """Recursively translate all string values in a dictionary"""
+    """Recursively translate all string values in a dictionary while maintaining order"""
     if isinstance(obj, str):
         return translator.translate(obj)
     elif isinstance(obj, dict):
