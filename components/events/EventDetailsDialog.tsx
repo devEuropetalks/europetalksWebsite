@@ -53,7 +53,7 @@ export default function EventDetailsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[1100px] p-0 gap-0 h-[90vh]">
+      <DialogContent className="sm:max-w-[1100px] p-0 gap-0 h-[90vh] overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 h-full">
           {/* Image Section - Full height with object-contain for proper scaling */}
           <div className="relative h-[300px] md:h-full bg-muted">
@@ -79,9 +79,9 @@ export default function EventDetailsDialog({
           </div>
 
           {/* Content Section */}
-          <div className="p-6 flex flex-col">
-            <ScrollArea className="flex-grow">
-              <div className="space-y-4">
+          <div className="flex flex-col h-full">
+            <ScrollArea className="flex-grow p-6">
+              <div className="space-y-4 pr-4">
                 <h2 className="text-2xl font-semibold">{event.title}</h2>
                 
                 <div className="flex flex-col gap-2 text-muted-foreground">
@@ -98,13 +98,13 @@ export default function EventDetailsDialog({
                 </div>
 
                 <div className="prose prose-sm max-w-none">
-                  <p>{event.description}</p>
+                  <p className="whitespace-pre-wrap">{event.description}</p>
                 </div>
               </div>
             </ScrollArea>
 
             {!isEventEnded() && (
-              <div className="pt-6 mt-auto">
+              <div className="p-6 pt-4 border-t">
                 <Button 
                   className="w-full" 
                   onClick={() => setIsSignupOpen(true)}
