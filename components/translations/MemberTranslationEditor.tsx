@@ -16,7 +16,9 @@ interface MemberTranslationEditorProps {
   allowedLanguages: string[];
 }
 
-export function MemberTranslationEditor({ allowedLanguages }: MemberTranslationEditorProps) {
+export function MemberTranslationEditor({
+  allowedLanguages,
+}: MemberTranslationEditorProps) {
   const { toast } = useToast();
   const [selectedLanguage, setSelectedLanguage] = useState(allowedLanguages[0]);
   const [selectedNamespace, setSelectedNamespace] = useState("home");
@@ -45,7 +47,7 @@ export function MemberTranslationEditor({ allowedLanguages }: MemberTranslationE
     "header",
     "components",
     "auth",
-    "other"
+    "other",
   ];
 
   const handleSave = async (translations: Record<string, unknown>) => {
@@ -91,10 +93,7 @@ export function MemberTranslationEditor({ allowedLanguages }: MemberTranslationE
       <div className="flex gap-4">
         <div className="w-1/2">
           <label className="block text-sm font-medium mb-2">Language</label>
-          <Select
-            value={selectedLanguage}
-            onValueChange={setSelectedLanguage}
-          >
+          <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
             <SelectTrigger>
               <SelectValue />
             </SelectTrigger>
@@ -136,4 +135,4 @@ export function MemberTranslationEditor({ allowedLanguages }: MemberTranslationE
       />
     </div>
   );
-} 
+}
