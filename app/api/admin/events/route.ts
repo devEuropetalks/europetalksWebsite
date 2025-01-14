@@ -7,7 +7,7 @@ const eventSchema = z.object({
   title: z.string().min(1),
   description: z.string().min(1),
   startDate: z.string(),
-  endDate: z.string().optional(),
+  endDate: z.string(),
   location: z.string().min(1),
   imageUrl: z.string().url().optional(),
   formFields: z.object({
@@ -61,7 +61,7 @@ export async function POST(request: Request) {
         title: validatedData.title,
         description: validatedData.description,
         startDate: new Date(validatedData.startDate),
-        endDate: validatedData.endDate ? new Date(validatedData.endDate) : new Date(validatedData.startDate),
+        endDate: new Date(validatedData.endDate),
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
         formFields: validatedData.formFields || { fields: [] },
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Error creating event:", error);
     if (error instanceof z.ZodError) {
-      return new NextResponse("Invalid request data", { status: 400 });
+      return new NextResponse(JSON.stringify(error.errors), { status: 400 });
     }
     return new NextResponse("Internal Server Error", { status: 500 });
   }
