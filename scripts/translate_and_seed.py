@@ -17,6 +17,8 @@ from deep_translator import GoogleTranslator
 from deep_translator.deepl import DeeplTranslator
 from difflib import SequenceMatcher
 
+#python version 3.12.8
+
 # Load environment variables
 load_dotenv()
 
