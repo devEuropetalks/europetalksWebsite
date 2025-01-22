@@ -125,10 +125,10 @@ export function EventCard({ event }: EventCardProps) {
             disabled={isEventEnded() || !isRegistrationOpen()}
           >
             {isEventEnded()
-              ? t("events.eventCard.eventEnded")
+              ? t("eventCard.eventEnded")
               : !isRegistrationOpen()
-              ? t("events.eventCard.registrationClosed")
-              : t("events.eventCard.signUp")}
+              ? t("eventCard.registrationClosed")
+              : t("eventCard.signUp")}
           </Button>
         </CardFooter>
       </Card>
