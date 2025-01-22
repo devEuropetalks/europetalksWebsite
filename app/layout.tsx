@@ -8,7 +8,6 @@ import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { TranslationsProvider } from "@/components/providers/TranslationsProvider";
 import { Toaster } from "@/components/ui/toaster";
-import { rockSalt } from "./fonts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -43,7 +42,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} ${rockSalt.className}`}>
+      <body className={`${inter.className}`}>
         <ThemeProvider>
           <ClerkThemeProvider>
             <I18nextProvider>
