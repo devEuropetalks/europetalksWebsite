@@ -12,6 +12,7 @@ import { useState } from "react";
 import EventSignupForm from "./EventSignupForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FormField } from "@/lib/types/event-form";
+import { EventTerms } from "@/lib/types/event-terms";
 
 interface EventDetailsDialogProps {
   event: {
@@ -22,7 +23,14 @@ interface EventDetailsDialogProps {
     endDate: Date | string;
     location: string;
     imageUrl?: string;
-    formFields?: { fields: FormField[] };
+    formFields?: {
+      fields: FormField[];
+      terms: EventTerms[];
+    };
+    signupPeriod?: {
+      startDate: string;
+      endDate: string;
+    };
   };
   isOpen: boolean;
   onClose: () => void;
@@ -36,14 +44,17 @@ export default function EventDetailsDialog({
   const [isSignupOpen, setIsSignupOpen] = useState(false);
   const [isImageLoading, setIsImageLoading] = useState(true);
 
-  const formatDateRange = (start: Date | string, end: Date | string | undefined) => {
+  const formatDateRange = (
+    start: Date | string,
+    end: Date | string | undefined
+  ) => {
     const startDate = new Date(start);
     const endDate = end ? new Date(end) : undefined;
-    
+
     if (!endDate || startDate.toDateString() === endDate.toDateString()) {
       return format(startDate, "PPp");
     }
-    
+
     return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
   };
 
@@ -76,7 +87,9 @@ export default function EventDetailsDialog({
                 />
               ) : (
                 <div className="w-full h-full bg-muted flex items-center justify-center">
-                  <span className="text-muted-foreground">No image available</span>
+                  <span className="text-muted-foreground">
+                    No image available
+                  </span>
                 </div>
               )}
               {isImageLoading && event.imageUrl && (
@@ -88,7 +101,7 @@ export default function EventDetailsDialog({
             <div className="flex flex-col p-6">
               <div className="space-y-4">
                 <h2 className="text-2xl font-semibold">{event.title}</h2>
-                
+
                 <div className="flex flex-col gap-2 text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <CalendarIcon className="h-5 w-5" />
@@ -109,8 +122,8 @@ export default function EventDetailsDialog({
 
               {!isEventEnded() && (
                 <div className="pt-6 mt-auto border-t">
-                  <Button 
-                    className="w-full" 
+                  <Button
+                    className="w-full"
                     onClick={() => setIsSignupOpen(true)}
                   >
                     Sign Up
@@ -127,10 +140,11 @@ export default function EventDetailsDialog({
           eventId={event.id}
           eventTitle={event.title}
           formFields={event.formFields?.fields || []}
+          terms={event.formFields?.terms || []}
           isOpen={isSignupOpen}
           onClose={() => setIsSignupOpen(false)}
         />
       )}
     </Dialog>
   );
-} 
+}
