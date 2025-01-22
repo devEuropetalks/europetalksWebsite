@@ -16,24 +16,24 @@ export const i18n = i18next;
 const popupTranslations = {
   en: {
     available: "This website is available in your language!",
-    switchTo: "Switch to {{language}}"
+    switchTo: "Switch to {{language}}",
   },
   de: {
     available: "Diese Website ist in Ihrer Sprache verfügbar!",
-    switchTo: "Zu {{language}} wechseln"
+    switchTo: "Zu {{language}} wechseln",
   },
   fr: {
     available: "Ce site est disponible dans votre langue !",
-    switchTo: "Passer à {{language}}"
+    switchTo: "Passer à {{language}}",
   },
   es: {
     available: "¡Este sitio web está disponible en su idioma!",
-    switchTo: "Cambiar a {{language}}"
+    switchTo: "Cambiar a {{language}}",
   },
   it: {
     available: "Questo sito è disponibile nella tua lingua!",
-    switchTo: "Passa a {{language}}"
-  }
+    switchTo: "Passa a {{language}}",
+  },
 } as const;
 
 const namespaces = [
@@ -52,26 +52,48 @@ const namespaces = [
 i18n.reloadResources = async (language: string, namespace?: string) => {
   try {
     // Skip on server-side
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    // Skip API calls for English - use translations.json directly
+    if (language === "en") {
+      if (namespace) {
+        // Add single namespace for English
+        i18n.addResourceBundle(
+          "en",
+          namespace,
+          initialTranslations.en[namespace],
+          true,
+          true
+        );
+      } else {
+        // Add all namespaces for English
+        Object.entries(initialTranslations.en).forEach(([ns, translations]) => {
+          i18n.addResourceBundle("en", ns, translations, true, true);
+        });
+      }
       return;
     }
 
     // If no specific namespace is provided, load all namespaces
     const namespacesToLoad = namespace ? [namespace] : namespaces;
-    
+
     for (const ns of namespacesToLoad) {
       const response = await fetch(
         `/api/translations?language=${language}&namespace=${ns}`
       );
-      
+
       if (!response.ok) {
-        console.warn(`Warning: Failed to reload translations for ${language}/${ns}`);
+        console.warn(
+          `Warning: Failed to reload translations for ${language}/${ns}`
+        );
         // Fallback to English if other language fails
         const defaultTranslations = initialTranslations.en[ns];
         i18n.addResourceBundle(language, ns, defaultTranslations, true, true);
         continue;
       }
-      
+
       const data = await response.json();
       // The response is now the namespace content directly when requesting a specific namespace
       const content = namespace ? data : data[ns];
@@ -160,14 +182,22 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
     if (detectedLanguage) {
       try {
         // First, fetch all translations for the new language
-        const response = await fetch(`/api/translations?language=${detectedLanguage}`);
-        if (!response.ok) throw new Error('Failed to fetch translations');
-        
+        const response = await fetch(
+          `/api/translations?language=${detectedLanguage}`
+        );
+        if (!response.ok) throw new Error("Failed to fetch translations");
+
         const data = await response.json();
-        
+
         // Add all resources to i18next
         Object.entries(data).forEach(([namespace, content]) => {
-          i18n.addResourceBundle(detectedLanguage, namespace, content, true, true);
+          i18n.addResourceBundle(
+            detectedLanguage,
+            namespace,
+            content,
+            true,
+            true
+          );
         });
 
         // Change the language after resources are loaded

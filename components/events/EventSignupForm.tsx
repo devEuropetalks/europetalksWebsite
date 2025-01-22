@@ -237,11 +237,18 @@ export default function EventSignupForm({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
+      <DialogContent
+        aria-describedby="event-signup-form-description"
+        aria-label="Event signup form"
+      >
         <DialogHeader>
           <DialogTitle>
             {t("signUp.title")} {eventTitle}
           </DialogTitle>
+          <div id="event-signup-form-description" className="sr-only">
+            Form to sign up for the event {eventTitle}. Contains fields for
+            personal information and event-specific details.
+          </div>
         </DialogHeader>
 
         <Form {...form}>

@@ -65,14 +65,18 @@ export default function EventDetailsDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-h-[90vh] p-0 sm:max-w-[1100px]">
+      <DialogContent
+        className="max-w-3xl h-[90vh] p-0 bg-background"
+        aria-describedby="event-details-description"
+        aria-label="Event details"
+      >
         <DialogHeader className="sr-only">
           <DialogTitle>{event.title}</DialogTitle>
         </DialogHeader>
-        <ScrollArea className="h-full max-h-[90vh]">
-          <div className="grid grid-cols-1 md:grid-cols-2">
+        <ScrollArea className="h-full">
+          <div className="flex flex-col h-full">
             {/* Image Section */}
-            <div className="relative h-[300px] md:h-[600px] bg-muted">
+            <div className="relative w-full aspect-video">
               {event.imageUrl ? (
                 <Image
                   src={event.imageUrl}

@@ -25,18 +25,26 @@ export async function PATCH(req: Request, { params }: RouteContext) {
     const { eventId } = await params;
     const body = await req.json();
 
+    // Update main fields
     const event = await db.event.update({
       where: { id: eventId },
       data: {
         title: body.title,
         description: body.description,
         startDate: new Date(body.startDate),
-        endDate: body.endDate ? new Date(body.endDate) : new Date(body.startDate),
+        endDate: body.endDate
+          ? new Date(body.endDate)
+          : new Date(body.startDate),
         location: body.location,
         imageUrl: body.imageUrl,
-        formFields: body.formFields || { fields: [] },
+        formFields: body.formFields || { fields: [], terms: [] },
       },
     });
+
+    // Update signup period using raw query
+    await db.$executeRaw`UPDATE "Event" SET "signupPeriodJson" = ${JSON.stringify(
+      body.signupPeriod || null
+    )}::jsonb WHERE id = ${eventId}`;
 
     return NextResponse.json(event);
   } catch (error) {

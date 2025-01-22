@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import type { EventFormData } from "@/lib/validations/event";
 import { EventForm } from "./EventForm";
 import { useState } from "react";
+import { EventFormConfig } from "@/lib/types/event-form";
 
 interface EditEventDialogProps {
   event: {
@@ -20,6 +21,11 @@ interface EditEventDialogProps {
     endDate?: Date;
     location: string | null;
     imageUrl?: string;
+    signupPeriodJson?: {
+      startDate?: string;
+      endDate?: string;
+    };
+    formFields?: EventFormConfig;
   } | null;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -35,7 +41,9 @@ export function EditEventDialog({
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleUpdateEvent = async (data: EventFormData & { imageUrl?: string }) => {
+  const handleUpdateEvent = async (
+    data: EventFormData & { imageUrl?: string; formFields?: EventFormConfig }
+  ) => {
     if (!event) return;
     setIsSubmitting(true);
 
@@ -82,10 +90,26 @@ export function EditEventDialog({
           defaultValues={{
             title: event.title,
             description: event.description,
-            startDate: typeof event.startDate === 'string' ? event.startDate : event.startDate.toISOString(),
-            endDate: event.endDate ? (typeof event.endDate === 'string' ? event.endDate : event.endDate.toISOString()) : undefined,
+            startDate:
+              typeof event.startDate === "string"
+                ? event.startDate
+                : event.startDate.toISOString(),
+            endDate: event.endDate
+              ? typeof event.endDate === "string"
+                ? event.endDate
+                : event.endDate.toISOString()
+              : undefined,
             location: event.location || "",
             imageUrl: event.imageUrl,
+            signupPeriod: {
+              startDate: event.signupPeriodJson?.startDate
+                ? new Date(event.signupPeriodJson.startDate).toISOString()
+                : undefined,
+              endDate: event.signupPeriodJson?.endDate
+                ? new Date(event.signupPeriodJson.endDate).toISOString()
+                : undefined,
+            },
+            formFields: event.formFields || { fields: [], terms: [] },
           }}
           isSubmitting={isSubmitting}
         />

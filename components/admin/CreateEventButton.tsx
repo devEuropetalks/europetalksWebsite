@@ -19,7 +19,9 @@ export function CreateEventButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleCreateEvent = async (data: EventFormData & { imageUrl?: string }) => {
+  const handleCreateEvent = async (
+    data: EventFormData & { imageUrl?: string }
+  ) => {
     setIsSubmitting(true);
 
     try {
@@ -59,9 +61,17 @@ export function CreateEventButton() {
           Create Event
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto"
+        aria-describedby="create-event-form-description"
+        aria-label="Create event form"
+      >
         <DialogHeader>
           <DialogTitle>Create Event</DialogTitle>
+          <div id="create-event-form-description" className="sr-only">
+            Form to create a new event. Contains fields for event details,
+            dates, location, and registration settings.
+          </div>
         </DialogHeader>
         <EventForm onSubmit={handleCreateEvent} isSubmitting={isSubmitting} />
       </DialogContent>

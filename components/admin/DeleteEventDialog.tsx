@@ -60,7 +60,10 @@ export function DeleteEventDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent
+        aria-describedby="delete-event-dialog-description"
+        aria-label="Delete event confirmation"
+      >
         <DialogHeader>
           <DialogTitle>Delete Event</DialogTitle>
           <DialogDescription>
