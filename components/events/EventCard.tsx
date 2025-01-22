@@ -28,6 +28,10 @@ interface EventCardProps {
       fields: FormField[];
       terms: EventTerms[];
     };
+    signupPeriod?: {
+      startDate: string;
+      endDate: string;
+    };
   };
 }
 
@@ -55,6 +59,18 @@ export function EventCard({ event }: EventCardProps) {
     const endDate = new Date(event.endDate);
     const now = new Date();
     return endDate < now;
+  };
+
+  const isRegistrationOpen = () => {
+    const now = new Date();
+    const signupStart = event.signupPeriod?.startDate
+      ? new Date(event.signupPeriod.startDate)
+      : new Date(0); // If not set, registration is open from the beginning
+    const signupEnd = event.signupPeriod?.endDate
+      ? new Date(event.signupPeriod.endDate)
+      : new Date(event.startDate); // If not set, registration closes at event start
+
+    return now >= signupStart && now <= signupEnd;
   };
 
   return (
@@ -106,9 +122,13 @@ export function EventCard({ event }: EventCardProps) {
               e.stopPropagation();
               setIsSignupOpen(true);
             }}
-            disabled={isEventEnded()}
+            disabled={isEventEnded() || !isRegistrationOpen()}
           >
-            {isEventEnded() ? t("eventCard.eventEnded") : t("eventCard.signUp")}
+            {isEventEnded()
+              ? t("events.eventCard.eventEnded")
+              : !isRegistrationOpen()
+              ? t("events.eventCard.registrationClosed")
+              : t("events.eventCard.signUp")}
           </Button>
         </CardFooter>
       </Card>

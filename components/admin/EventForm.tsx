@@ -342,6 +342,171 @@ export function EventForm({
               )}
             </div>
 
+            <div className="mt-6 pt-6 border-t">
+              <h3 className="text-lg font-medium mb-4">Registration Period</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="signupPeriod.startDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Registration Opens</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "pl-3 text-left font-normal w-full md:w-[280px]",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(new Date(field.value), "PPP p")
+                              ) : (
+                                <span>Immediately (default)</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={
+                              field.value ? new Date(field.value) : undefined
+                            }
+                            onSelect={(date) => {
+                              if (date) {
+                                const currentDate = new Date();
+                                date.setHours(
+                                  currentDate.getHours(),
+                                  currentDate.getMinutes()
+                                );
+                                field.onChange(date.toISOString());
+                              }
+                            }}
+                            initialFocus
+                          />
+                          <div className="p-3 border-t flex items-center gap-2">
+                            <Clock className="h-4 w-4 opacity-50" />
+                            <input
+                              type="time"
+                              className="w-full min-w-[150px] px-2 py-1 rounded-md border"
+                              onChange={(e) => {
+                                const date = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
+                                const [hours, minutes] =
+                                  e.target.value.split(":");
+                                date.setHours(
+                                  parseInt(hours),
+                                  parseInt(minutes)
+                                );
+                                field.onChange(date.toISOString());
+                              }}
+                              value={
+                                field.value
+                                  ? format(new Date(field.value), "HH:mm")
+                                  : ""
+                              }
+                            />
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                      <FormDescription>
+                        When should registration open? Leave empty to open
+                        immediately.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="signupPeriod.endDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>Registration Closes</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "pl-3 text-left font-normal w-full md:w-[280px]",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(new Date(field.value), "PPP p")
+                              ) : (
+                                <span>At event start (default)</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <Calendar
+                            mode="single"
+                            selected={
+                              field.value ? new Date(field.value) : undefined
+                            }
+                            onSelect={(date) => {
+                              if (date) {
+                                const currentDate = new Date();
+                                date.setHours(
+                                  currentDate.getHours(),
+                                  currentDate.getMinutes()
+                                );
+                                field.onChange(date.toISOString());
+                              }
+                            }}
+                            disabled={(date) => {
+                              const eventStart = form.getValues("startDate");
+                              return eventStart && date > new Date(eventStart);
+                            }}
+                            initialFocus
+                          />
+                          <div className="p-3 border-t flex items-center gap-2">
+                            <Clock className="h-4 w-4 opacity-50" />
+                            <input
+                              type="time"
+                              className="w-full min-w-[150px] px-2 py-1 rounded-md border"
+                              onChange={(e) => {
+                                const date = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
+                                const [hours, minutes] =
+                                  e.target.value.split(":");
+                                date.setHours(
+                                  parseInt(hours),
+                                  parseInt(minutes)
+                                );
+                                field.onChange(date.toISOString());
+                              }}
+                              value={
+                                field.value
+                                  ? format(new Date(field.value), "HH:mm")
+                                  : ""
+                              }
+                            />
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                      <FormDescription>
+                        When should registration close? Leave empty to close at
+                        event start.
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
+
             <FormField
               control={form.control}
               name="location"

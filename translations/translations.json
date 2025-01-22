@@ -133,6 +133,7 @@
       "eventCard": {
         "signUp": "Sign Up",
         "eventEnded": "Event Ended",
+        "registrationClosed": "Registration Closed",
         "readMore": "Read More",
         "date": "Date",
         "time": "Time",
