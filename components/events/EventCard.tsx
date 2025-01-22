@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { FormField } from "@/lib/types/event-form";
+import { EventTerms } from "@/lib/types/event-form";
 
 interface EventCardProps {
   event: {
@@ -23,7 +24,10 @@ interface EventCardProps {
     endDate: Date | string;
     location: string;
     imageUrl?: string;
-    formFields?: { fields: FormField[] };
+    formFields?: {
+      fields: FormField[];
+      terms: EventTerms[];
+    };
   };
 }
 
@@ -33,14 +37,17 @@ export function EventCard({ event }: EventCardProps) {
   const { t } = useTranslation("events");
   const [isImageLoading, setIsImageLoading] = useState(true);
 
-  const formatDateRange = (start: Date | string, end: Date | string | undefined) => {
+  const formatDateRange = (
+    start: Date | string,
+    end: Date | string | undefined
+  ) => {
     const startDate = new Date(start);
     const endDate = end ? new Date(end) : undefined;
-    
+
     if (!endDate || startDate.toDateString() === endDate.toDateString()) {
       return format(startDate, "PPp");
     }
-    
+
     return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
   };
 
@@ -52,7 +59,7 @@ export function EventCard({ event }: EventCardProps) {
 
   return (
     <>
-      <Card 
+      <Card
         className="overflow-hidden cursor-pointer transition-shadow hover:shadow-lg"
         onClick={() => setIsDetailsOpen(true)}
       >
@@ -117,6 +124,7 @@ export function EventCard({ event }: EventCardProps) {
           eventId={event.id}
           eventTitle={event.title}
           formFields={event.formFields?.fields || []}
+          terms={event.formFields?.terms || []}
           isOpen={isSignupOpen}
           onClose={() => setIsSignupOpen(false)}
         />

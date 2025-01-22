@@ -27,13 +27,24 @@ import { Textarea } from "@/components/ui/textarea";
 import { useTranslation } from "react-i18next";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { FormField as CustomFormField, createDynamicSchema } from "@/lib/types/event-form";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  FormField as CustomFormField,
+  createDynamicSchema,
+  EventTerms,
+} from "@/lib/types/event-form";
 
 interface EventSignupFormProps {
   eventId: string;
   eventTitle: string;
   formFields: CustomFormField[];
+  terms: EventTerms[];
   isOpen: boolean;
   onClose: () => void;
 }
@@ -42,6 +53,7 @@ export default function EventSignupForm({
   eventId,
   eventTitle,
   formFields,
+  terms,
   isOpen,
   onClose,
 }: EventSignupFormProps) {
@@ -50,7 +62,7 @@ export default function EventSignupForm({
   const { toast } = useToast();
   const { user } = useUser();
 
-  const signupSchema = createDynamicSchema(formFields);
+  const signupSchema = createDynamicSchema(formFields, terms);
   type SignupFormData = z.infer<typeof signupSchema>;
 
   const form = useForm<SignupFormData>({
@@ -58,6 +70,7 @@ export default function EventSignupForm({
     defaultValues: {
       fullName: user?.fullName || "",
       email: user?.primaryEmailAddress?.emailAddress || "",
+      termsAgreement: [],
     },
   });
 
@@ -106,7 +119,11 @@ export default function EventSignupForm({
       key: field.id,
     };
 
-    const renderField = ({ field: formField }: { field: ControllerRenderProps }) => (
+    const renderField = ({
+      field: formField,
+    }: {
+      field: ControllerRenderProps;
+    }) => (
       <FormItem>
         <FormLabel>{field.label}</FormLabel>
         <FormControl>
@@ -144,7 +161,10 @@ export default function EventSignupForm({
                 return (
                   <div className="space-y-2">
                     {field.options?.map((option) => (
-                      <div key={option.value} className="flex items-center space-x-2">
+                      <div
+                        key={option.value}
+                        className="flex items-center space-x-2"
+                      >
                         <Checkbox
                           id={`${field.name}-${option.value}`}
                           checked={formField.value?.includes(option.value)}
@@ -152,7 +172,9 @@ export default function EventSignupForm({
                             const currentValue = formField.value || [];
                             const newValue = checked
                               ? [...currentValue, option.value]
-                              : currentValue.filter((v: string) => v !== option.value);
+                              : currentValue.filter(
+                                  (v: string) => v !== option.value
+                                );
                             formField.onChange(newValue);
                           }}
                         />
@@ -174,8 +196,14 @@ export default function EventSignupForm({
                     className="space-y-2"
                   >
                     {field.options?.map((option) => (
-                      <div key={option.value} className="flex items-center space-x-2">
-                        <RadioGroupItem value={option.value} id={`${field.name}-${option.value}`} />
+                      <div
+                        key={option.value}
+                        className="flex items-center space-x-2"
+                      >
+                        <RadioGroupItem
+                          value={option.value}
+                          id={`${field.name}-${option.value}`}
+                        />
                         <label
                           htmlFor={`${field.name}-${option.value}`}
                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -197,7 +225,9 @@ export default function EventSignupForm({
             }
           })()}
         </FormControl>
-        {field.description && <FormDescription>{field.description}</FormDescription>}
+        {field.description && (
+          <FormDescription>{field.description}</FormDescription>
+        )}
         <FormMessage />
       </FormItem>
     );
@@ -249,11 +279,43 @@ export default function EventSignupForm({
 
             {formFields.map(renderFormField)}
 
+            <div className="space-y-4 border-t pt-4 mt-4">
+              <h3 className="font-medium text-lg">Terms and Conditions</h3>
+              <div className="space-y-4">
+                {terms.map((term) => (
+                  <FormField
+                    key={term.id}
+                    control={form.control}
+                    name="termsAgreement"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(term.id)}
+                            onCheckedChange={(checked) => {
+                              const value = field.value || [];
+                              const newValue = checked
+                                ? [...value, term.id]
+                                : value.filter((id) => id !== term.id);
+                              field.onChange(newValue);
+                            }}
+                          />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                          <FormLabel className="text-sm font-normal">
+                            {term.text}
+                          </FormLabel>
+                          <FormMessage />
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                ))}
+              </div>
+            </div>
+
             <Button type="submit" disabled={isSubmitting} className="w-full">
-              {isSubmitting 
-                ? t("signUp.submitting")
-                : t("signUp.submit")
-              }
+              {isSubmitting ? t("signUp.submitting") : t("signUp.submit")}
             </Button>
           </form>
         </Form>

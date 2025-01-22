@@ -19,10 +19,22 @@ import { useForm } from "react-hook-form";
 import { UploadButton } from "@/utils/uploadthing";
 import { useState } from "react";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { CalendarIcon, Clock, ImageIcon, Loader2, X } from "lucide-react";
+import {
+  CalendarIcon,
+  Clock,
+  ImageIcon,
+  Loader2,
+  X,
+  Trash2,
+  PlusCircle,
+} from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
@@ -30,15 +42,26 @@ import { FormFieldsEditor } from "./FormFieldsEditor";
 import { EventFormConfig } from "@/lib/types/event-form";
 
 interface EventFormProps {
-  onSubmit: (data: EventFormData & { imageUrl?: string; formFields?: EventFormConfig }) => void;
-  defaultValues?: EventFormData & { imageUrl?: string; formFields?: EventFormConfig };
+  onSubmit: (
+    data: EventFormData & { imageUrl?: string; formFields?: EventFormConfig }
+  ) => void;
+  defaultValues?: EventFormData & {
+    imageUrl?: string;
+    formFields?: EventFormConfig;
+  };
   isSubmitting?: boolean;
 }
 
-export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormProps) {
-  const [imageUrl, setImageUrl] = useState<string | undefined>(defaultValues?.imageUrl);
+export function EventForm({
+  onSubmit,
+  defaultValues,
+  isSubmitting,
+}: EventFormProps) {
+  const [imageUrl, setImageUrl] = useState<string | undefined>(
+    defaultValues?.imageUrl
+  );
   const [formFields, setFormFields] = useState<EventFormConfig>(() => ({
-    fields: (defaultValues?.formFields?.fields || []).map(field => ({
+    fields: (defaultValues?.formFields?.fields || []).map((field) => ({
       id: field.id || crypto.randomUUID(),
       type: field.type || "text",
       label: field.label || "",
@@ -47,8 +70,9 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
       placeholder: field.placeholder,
       description: field.description,
       options: field.options,
-      validation: field.validation
-    }))
+      validation: field.validation,
+    })),
+    terms: defaultValues?.formFields?.terms || [],
   }));
   const [isMultiDay, setIsMultiDay] = useState(() => {
     if (!defaultValues?.startDate || !defaultValues?.endDate) return false;
@@ -85,6 +109,25 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
     });
   };
 
+  const addTerm = () => {
+    const newTerm = {
+      id: crypto.randomUUID(),
+      text: "",
+    };
+    setFormFields((prev) => ({
+      ...prev,
+      terms: [...prev.terms, newTerm],
+    }));
+  };
+
+  const removeTerm = (index: number) => {
+    const newTerms = formFields.terms.filter((_, i) => i !== index);
+    setFormFields((prev) => ({
+      ...prev,
+      terms: newTerms,
+    }));
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
@@ -97,7 +140,11 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter event title" className="max-w-3xl" />
+                    <Input
+                      {...field}
+                      placeholder="Enter event title"
+                      className="max-w-3xl"
+                    />
                   </FormControl>
                   <FormDescription>
                     Choose a clear and descriptive title for your event
@@ -114,14 +161,15 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      {...field} 
+                    <Textarea
+                      {...field}
                       placeholder="Describe your event..."
                       className="min-h-[150px] max-w-3xl"
                     />
                   </FormControl>
                   <FormDescription>
-                    Provide detailed information about the event, including what attendees can expect
+                    Provide detailed information about the event, including what
+                    attendees can expect
                   </FormDescription>
                   <FormMessage />
                 </FormItem>
@@ -165,7 +213,10 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                             )}
                           >
                             {field.value ? (
-                              format(new Date(field.value), isMultiDay ? "PPP" : "PPP p")
+                              format(
+                                new Date(field.value),
+                                isMultiDay ? "PPP" : "PPP p"
+                              )
                             ) : (
                               <span>Pick a date</span>
                             )}
@@ -176,14 +227,19 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                       <PopoverContent className="w-auto p-0" align="start">
                         <Calendar
                           mode="single"
-                          selected={field.value ? new Date(field.value) : undefined}
+                          selected={
+                            field.value ? new Date(field.value) : undefined
+                          }
                           onSelect={(date) => {
                             if (date) {
                               if (isMultiDay) {
                                 date.setHours(0, 0, 0, 0);
                               } else {
                                 const currentDate = new Date();
-                                date.setHours(currentDate.getHours(), currentDate.getMinutes());
+                                date.setHours(
+                                  currentDate.getHours(),
+                                  currentDate.getMinutes()
+                                );
                               }
                               field.onChange(date.toISOString());
                             }
@@ -198,19 +254,31 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                               type="time"
                               className="w-full min-w-[150px] px-2 py-1 rounded-md border"
                               onChange={(e) => {
-                                const date = field.value ? new Date(field.value) : new Date();
-                                const [hours, minutes] = e.target.value.split(':');
-                                date.setHours(parseInt(hours), parseInt(minutes));
+                                const date = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
+                                const [hours, minutes] =
+                                  e.target.value.split(":");
+                                date.setHours(
+                                  parseInt(hours),
+                                  parseInt(minutes)
+                                );
                                 field.onChange(date.toISOString());
                               }}
-                              value={field.value ? format(new Date(field.value), "HH:mm") : ""}
+                              value={
+                                field.value
+                                  ? format(new Date(field.value), "HH:mm")
+                                  : ""
+                              }
                             />
                           </div>
                         )}
                       </PopoverContent>
                     </Popover>
                     <FormDescription>
-                      {isMultiDay ? "Select the start date of your event" : "Select the date and time of your event"}
+                      {isMultiDay
+                        ? "Select the start date of your event"
+                        : "Select the date and time of your event"}
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
@@ -246,7 +314,9 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                         <PopoverContent className="w-auto p-0" align="start">
                           <Calendar
                             mode="single"
-                            selected={field.value ? new Date(field.value) : undefined}
+                            selected={
+                              field.value ? new Date(field.value) : undefined
+                            }
                             onSelect={(date) => {
                               if (date) {
                                 date.setHours(23, 59, 59, 999);
@@ -279,7 +349,11 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter event location" className="max-w-3xl" />
+                    <Input
+                      {...field}
+                      placeholder="Enter event location"
+                      className="max-w-3xl"
+                    />
                   </FormControl>
                   <FormDescription>
                     Specify where the event will take place
@@ -324,7 +398,8 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
                         setImageUrl(res[0].url);
                         toast({
                           title: "Image uploaded",
-                          description: "Your event image has been uploaded successfully.",
+                          description:
+                            "Your event image has been uploaded successfully.",
                         });
                       }
                       setIsUploading(false);
@@ -348,14 +423,64 @@ export function EventForm({ onSubmit, defaultValues, isSubmitting }: EventFormPr
             <div className="mt-6 pt-6 border-t">
               <FormFieldsEditor
                 value={formFields.fields}
-                onChange={(fields) => setFormFields({ fields })}
+                onChange={(fields) =>
+                  setFormFields({ fields, terms: formFields.terms })
+                }
               />
+            </div>
+
+            <div className="mt-6 pt-6 border-t">
+              <h3 className="text-lg font-medium mb-4">Terms and Conditions</h3>
+              <div className="space-y-4">
+                {formFields.terms.map((term, index) => (
+                  <div key={term.id} className="flex gap-4">
+                    <FormField
+                      control={form.control}
+                      name={`terms.${index}.text`}
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormControl>
+                            <Textarea
+                              {...field}
+                              placeholder="Enter terms text..."
+                              className="min-h-[100px]"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => removeTerm(index)}
+                      className="text-destructive"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ))}
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => addTerm()}
+                  className="w-full"
+                >
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  Add Terms
+                </Button>
+              </div>
             </div>
           </div>
         </Card>
 
         <div className="flex justify-end">
-          <Button type="submit" disabled={isSubmitting || isUploading} className="w-full md:w-auto">
+          <Button
+            type="submit"
+            disabled={isSubmitting || isUploading}
+            className="w-full md:w-auto"
+          >
             {isSubmitting ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
