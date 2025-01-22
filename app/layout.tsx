@@ -5,16 +5,12 @@ import Header from "@/components/Header";
 import { I18nextProvider } from "@/components/i18n-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Metadata } from "next";
-import { Inter, Rock_Salt } from "next/font/google";
-import { TranslationsProvider } from '@/components/providers/TranslationsProvider';
+import { Inter } from "next/font/google";
+import { TranslationsProvider } from "@/components/providers/TranslationsProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { rockSalt } from "./fonts";
 
 const inter = Inter({ subsets: ["latin"] });
-const rockSalt = Rock_Salt({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-rock-salt",
-});
 
 export const metadata: Metadata = {
   title: "EuropeTalks",
@@ -47,15 +43,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} ${rockSalt.variable}`}>
+      <body className={`${inter.className} ${rockSalt.className}`}>
         <ThemeProvider>
           <ClerkThemeProvider>
             <I18nextProvider>
               <TranslationsProvider>
                 <Header />
-                <main className="min-h-screen">
-                  {children}
-                </main>
+                <main className="min-h-screen">{children}</main>
                 <Footer />
                 <Toaster />
               </TranslationsProvider>

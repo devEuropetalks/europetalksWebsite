@@ -11,8 +11,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import EventSignupForm from "./EventSignupForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { FormField } from "@/lib/types/event-form";
-import { EventTerms } from "@/lib/types/event-terms";
+import { FormField, EventTerms } from "@/lib/types/event-form";
 
 interface EventDetailsDialogProps {
   event: {
