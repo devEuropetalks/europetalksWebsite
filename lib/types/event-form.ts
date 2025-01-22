@@ -7,7 +7,8 @@ export type FormFieldType =
   | "textarea"
   | "select"
   | "checkbox"
-  | "radio";
+  | "radio"
+  | "date";
 
 export interface FormFieldOption {
   label: string;
@@ -61,7 +62,10 @@ export function createDynamicSchema(
   };
 
   formFields.forEach((field) => {
-    let fieldSchema: z.ZodString | z.ZodArray<z.ZodString>;
+    let fieldSchema:
+      | z.ZodString
+      | z.ZodArray<z.ZodString>
+      | z.ZodEffects<z.ZodString>;
 
     switch (field.type) {
       case "email":
@@ -79,6 +83,12 @@ export function createDynamicSchema(
             field.validation?.customMessage ||
               "Please enter a valid phone number"
           );
+        break;
+      case "date":
+        fieldSchema = z.string().refine((value) => {
+          const date = new Date(value);
+          return !isNaN(date.getTime());
+        }, field.validation?.customMessage || "Please enter a valid date");
         break;
       case "textarea":
       case "text":

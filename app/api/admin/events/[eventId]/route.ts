@@ -42,8 +42,8 @@ export async function PATCH(req: Request, { params }: RouteContext) {
     });
 
     // Update signup period using raw query
-    await db.$executeRaw`UPDATE "Event" SET "signupPeriodJson" = ${JSON.stringify(
-      body.signupPeriod || null
+    await db.$executeRaw`UPDATE "Event" SET "signup_period_json" = ${JSON.stringify(
+      body.signupPeriodJson || { startDate: null, endDate: null }
     )}::jsonb WHERE id = ${eventId}`;
 
     return NextResponse.json(event);

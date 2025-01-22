@@ -39,6 +39,15 @@ import {
   createDynamicSchema,
   EventTerms,
 } from "@/lib/types/event-form";
+import { format } from "date-fns";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { CalendarIcon } from "lucide-react";
 
 interface EventSignupFormProps {
   eventId: string;
@@ -129,6 +138,45 @@ export default function EventSignupForm({
         <FormControl>
           {(() => {
             switch (field.type) {
+              case "date":
+                return (
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className={cn(
+                            "w-full pl-3 text-left font-normal",
+                            !formField.value && "text-muted-foreground"
+                          )}
+                        >
+                          {formField.value ? (
+                            format(new Date(formField.value), "PPP")
+                          ) : (
+                            <span>{field.placeholder || "Pick a date"}</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={
+                          formField.value
+                            ? new Date(formField.value)
+                            : undefined
+                        }
+                        onSelect={(date) => {
+                          if (date) {
+                            formField.onChange(date.toISOString());
+                          }
+                        }}
+                        initialFocus
+                      />
+                    </PopoverContent>
+                  </Popover>
+                );
               case "textarea":
                 return (
                   <Textarea

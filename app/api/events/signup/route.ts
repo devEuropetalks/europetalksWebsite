@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { db } from "@/lib/db";
+import { format } from "date-fns";
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_SERVER_HOST,
@@ -12,24 +13,43 @@ const transporter = nodemailer.createTransport({
   secure: false,
   requireTLS: true,
   tls: {
-    minVersion: 'TLSv1.2',
-    rejectUnauthorized: false
-  }
+    minVersion: "TLSv1.2",
+    rejectUnauthorized: false,
+  },
 });
 
 // Add verification
-transporter.verify(function(error, success) {
+transporter.verify(function (error, success) {
   if (error) {
-    console.log('Event signup server connection failed:', error);
+    console.log("Event signup server connection failed:", error);
   } else {
-    console.log('Event signup server is ready to take messages', success);
+    console.log("Event signup server is ready to take messages", success);
   }
 });
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { eventId, fullName, email, phone, motivation, eventTitle } = body;
+    const { eventId, fullName, email, ...formData } = body;
+
+    // Format any date fields in the form data
+    const formattedFormData = Object.entries(formData).reduce(
+      (acc, [key, value]) => {
+        // If the value is a valid ISO date string, format it for display
+        const date = new Date(String(value));
+        if (
+          !isNaN(date.getTime()) &&
+          typeof value === "string" &&
+          value.match(/^\d{4}-\d{2}-\d{2}/)
+        ) {
+          acc[key] = format(date, "PPP");
+        } else {
+          acc[key] = String(value);
+        }
+        return acc;
+      },
+      {} as Record<string, string>
+    );
 
     // Save to database using the existing db connection
     await db.eventSignup.create({
@@ -37,10 +57,19 @@ export async function POST(request: Request) {
         eventId,
         fullName,
         email,
-        phone,
-        motivation: motivation || "",
+        formData: formattedFormData,
       },
     });
+
+    // Get event details for the email
+    const event = await db.event.findUnique({
+      where: { id: eventId },
+      select: { title: true },
+    });
+
+    if (!event) {
+      throw new Error("Event not found");
+    }
 
     // Send confirmation email to user
     await transporter.sendMail({
@@ -50,23 +79,30 @@ export async function POST(request: Request) {
       html: `
         <h1>Thank you for registering!</h1>
         <p>Dear ${fullName},</p>
-        <p>Your registration for our EuropeTalks event ${eventTitle} has been received. We'll send you more details soon.</p>
+        <p>Your registration for our EuropeTalks event "${
+          event.title
+        }" has been received. We'll send you more details soon.</p>
+        <h2>Your Registration Details:</h2>
+        ${Object.entries(formattedFormData)
+          .map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`)
+          .join("\n")}
       `,
     });
 
-    // Send notification to admin with motivation included
+    // Send notification to admin
     await transporter.sendMail({
       from: `"EuropeTalks" <${process.env.EVENT_SIGNUP_EMAIL_FROM}>`,
       to: process.env.SEND_TO_EMAIL,
       subject: "New Event Registration",
       html: `
         <h1>New Registration</h1>
-        <p>Event ID: ${eventId}</p>
-        <p>Event Title: ${eventTitle}</p>
+        <p>Event: ${event.title} (ID: ${eventId})</p>
         <p>Name: ${fullName}</p>
         <p>Email: ${email}</p>
-        <p>Phone: ${phone || "Not provided"}</p>
-        ${motivation ? `<p>Motivation: ${motivation}</p>` : ""}
+        <h2>Form Data:</h2>
+        ${Object.entries(formattedFormData)
+          .map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`)
+          .join("\n")}
       `,
     });
 

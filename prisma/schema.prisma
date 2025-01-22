@@ -16,7 +16,7 @@ model Event {
   location    String
   imageUrl    String?
   formFields  Json?        @default("{\"fields\":[]}")
-  signupPeriodJson Json?  @default("{}")
+  signup_period_json Json?  @default("{}")
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   signups     EventSignup[]

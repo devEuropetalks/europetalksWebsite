@@ -3,21 +3,32 @@ import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-const eventSchema = z.object({
-  title: z.string().min(1),
-  description: z.string().min(1),
-  startDate: z.string(),
-  endDate: z.string(),
-  location: z.string().min(1),
-  imageUrl: z.string().url().optional(),
-  formFields: z.object({
-    fields: z.array(z.any())
-  }).optional(),
-}).required();
+const eventSchema = z
+  .object({
+    title: z.string().min(1),
+    description: z.string().min(1),
+    startDate: z.string(),
+    endDate: z.string(),
+    location: z.string().min(1),
+    imageUrl: z.string().url().optional(),
+    formFields: z
+      .object({
+        fields: z.array(z.any()),
+        terms: z.array(z.any()),
+      })
+      .optional(),
+    signupPeriodJson: z
+      .object({
+        startDate: z.string().nullable(),
+        endDate: z.string().nullable(),
+      })
+      .optional(),
+  })
+  .required();
 
 export async function GET() {
   const { userId } = await auth();
-  
+
   if (!userId) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
@@ -47,7 +58,7 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const { userId } = await auth();
-  
+
   if (!userId) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
@@ -64,9 +75,14 @@ export async function POST(request: Request) {
         endDate: new Date(validatedData.endDate),
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
-        formFields: validatedData.formFields || { fields: [] },
+        formFields: validatedData.formFields || { fields: [], terms: [] },
       },
     });
+
+    // Set signup period using raw query
+    await db.$executeRaw`UPDATE "Event" SET "signup_period_json" = ${JSON.stringify(
+      validatedData.signupPeriodJson || { startDate: null, endDate: null }
+    )}::jsonb WHERE id = ${event.id}`;
 
     return NextResponse.json(event);
   } catch (error) {
