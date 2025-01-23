@@ -108,11 +108,20 @@ export function EventForm({
         endDate = values.startDate;
       }
 
+      // Combine form fields and terms, ensuring required fields
+      const formFieldsWithTerms = {
+        ...formFields,
+        terms: (values.terms || []).map(term => ({
+          id: term.id || crypto.randomUUID(),
+          text: term.text || ""
+        }))
+      };
+
       onSubmit({
         ...values,
         endDate,
         imageUrl: imageUrl,
-        formFields,
+        formFields: formFieldsWithTerms,
       });
     } catch (error) {
       console.error('Error submitting form:', error);

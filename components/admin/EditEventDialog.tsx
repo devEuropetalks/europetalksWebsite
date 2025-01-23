@@ -5,6 +5,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import type { EventFormData } from "@/lib/validations/event";
@@ -81,9 +82,15 @@ export function EditEventDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+      <DialogContent 
+        className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto"
+        aria-describedby="edit-event-form-description"
+      >
         <DialogHeader>
           <DialogTitle>Edit Event</DialogTitle>
+          <DialogDescription id="edit-event-form-description">
+            Make changes to your event details, dates, location, and registration settings.
+          </DialogDescription>
         </DialogHeader>
         <EventForm
           onSubmit={handleUpdateEvent}
