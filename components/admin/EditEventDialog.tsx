@@ -101,7 +101,7 @@ export function EditEventDialog({
               : undefined,
             location: event.location || "",
             imageUrl: event.imageUrl,
-            signupPeriod: {
+            signupPeriodJson: {
               startDate: event.signupPeriodJson?.startDate
                 ? new Date(event.signupPeriodJson.startDate).toISOString()
                 : undefined,
