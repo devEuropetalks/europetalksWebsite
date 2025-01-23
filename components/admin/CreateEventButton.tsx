@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import type { EventFormData } from "@/lib/validations/event";
@@ -78,15 +79,13 @@ export function CreateEventButton() {
       </DialogTrigger>
       <DialogContent
         className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto"
-        aria-describedby="create-event-form-description"
-        aria-label="Create event form"
+        aria-describedby="create-event-description"
       >
         <DialogHeader>
           <DialogTitle>Create Event</DialogTitle>
-          <div id="create-event-form-description" className="sr-only">
-            Form to create a new event. Contains fields for event details,
-            dates, location, and registration settings.
-          </div>
+          <DialogDescription id="create-event-description">
+            Fill in the details to create a new event. Add title, description, dates, location, and registration settings.
+          </DialogDescription>
         </DialogHeader>
         <EventForm onSubmit={handleCreateEvent} isSubmitting={isSubmitting} />
       </DialogContent>

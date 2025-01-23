@@ -3,6 +3,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { format } from "date-fns";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
@@ -68,10 +69,12 @@ export default function EventDetailsDialog({
       <DialogContent
         className="max-w-3xl h-[90vh] p-0 bg-background"
         aria-describedby="event-details-description"
-        aria-label="Event details"
       >
-        <DialogHeader className="sr-only">
+        <DialogHeader>
           <DialogTitle>{event.title}</DialogTitle>
+          <DialogDescription id="event-details-description">
+            View details and information about this event, including date, location, and description.
+          </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-full">
           <div className="flex flex-col h-full">

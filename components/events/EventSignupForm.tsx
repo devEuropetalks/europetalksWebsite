@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -286,17 +287,15 @@ export default function EventSignupForm({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        aria-describedby="event-signup-form-description"
-        aria-label="Event signup form"
+        aria-describedby="event-signup-description"
       >
         <DialogHeader>
           <DialogTitle>
             {t("signUp.title")} {eventTitle}
           </DialogTitle>
-          <div id="event-signup-form-description" className="sr-only">
-            Form to sign up for the event {eventTitle}. Contains fields for
-            personal information and event-specific details.
-          </div>
+          <DialogDescription id="event-signup-description">
+            Complete this form to register for {eventTitle}. Please provide your personal information and any required event-specific details.
+          </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>

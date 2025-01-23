@@ -84,12 +84,12 @@ export function EditEventDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent 
         className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto"
-        aria-describedby="edit-event-form-description"
+        aria-describedby="edit-event-description"
       >
         <DialogHeader>
           <DialogTitle>Edit Event</DialogTitle>
-          <DialogDescription id="edit-event-form-description">
-            Make changes to your event details, dates, location, and registration settings.
+          <DialogDescription id="edit-event-description">
+            Make changes to your event details, including title, description, dates, location, and registration settings.
           </DialogDescription>
         </DialogHeader>
         <EventForm
