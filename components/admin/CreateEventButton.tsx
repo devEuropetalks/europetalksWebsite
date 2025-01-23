@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 import type { EventFormData } from "@/lib/validations/event";
+import type { EventFormConfig } from "@/lib/types/event-form";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -20,20 +21,34 @@ export function CreateEventButton() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleCreateEvent = async (
-    data: EventFormData & { imageUrl?: string }
+    data: EventFormData & { imageUrl?: string; formFields?: EventFormConfig }
   ) => {
     setIsSubmitting(true);
 
     try {
+      // Transform the data to match the API's expected format
+      const transformedData = {
+        ...data,
+        endDate: data.endDate || data.startDate, // Ensure endDate is set
+        signupPeriodJson: {
+          startDate: data.signupPeriodJson?.startDate || null,
+          endDate: data.signupPeriodJson?.endDate || null,
+        },
+        formFields: data.formFields || { fields: [], terms: [] }
+      };
+
       const response = await fetch("/api/admin/events", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify(transformedData),
       });
 
-      if (!response.ok) throw new Error("Failed to create event");
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData ? JSON.stringify(errorData) : "Failed to create event");
+      }
 
       toast({
         title: "Success",
@@ -45,7 +60,7 @@ export function CreateEventButton() {
       console.error("Error creating event:", error);
       toast({
         title: "Error",
-        description: "Failed to create event. Please try again.",
+        description: error instanceof Error ? error.message : "Failed to create event. Please try again.",
         variant: "destructive",
       });
     } finally {

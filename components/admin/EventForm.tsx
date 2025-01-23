@@ -94,19 +94,34 @@ export function EventForm({
   });
 
   const handleSubmit = async (values: EventFormData) => {
-    let endDate = values.endDate;
-    if (!isMultiDay && values.startDate) {
-      // For single-day events, set endDate to the end of the selected day
-      const date = new Date(values.startDate);
-      date.setHours(23, 59, 59, 999);
-      endDate = date.toISOString();
+    try {
+      let endDate = values.endDate;
+      if (!isMultiDay && values.startDate) {
+        // For single-day events, set endDate to the end of the selected day
+        const date = new Date(values.startDate);
+        date.setHours(23, 59, 59, 999);
+        endDate = date.toISOString();
+      }
+
+      // Ensure endDate is always set
+      if (!endDate) {
+        endDate = values.startDate;
+      }
+
+      onSubmit({
+        ...values,
+        endDate,
+        imageUrl: imageUrl,
+        formFields,
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save event. Please check all required fields are filled correctly.",
+        variant: "destructive",
+      });
     }
-    onSubmit({
-      ...values,
-      endDate,
-      imageUrl: imageUrl,
-      formFields,
-    });
   };
 
   const addTerm = () => {
@@ -347,7 +362,7 @@ export function EventForm({
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
-                  name="signupPeriod.startDate"
+                  name="signupPeriodJson.startDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Registration Opens</FormLabel>
@@ -425,7 +440,7 @@ export function EventForm({
 
                 <FormField
                   control={form.control}
-                  name="signupPeriod.endDate"
+                  name="signupPeriodJson.endDate"
                   render={({ field }) => (
                     <FormItem className="flex flex-col">
                       <FormLabel>Registration Closes</FormLabel>

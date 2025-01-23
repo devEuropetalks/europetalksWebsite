@@ -15,7 +15,7 @@ export const eventFormSchema = z
         })
       )
       .optional(),
-    signupPeriod: z.object({
+    signupPeriodJson: z.object({
       startDate: z.string().optional(), // If not set, defaults to creation time
       endDate: z.string().optional(), // If not set, defaults to event start time
     }),
@@ -38,14 +38,14 @@ export const eventFormSchema = z
   )
   .refine(
     (data) => {
-      if (!data.signupPeriod.endDate) return true;
-      const signupEnd = new Date(data.signupPeriod.endDate);
+      if (!data.signupPeriodJson.endDate) return true;
+      const signupEnd = new Date(data.signupPeriodJson.endDate);
       const eventStart = new Date(data.startDate);
       return signupEnd <= eventStart;
     },
     {
       message: "Signup end date must be before or equal to event start date",
-      path: ["signupPeriod.endDate"],
+      path: ["signupPeriodJson.endDate"],
     }
   );
 
