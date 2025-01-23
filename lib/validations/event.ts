@@ -19,6 +19,17 @@ export const eventFormSchema = z
       startDate: z.string().optional(), // If not set, defaults to creation time
       endDate: z.string().optional(), // If not set, defaults to event start time
     }),
+    formFields: z
+      .object({
+        fields: z.array(z.any()),
+        terms: z.array(
+          z.object({
+            id: z.string(),
+            text: z.string(),
+          })
+        ),
+      })
+      .optional(),
   })
   .refine(
     (data) => {
