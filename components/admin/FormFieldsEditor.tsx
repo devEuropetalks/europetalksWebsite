@@ -30,6 +30,7 @@ const FIELD_TYPES: { label: string; value: FormFieldType }[] = [
   { label: "Text", value: "text" },
   { label: "Email", value: "email" },
   { label: "Phone", value: "tel" },
+  { label: "Date", value: "date" },
   { label: "Textarea", value: "textarea" },
   { label: "Select", value: "select" },
   { label: "Checkbox", value: "checkbox" },
