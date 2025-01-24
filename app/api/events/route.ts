@@ -15,15 +15,14 @@ export async function GET() {
       orderBy: {
         startDate: "asc",
       },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        startDate: true,
-        endDate: true,
-        location: true,
-        imageUrl: true,
-      },
+      include: {
+        formSchema: {
+          include: {
+            fields: true,
+            terms: true
+          }
+        }
+      }
     });
 
     // Get past events (where end date is in the past)
@@ -36,15 +35,14 @@ export async function GET() {
       orderBy: {
         startDate: "desc",
       },
-      select: {
-        id: true,
-        title: true,
-        description: true,
-        startDate: true,
-        endDate: true,
-        location: true,
-        imageUrl: true,
-      },
+      include: {
+        formSchema: {
+          include: {
+            fields: true,
+            terms: true
+          }
+        }
+      }
     });
 
     return NextResponse.json({

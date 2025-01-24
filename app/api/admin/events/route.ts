@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 import { eventFormSchema } from "@/lib/validations/event";
+import { z } from "zod";
 
 export async function GET() {
   const { userId } = await auth();
@@ -12,6 +13,14 @@ export async function GET() {
 
   try {
     const events = await db.event.findMany({
+      include: {
+        formSchema: {
+          include: {
+            fields: true,
+            terms: true
+          }
+        }
+      },
       orderBy: {
         startDate: "desc",
       },
@@ -32,27 +41,37 @@ export async function POST(request: Request) {
   }
 
   try {
-    const body = await request.json();
-    const validatedData = eventFormSchema.parse(body);
+    const json = await request.json();
+    const validatedData = eventFormSchema.parse(json);
 
     const event = await db.event.create({
       data: {
         title: validatedData.title,
         description: validatedData.description,
         startDate: new Date(validatedData.startDate),
-        endDate: validatedData.endDate ? new Date(validatedData.endDate) : null,
+        endDate: new Date(validatedData.endDate),
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
-        formFields: validatedData.formFields,
         signup_period_json: validatedData.signupPeriodJson,
+        ...(validatedData.formSchemaId ? {
+          formSchemaId: validatedData.formSchemaId
+        } : {})
       },
+      include: {
+        formSchema: {
+          include: {
+            fields: true,
+            terms: true
+          }
+        }
+      }
     });
 
     return NextResponse.json(event);
   } catch (error) {
     console.error("[EVENTS_POST]", error);
-    if (error instanceof Error) {
-      return new NextResponse(error.message, { status: 400 });
+    if (error instanceof z.ZodError) {
+      return new NextResponse(JSON.stringify(error.errors), { status: 400 });
     }
     return new NextResponse("Internal error", { status: 500 });
   }

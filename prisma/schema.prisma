@@ -12,14 +12,55 @@ model Event {
   title       String
   description String
   startDate   DateTime
-  endDate     DateTime?
+  endDate     DateTime
   location    String
   imageUrl    String?
-  formFields  Json?        @default("{\"fields\":[]}")
+  formSchemaId String?
+  formSchema  FormSchema?   @relation(fields: [formSchemaId], references: [id])
   signup_period_json Json?  @default("{}")
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   signups     EventSignup[]
+
+  @@index([formSchemaId])
+}
+
+model FormSchema {
+  id          String      @id @default(cuid())
+  name        String
+  description String?
+  fields      FormField[]
+  terms       EventTerm[]
+  events      Event[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+model FormField {
+  id          String     @id @default(cuid())
+  schemaId    String
+  type        String
+  label       String
+  name        String
+  required    Boolean    @default(false)
+  placeholder String?
+  description String?
+  options     Json?      @default("[]")
+  validation  Json?
+  order       Int        @default(0)
+  schema      FormSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+
+  @@index([schemaId])
+}
+
+model EventTerm {
+  id          String     @id @default(cuid())
+  schemaId    String
+  text        String
+  order       Int        @default(0)
+  schema      FormSchema @relation(fields: [schemaId], references: [id], onDelete: Cascade)
+
+  @@index([schemaId])
 }
 
 model EventSignup {

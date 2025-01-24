@@ -2,14 +2,12 @@ import { db } from "@/lib/db";
 import { NextResponse } from "next/server";
 import { eventFormSchema } from "@/lib/validations/event";
 import { auth } from "@clerk/nextjs/server";
+import { z } from "zod";
 
-interface RouteContext {
-  params: Promise<{
-    eventId: string;
-  }>;
-}
-
-export async function DELETE(req: Request, { params }: RouteContext) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: { eventId: string } }
+) {
   const { userId } = await auth();
 
   if (!userId) {
@@ -17,9 +15,8 @@ export async function DELETE(req: Request, { params }: RouteContext) {
   }
 
   try {
-    const { eventId } = await params;
     await db.event.delete({
-      where: { id: eventId },
+      where: { id: params.eventId },
     });
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -28,7 +25,10 @@ export async function DELETE(req: Request, { params }: RouteContext) {
   }
 }
 
-export async function PATCH(req: Request, { params }: RouteContext) {
+export async function PATCH(
+  request: Request,
+  { params }: { params: { eventId: string } }
+) {
   const { userId } = await auth();
 
   if (!userId) {
@@ -36,30 +36,38 @@ export async function PATCH(req: Request, { params }: RouteContext) {
   }
 
   try {
-    const { eventId } = await params;
-    const body = await req.json();
-    
-    const validatedData = eventFormSchema.parse(body);
+    const json = await request.json();
+    const validatedData = eventFormSchema.parse(json);
 
     const event = await db.event.update({
-      where: { id: eventId },
+      where: { id: params.eventId },
       data: {
         title: validatedData.title,
         description: validatedData.description,
         startDate: new Date(validatedData.startDate),
-        endDate: validatedData.endDate ? new Date(validatedData.endDate) : null,
+        endDate: new Date(validatedData.endDate),
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
-        formFields: validatedData.formFields,
         signup_period_json: validatedData.signupPeriodJson,
+        ...(validatedData.formSchemaId ? {
+          formSchemaId: validatedData.formSchemaId
+        } : {})
       },
+      include: {
+        formSchema: {
+          include: {
+            fields: true,
+            terms: true
+          }
+        }
+      }
     });
 
     return NextResponse.json(event);
   } catch (error) {
-    console.error("[EVENTS_PATCH]", error);
-    if (error instanceof Error) {
-      return new NextResponse(error.message, { status: 400 });
+    console.error("[EVENT_PATCH]", error);
+    if (error instanceof z.ZodError) {
+      return new NextResponse(JSON.stringify(error.errors), { status: 400 });
     }
     return new NextResponse("Internal error", { status: 500 });
   }

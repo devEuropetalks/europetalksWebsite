@@ -15,6 +15,22 @@ export interface FormFieldOption {
   value: string;
 }
 
+export interface BaseFormField {
+  type: FormFieldType;
+  label: string;
+  name: string;
+  required: boolean;
+  placeholder?: string;
+  description?: string;
+  options?: FormFieldOption[];
+  validation?: {
+    min?: number;
+    max?: number;
+    pattern?: string;
+    customMessage?: string;
+  };
+}
+
 export interface FormField {
   id: string;
   type: FormFieldType;
@@ -23,7 +39,7 @@ export interface FormField {
   required: boolean;
   placeholder?: string;
   description?: string;
-  options?: FormFieldOption[]; // For select, checkbox, radio
+  options: FormFieldOption[];
   validation?: {
     min?: number;
     max?: number;
@@ -42,6 +58,35 @@ export interface EventFormConfig {
   terms: EventTerms[];
 }
 
+export type EventTermsInput = Required<Pick<EventTerms, 'id'>> & Partial<Omit<EventTerms, 'id'>>;
+
+export interface PartialFormField {
+  id: string;
+  type?: FormFieldType;
+  label?: string;
+  name?: string;
+  required?: boolean;
+  placeholder?: string;
+  description?: string;
+  options?: FormFieldOption[];
+  validation?: {
+    min?: number;
+    max?: number;
+    pattern?: string;
+    customMessage?: string;
+  };
+}
+
+export interface PartialEventTerms {
+  id: string;
+  text?: string;
+}
+
+export interface PartialEventFormConfig {
+  fields?: PartialFormField[];
+  terms?: PartialEventTerms[];
+}
+
 // Helper function to create a dynamic Zod schema based on form fields
 export function createDynamicSchema(
   formFields: FormField[],
@@ -53,12 +98,12 @@ export function createDynamicSchema(
       .string()
       .min(3, "Full name is required and must be at least 3 characters"),
     email: z.string().email("Please enter a valid email address"),
-    termsAgreement: z
-      .array(z.string())
-      .refine(
-        (value) => value.length === terms.length,
-        "You must agree to all terms and conditions"
-      ),
+    termsAgreement: terms.length > 0 
+      ? z.array(z.string()).refine(
+          (value) => value.length === terms.length,
+          "You must agree to all terms and conditions"
+        )
+      : z.array(z.string()).optional(),
   };
 
   formFields.forEach((field) => {

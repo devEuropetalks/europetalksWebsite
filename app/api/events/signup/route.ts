@@ -64,7 +64,15 @@ export async function POST(request: Request) {
     // Get event details for the email
     const event = await db.event.findUnique({
       where: { id: eventId },
-      select: { title: true },
+      select: { 
+        title: true,
+        formSchema: {
+          include: {
+            fields: true,
+            terms: true
+          }
+        }
+      },
     });
 
     if (!event) {
@@ -84,7 +92,10 @@ export async function POST(request: Request) {
         }" has been received. We'll send you more details soon.</p>
         <h2>Your Registration Details:</h2>
         ${Object.entries(formattedFormData)
-          .map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`)
+          .map(([key, value]) => {
+            const field = event.formSchema?.fields.find(f => f.name === key);
+            return `<p><strong>${field?.label || key}:</strong> ${value}</p>`;
+          })
           .join("\n")}
       `,
     });
@@ -101,7 +112,10 @@ export async function POST(request: Request) {
         <p>Email: ${email}</p>
         <h2>Form Data:</h2>
         ${Object.entries(formattedFormData)
-          .map(([key, value]) => `<p><strong>${key}:</strong> ${value}</p>`)
+          .map(([key, value]) => {
+            const field = event.formSchema?.fields.find(f => f.name === key);
+            return `<p><strong>${field?.label || key}:</strong> ${value}</p>`;
+          })
           .join("\n")}
       `,
     });
