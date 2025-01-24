@@ -1,63 +1,74 @@
 import { z } from "zod";
 
-export const eventFormSchema = z
-  .object({
-    title: z.string().min(1, "Title is required"),
-    description: z.string().min(1, "Description is required"),
-    startDate: z.string().min(1, "Start date is required"),
-    endDate: z.string().optional(),
-    location: z.string().min(1, "Location is required"),
-    terms: z
-      .array(
-        z.object({
-          id: z.string(),
-          text: z.string(),
-        })
-      )
-      .optional(),
-    signupPeriodJson: z.object({
-      startDate: z.string().optional(), // If not set, defaults to creation time
-      endDate: z.string().optional(), // If not set, defaults to event start time
-    }),
-    formFields: z
-      .object({
-        fields: z.array(z.any()),
-        terms: z.array(
-          z.object({
-            id: z.string(),
-            text: z.string(),
-          })
-        ),
-      })
-      .optional(),
-  })
-  .refine(
-    (data) => {
-      // If no end date is provided, it's valid (single-day event)
-      if (!data.endDate) return true;
+const formFieldOptionSchema = z.object({
+  label: z.string(),
+  value: z.string(),
+});
 
-      const start = new Date(data.startDate);
-      const end = new Date(data.endDate);
+const formFieldSchema = z.object({
+  id: z.string(),
+  type: z.enum([
+    "text",
+    "email",
+    "tel",
+    "textarea",
+    "select",
+    "checkbox",
+    "radio",
+    "date",
+  ] as const),
+  label: z.string(),
+  name: z.string(),
+  required: z.boolean(),
+  placeholder: z.string().optional(),
+  description: z.string().optional(),
+  options: z.array(formFieldOptionSchema).optional(),
+  validation: z.object({
+    min: z.number().optional(),
+    max: z.number().optional(),
+    pattern: z.string().optional(),
+    customMessage: z.string().optional(),
+  }).optional(),
+});
 
-      // For multi-day events, end date must be after or equal to start date
-      return end >= start;
-    },
-    {
-      message: "End date must be after or equal to start date",
-      path: ["endDate"],
-    }
-  )
-  .refine(
-    (data) => {
-      if (!data.signupPeriodJson.endDate) return true;
-      const signupEnd = new Date(data.signupPeriodJson.endDate);
-      const eventStart = new Date(data.startDate);
-      return signupEnd <= eventStart;
-    },
-    {
-      message: "Signup end date must be before or equal to event start date",
-      path: ["signupPeriodJson.endDate"],
-    }
-  );
+const termSchema = z.object({
+  id: z.string(),
+  text: z.string(),
+});
+
+export const eventFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
+  startDate: z.string().min(1, "Start date is required"),
+  endDate: z.string().optional(),
+  location: z.string().min(1, "Location is required"),
+  imageUrl: z.string().url().optional(),
+  formFields: z
+    .object({
+      fields: z.array(formFieldSchema),
+      terms: z.array(termSchema),
+    })
+    .optional()
+    .default({ fields: [], terms: [] }),
+  signupPeriodJson: z
+    .object({
+      startDate: z.string().nullable(),
+      endDate: z.string().nullable(),
+    })
+    .optional()
+    .default({ startDate: null, endDate: null }),
+})
+.refine(
+  (data) => {
+    if (!data.endDate) return true;
+    const start = new Date(data.startDate);
+    const end = new Date(data.endDate);
+    return end >= start;
+  },
+  {
+    message: "End date must be after or equal to start date",
+    path: ["endDate"],
+  }
+);
 
 export type EventFormData = z.infer<typeof eventFormSchema>;
