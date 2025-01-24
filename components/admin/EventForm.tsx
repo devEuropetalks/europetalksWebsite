@@ -559,11 +559,12 @@ export function EventForm({
             />
 
             <div className="space-y-3">
-              <FormLabel>Event Image</FormLabel>
+              <FormLabel htmlFor="event-image">Event Image</FormLabel>
               <div className="flex items-center gap-4">
                 {imageUrl ? (
                   <div className="relative w-40 h-40 rounded-lg overflow-hidden group">
                     <Image
+                      id="event-image"
                       src={imageUrl}
                       alt="Event preview"
                       className="object-cover"
@@ -616,12 +617,18 @@ export function EventForm({
             </div>
 
             <div className="mt-6 pt-6 border-t">
-              <FormFieldsEditor
-                value={formFields.fields}
-                onChange={(fields) =>
-                  setFormFields({ fields, terms: formFields.terms })
-                }
-              />
+              <div className="flex items-center justify-between">
+                <FormLabel htmlFor="custom-form-fields">Custom Form Fields</FormLabel>
+              </div>
+
+              <div id="custom-form-fields">
+                <FormFieldsEditor
+                  value={formFields.fields}
+                  onChange={(fields) =>
+                    setFormFields({ fields, terms: formFields.terms })
+                  }
+                />
+              </div>
             </div>
 
             <div className="mt-6 pt-6 border-t">
