@@ -107,7 +107,7 @@ export function FormFieldsEditor({ value, onChange }: FormFieldsEditorProps) {
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <FormLabel>Custom Form Fields</FormLabel>
+        <FormLabel htmlFor="custom-form-fields">Custom Form Fields</FormLabel>
         <Button
           type="button"
           variant="outline"
@@ -123,7 +123,12 @@ export function FormFieldsEditor({ value, onChange }: FormFieldsEditorProps) {
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="formFields">
           {(provided) => (
-            <div {...provided.droppableProps} ref={provided.innerRef} className="space-y-4">
+            <div 
+              {...provided.droppableProps} 
+              ref={provided.innerRef} 
+              className="space-y-4"
+              id="custom-form-fields"
+            >
               {fields.map((field, index) => (
                 <Draggable key={field.id} draggableId={field.id} index={index}>
                   {(provided) => (

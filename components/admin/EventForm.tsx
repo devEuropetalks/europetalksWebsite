@@ -617,18 +617,12 @@ export function EventForm({
             </div>
 
             <div className="mt-6 pt-6 border-t">
-              <div className="flex items-center justify-between">
-                <FormLabel htmlFor="custom-form-fields">Custom Form Fields</FormLabel>
-              </div>
-
-              <div id="custom-form-fields">
-                <FormFieldsEditor
-                  value={formFields.fields}
-                  onChange={(fields) =>
-                    setFormFields({ fields, terms: formFields.terms })
-                  }
-                />
-              </div>
+              <FormFieldsEditor
+                value={formFields.fields}
+                onChange={(fields) =>
+                  setFormFields({ fields, terms: formFields.terms })
+                }
+              />
             </div>
 
             <div className="mt-6 pt-6 border-t">
