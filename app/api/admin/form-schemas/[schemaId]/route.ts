@@ -31,9 +31,15 @@ const formSchemaSchema = z.object({
   }))
 });
 
+type RouteContext = {
+  params: {
+    schemaId: string;
+  };
+};
+
 export async function PATCH(
   request: Request,
-  { params }: { params: { schemaId: string } }
+  context: RouteContext
 ) {
   const { userId } = await auth();
 
@@ -47,15 +53,15 @@ export async function PATCH(
 
     // Delete existing fields and terms
     await db.formField.deleteMany({
-      where: { schemaId: params.schemaId }
+      where: { schemaId: context.params.schemaId }
     });
     await db.eventTerm.deleteMany({
-      where: { schemaId: params.schemaId }
+      where: { schemaId: context.params.schemaId }
     });
 
     // Update schema with new fields and terms
     const schema = await db.formSchema.update({
-      where: { id: params.schemaId },
+      where: { id: context.params.schemaId },
       data: {
         name: body.name,
         description: body.description,
@@ -97,7 +103,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { schemaId: string } }
+  context: RouteContext
 ) {
   const { userId } = await auth();
 
@@ -107,7 +113,7 @@ export async function DELETE(
 
   try {
     await db.formSchema.delete({
-      where: { id: params.schemaId }
+      where: { id: context.params.schemaId }
     });
 
     return new NextResponse(null, { status: 204 });
