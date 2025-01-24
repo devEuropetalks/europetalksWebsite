@@ -8,7 +8,7 @@ const eventSchema = z
     title: z.string().min(1),
     description: z.string().min(1),
     startDate: z.string(),
-    endDate: z.string(),
+    endDate: z.string().optional(),
     location: z.string().min(1),
     imageUrl: z.string().url().optional(),
     formFields: z
@@ -16,15 +16,20 @@ const eventSchema = z
         fields: z.array(z.any()),
         terms: z.array(z.any()),
       })
-      .optional(),
+      .optional()
+      .default({ fields: [], terms: [] }),
     signupPeriodJson: z
       .object({
         startDate: z.string().nullable(),
         endDate: z.string().nullable(),
       })
-      .optional(),
+      .optional()
+      .default({ startDate: null, endDate: null }),
   })
-  .required();
+  .transform((data) => ({
+    ...data,
+    endDate: data.endDate || data.startDate,
+  }));
 
 export async function GET() {
   const { userId } = await auth();
@@ -73,11 +78,11 @@ export async function POST(request: Request) {
         title: validatedData.title,
         description: validatedData.description,
         startDate: new Date(validatedData.startDate),
-        endDate: validatedData.endDate ? new Date(validatedData.endDate) : new Date(validatedData.startDate),
+        endDate: new Date(validatedData.endDate),
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
-        formFields: validatedData.formFields || { fields: [], terms: [] },
-        signup_period_json: validatedData.signupPeriodJson || { startDate: null, endDate: null }
+        formFields: validatedData.formFields,
+        signup_period_json: validatedData.signupPeriodJson
       },
     });
 
@@ -87,6 +92,6 @@ export async function POST(request: Request) {
     if (error instanceof z.ZodError) {
       return new NextResponse(JSON.stringify(error.errors), { status: 400 });
     }
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return new NextResponse("Failed to create event", { status: 500 });
   }
 }
