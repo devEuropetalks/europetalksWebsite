@@ -71,4 +71,11 @@ export const eventFormSchema = z.object({
   }
 );
 
+export type FormFieldOption = z.infer<typeof formFieldOptionSchema>;
+export type FormField = z.infer<typeof formFieldSchema>;
+export type EventTerm = z.infer<typeof termSchema>;
+export type EventFormConfig = {
+  fields: FormField[];
+  terms: EventTerm[];
+};
 export type EventFormData = z.infer<typeof eventFormSchema>;
