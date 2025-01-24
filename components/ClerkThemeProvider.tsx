@@ -17,6 +17,7 @@ export default function ClerkThemeProvider({
         baseTheme: theme === "dark" ? dark : undefined,
       }}
       signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/"
     >
       {children}
     </ClerkProvider>
