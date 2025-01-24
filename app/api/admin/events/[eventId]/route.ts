@@ -4,15 +4,9 @@ import { eventFormSchema } from "@/lib/validations/event";
 import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 
-type RouteContext = {
-  params: {
-    eventId: string;
-  };
-};
-
 export async function DELETE(
   request: Request,
-  context: RouteContext
+  { params }: { params: { eventId: string } }
 ) {
   const { userId } = await auth();
 
@@ -22,7 +16,7 @@ export async function DELETE(
 
   try {
     await db.event.delete({
-      where: { id: context.params.eventId },
+      where: { id: params.eventId },
     });
     return NextResponse.json({ success: true });
   } catch (error) {
@@ -33,7 +27,7 @@ export async function DELETE(
 
 export async function PATCH(
   request: Request,
-  context: RouteContext
+  { params }: { params: { eventId: string } }
 ) {
   const { userId } = await auth();
 
@@ -46,7 +40,7 @@ export async function PATCH(
     const validatedData = eventFormSchema.parse(json);
 
     const event = await db.event.update({
-      where: { id: context.params.eventId },
+      where: { id: params.eventId },
       data: {
         title: validatedData.title,
         description: validatedData.description,
