@@ -6,41 +6,42 @@ import { z } from "zod";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { eventId: string } }
+  context: { params: { eventId: string } }
 ) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
-
   try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     await db.event.delete({
-      where: { id: params.eventId },
+      where: { id: context.params.eventId },
     });
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error("[EVENTS_DELETE]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { eventId: string } }
+  context: { params: { eventId: string } }
 ) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
-
   try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const json = await request.json();
     const validatedData = eventFormSchema.parse(json);
 
     const event = await db.event.update({
-      where: { id: params.eventId },
+      where: { id: context.params.eventId },
       data: {
         title: validatedData.title,
         description: validatedData.description,
@@ -67,8 +68,8 @@ export async function PATCH(
   } catch (error) {
     console.error("[EVENT_PATCH]", error);
     if (error instanceof z.ZodError) {
-      return new NextResponse(JSON.stringify(error.errors), { status: 400 });
+      return NextResponse.json({ errors: error.errors }, { status: 400 });
     }
-    return new NextResponse("Internal error", { status: 500 });
+    return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }
