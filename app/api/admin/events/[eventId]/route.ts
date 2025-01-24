@@ -1,11 +1,11 @@
 import { db } from "@/lib/db";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { eventFormSchema } from "@/lib/validations/event";
 import { auth } from "@clerk/nextjs/server";
 import { z } from "zod";
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { eventId: string } }
 ) {
   const { userId } = await auth();
@@ -26,7 +26,7 @@ export async function DELETE(
 }
 
 export async function PATCH(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { eventId: string } }
 ) {
   const { userId } = await auth();
