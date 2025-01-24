@@ -276,6 +276,8 @@ export function EventForm({
                             <Clock className="h-4 w-4 opacity-50" />
                             <input
                               type="time"
+                              id="event-start-time"
+                              name="event-start-time"
                               className="w-full min-w-[150px] px-2 py-1 rounded-md border"
                               onChange={(e) => {
                                 const date = field.value
@@ -416,6 +418,8 @@ export function EventForm({
                             <Clock className="h-4 w-4 opacity-50" />
                             <input
                               type="time"
+                              id="registration-start-time"
+                              name="registration-start-time"
                               className="w-full min-w-[150px] px-2 py-1 rounded-md border"
                               onChange={(e) => {
                                 const date = field.value
@@ -498,6 +502,8 @@ export function EventForm({
                             <Clock className="h-4 w-4 opacity-50" />
                             <input
                               type="time"
+                              id="registration-end-time"
+                              name="registration-end-time"
                               className="w-full min-w-[150px] px-2 py-1 rounded-md border"
                               onChange={(e) => {
                                 const date = field.value
