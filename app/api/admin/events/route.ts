@@ -67,22 +67,19 @@ export async function POST(request: Request) {
     const body = await request.json();
     const validatedData = eventSchema.parse(body);
 
+    // Create event with all fields including signup period
     const event = await db.event.create({
       data: {
         title: validatedData.title,
         description: validatedData.description,
         startDate: new Date(validatedData.startDate),
-        endDate: new Date(validatedData.endDate),
+        endDate: validatedData.endDate ? new Date(validatedData.endDate) : new Date(validatedData.startDate),
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
         formFields: validatedData.formFields || { fields: [], terms: [] },
+        signup_period_json: validatedData.signupPeriodJson || { startDate: null, endDate: null }
       },
     });
-
-    // Set signup period using raw query
-    await db.$executeRaw`UPDATE "Event" SET "signup_period_json" = ${JSON.stringify(
-      validatedData.signupPeriodJson || { startDate: null, endDate: null }
-    )}::jsonb WHERE id = ${event.id}`;
 
     return NextResponse.json(event);
   } catch (error) {
