@@ -18,15 +18,10 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { UploadButton } from "@/utils/uploadthing";
 import { useState } from "react";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { formatInTimeZone, fromZonedTime, toZonedTime } from "date-fns-tz";
-import { CalendarIcon, Clock, Loader2, Trash2 } from "lucide-react";
+import { DatePicker } from "@/components/ui/date-picker";
+import { DateRangePicker } from "@/components/ui/date-range-picker";
+import { formatInTimeZone } from "date-fns-tz";
+import { Clock, Loader2, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
@@ -147,185 +142,103 @@ export function EventForm({
               </label>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="startDate"
-                render={({ field }) => (
-                  <FormItem className="flex flex-col">
-                    <FormLabel>{isMultiDay ? "Start Date" : "Date"}</FormLabel>
-                    <div className="flex flex-col gap-2">
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant="outline"
-                              className={cn(
-                                "pl-3 text-left font-normal w-full md:w-[280px]",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                formatInTimeZone(
-                                  new Date(field.value),
-                                  TIMEZONE,
-                                  "PPP"
-                                )
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={
-                              field.value
-                                ? toZonedTime(new Date(field.value), TIMEZONE)
-                                : undefined
+            <div className="grid grid-cols-1 gap-4">
+              {!isMultiDay ? (
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="startDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Date</FormLabel>
+                        <div className="flex flex-col gap-2">
+                          <DatePicker
+                            date={
+                              field.value ? new Date(field.value) : undefined
                             }
-                            onSelect={(date) => {
+                            setDate={(date) => {
                               if (date) {
-                                const currentValue = field.value
-                                  ? toZonedTime(new Date(field.value), TIMEZONE)
-                                  : toZonedTime(new Date(), TIMEZONE);
+                                // Keep the current time when changing the date
+                                const currentTime = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
                                 date.setHours(
-                                  currentValue.getHours(),
-                                  currentValue.getMinutes()
+                                  currentTime.getHours(),
+                                  currentTime.getMinutes()
                                 );
-                                field.onChange(
-                                  fromZonedTime(date, TIMEZONE).toISOString()
-                                );
+                                field.onChange(date.toISOString());
                               }
                             }}
-                            initialFocus
                           />
-                        </PopoverContent>
-                      </Popover>
-                      <div className="flex items-center gap-2">
-                        <Input
-                          type="time"
-                          className="w-[140px]"
-                          value={
-                            field.value
-                              ? formatInTimeZone(
-                                  new Date(field.value),
-                                  TIMEZONE,
-                                  "HH:mm"
-                                )
-                              : ""
-                          }
-                          onChange={(e) => {
-                            const [hours, minutes] = e.target.value.split(":");
-                            const date = field.value
-                              ? toZonedTime(new Date(field.value), TIMEZONE)
-                              : toZonedTime(new Date(), TIMEZONE);
-                            date.setHours(parseInt(hours), parseInt(minutes));
-                            field.onChange(
-                              fromZonedTime(date, TIMEZONE).toISOString()
-                            );
-                          }}
-                        />
-                        <Clock className="h-4 w-4 opacity-50" />
-                      </div>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {isMultiDay && (
+                          <div className="flex items-center gap-2">
+                            <Input
+                              type="time"
+                              className="w-[140px]"
+                              value={
+                                field.value
+                                  ? formatInTimeZone(
+                                      new Date(field.value),
+                                      TIMEZONE,
+                                      "HH:mm"
+                                    )
+                                  : ""
+                              }
+                              onChange={(e) => {
+                                const [hours, minutes] =
+                                  e.target.value.split(":");
+                                const date = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
+                                date.setHours(
+                                  parseInt(hours),
+                                  parseInt(minutes)
+                                );
+                                field.onChange(date.toISOString());
+                              }}
+                            />
+                            <Clock className="h-4 w-4 opacity-50" />
+                          </div>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ) : (
                 <FormField
                   control={form.control}
-                  name="endDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>End Date</FormLabel>
-                      <div className="flex flex-col gap-2">
-                        <Popover>
-                          <PopoverTrigger asChild>
-                            <FormControl>
-                              <Button
-                                variant="outline"
-                                className={cn(
-                                  "pl-3 text-left font-normal w-full md:w-[280px]",
-                                  !field.value && "text-muted-foreground"
-                                )}
-                              >
-                                {field.value ? (
-                                  formatInTimeZone(
-                                    new Date(field.value),
-                                    TIMEZONE,
-                                    "PPP"
-                                  )
-                                ) : (
-                                  <span>Pick a date</span>
-                                )}
-                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                              </Button>
-                            </FormControl>
-                          </PopoverTrigger>
-                          <PopoverContent className="w-auto p-0" align="start">
-                            <Calendar
-                              mode="single"
-                              selected={
-                                field.value
-                                  ? toZonedTime(new Date(field.value), TIMEZONE)
-                                  : undefined
-                              }
-                              onSelect={(date) => {
-                                if (date) {
-                                  const currentValue = field.value
-                                    ? toZonedTime(
-                                        new Date(field.value),
-                                        TIMEZONE
-                                      )
-                                    : toZonedTime(new Date(), TIMEZONE);
-                                  date.setHours(
-                                    currentValue.getHours(),
-                                    currentValue.getMinutes()
-                                  );
-                                  field.onChange(
-                                    fromZonedTime(date, TIMEZONE).toISOString()
-                                  );
-                                }
-                              }}
-                              initialFocus
-                            />
-                          </PopoverContent>
-                        </Popover>
-                        <div className="flex items-center gap-2">
-                          <Input
-                            type="time"
-                            className="w-[140px]"
-                            value={
-                              field.value
-                                ? formatInTimeZone(
-                                    new Date(field.value),
-                                    TIMEZONE,
-                                    "HH:mm"
-                                  )
-                                : ""
+                  name="startDate"
+                  render={({ field: startField }) => (
+                    <FormField
+                      control={form.control}
+                      name="endDate"
+                      render={({ field: endField }) => (
+                        <FormItem>
+                          <FormLabel>Date Range</FormLabel>
+                          <DateRangePicker
+                            from={
+                              startField.value
+                                ? new Date(startField.value)
+                                : undefined
                             }
-                            onChange={(e) => {
-                              const [hours, minutes] =
-                                e.target.value.split(":");
-                              const date = field.value
-                                ? toZonedTime(new Date(field.value), TIMEZONE)
-                                : toZonedTime(new Date(), TIMEZONE);
-                              date.setHours(parseInt(hours), parseInt(minutes));
-                              field.onChange(
-                                fromZonedTime(date, TIMEZONE).toISOString()
-                              );
+                            to={
+                              endField.value
+                                ? new Date(endField.value)
+                                : undefined
+                            }
+                            onSelect={({ from, to }) => {
+                              if (from) {
+                                startField.onChange(from.toISOString());
+                              }
+                              if (to) {
+                                endField.onChange(to.toISOString());
+                              }
                             }}
                           />
-                          <Clock className="h-4 w-4 opacity-50" />
-                        </div>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   )}
                 />
               )}
