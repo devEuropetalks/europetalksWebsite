@@ -16,29 +16,64 @@ import {
 interface DatePickerProps {
   date?: Date;
   setDate: (date: Date | undefined) => void;
+  disabled?: boolean;
 }
 
-export function DatePicker({ date, setDate }: DatePickerProps) {
+export function DatePicker({
+  date,
+  setDate,
+  disabled = false,
+}: DatePickerProps) {
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const handleSelect = React.useCallback(
+    (selectedDate: Date | undefined) => {
+      if (selectedDate) {
+        // Preserve the time when selecting a new date
+        const newDate = new Date(selectedDate);
+        if (date) {
+          newDate.setHours(date.getHours(), date.getMinutes());
+        }
+        setDate(newDate);
+        setIsOpen(false);
+      }
+    },
+    [date, setDate]
+  );
+
   return (
-    <Popover>
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"outline"}
           className={cn(
             "w-[240px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            !date && "text-muted-foreground",
+            disabled && "opacity-50 cursor-not-allowed"
           )}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!disabled) {
+              setIsOpen(true);
+            }
+          }}
+          disabled={disabled}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
           {date ? format(date, "PPP") : <span>Pick a date</span>}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
+      <PopoverContent
+        className="w-auto p-0"
+        align="start"
+        onClick={(e) => e.stopPropagation()}
+      >
         <Calendar
-          mode="single"
           selected={date}
-          onSelect={setDate}
+          onSelect={handleSelect}
           initialFocus
+          disabled={disabled}
         />
       </PopoverContent>
     </Popover>

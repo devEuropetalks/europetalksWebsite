@@ -19,7 +19,6 @@ import { useForm } from "react-hook-form";
 import { UploadButton } from "@/utils/uploadthing";
 import { useState } from "react";
 import { DatePicker } from "@/components/ui/date-picker";
-import { DateRangePicker } from "@/components/ui/date-range-picker";
 import { formatInTimeZone } from "date-fns-tz";
 import { Clock, Loader2, Trash2 } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
@@ -150,7 +149,7 @@ export function EventForm({
                     name="startDate"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Date</FormLabel>
+                        <FormLabel>Date and Time</FormLabel>
                         <div className="flex flex-col gap-2">
                           <DatePicker
                             date={
@@ -158,7 +157,128 @@ export function EventForm({
                             }
                             setDate={(date) => {
                               if (date) {
-                                // Keep the current time when changing the date
+                                const currentTime = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
+                                date.setHours(
+                                  currentTime.getHours(),
+                                  currentTime.getMinutes()
+                                );
+                                const newDate = date.toISOString();
+                                field.onChange(newDate);
+                                form.setValue("endDate", newDate);
+                              }
+                            }}
+                          />
+                          <div className="flex items-center gap-2">
+                            <Input
+                              type="time"
+                              className="w-[140px]"
+                              value={
+                                field.value
+                                  ? formatInTimeZone(
+                                      new Date(field.value),
+                                      TIMEZONE,
+                                      "HH:mm"
+                                    )
+                                  : ""
+                              }
+                              onChange={(e) => {
+                                const [hours, minutes] =
+                                  e.target.value.split(":");
+                                const date = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
+                                date.setHours(
+                                  parseInt(hours),
+                                  parseInt(minutes)
+                                );
+                                const newDate = date.toISOString();
+                                field.onChange(newDate);
+                                form.setValue("endDate", newDate);
+                              }}
+                            />
+                            <Clock className="h-4 w-4 opacity-50" />
+                          </div>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  <FormField
+                    control={form.control}
+                    name="startDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Start Date and Time</FormLabel>
+                        <div className="flex flex-col gap-2">
+                          <DatePicker
+                            date={
+                              field.value ? new Date(field.value) : undefined
+                            }
+                            setDate={(date) => {
+                              if (date) {
+                                const currentTime = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
+                                date.setHours(
+                                  currentTime.getHours(),
+                                  currentTime.getMinutes()
+                                );
+                                field.onChange(date.toISOString());
+                              }
+                            }}
+                          />
+                          <div className="flex items-center gap-2">
+                            <Input
+                              type="time"
+                              className="w-[140px]"
+                              value={
+                                field.value
+                                  ? formatInTimeZone(
+                                      new Date(field.value),
+                                      TIMEZONE,
+                                      "HH:mm"
+                                    )
+                                  : ""
+                              }
+                              onChange={(e) => {
+                                const [hours, minutes] =
+                                  e.target.value.split(":");
+                                const date = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
+                                date.setHours(
+                                  parseInt(hours),
+                                  parseInt(minutes)
+                                );
+                                field.onChange(date.toISOString());
+                              }}
+                            />
+                            <Clock className="h-4 w-4 opacity-50" />
+                          </div>
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="endDate"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>End Date and Time</FormLabel>
+                        <div className="flex flex-col gap-2">
+                          <DatePicker
+                            date={
+                              field.value ? new Date(field.value) : undefined
+                            }
+                            setDate={(date) => {
+                              if (date) {
                                 const currentTime = field.value
                                   ? new Date(field.value)
                                   : new Date();
@@ -204,43 +324,6 @@ export function EventForm({
                     )}
                   />
                 </div>
-              ) : (
-                <FormField
-                  control={form.control}
-                  name="startDate"
-                  render={({ field: startField }) => (
-                    <FormField
-                      control={form.control}
-                      name="endDate"
-                      render={({ field: endField }) => (
-                        <FormItem>
-                          <FormLabel>Date Range</FormLabel>
-                          <DateRangePicker
-                            from={
-                              startField.value
-                                ? new Date(startField.value)
-                                : undefined
-                            }
-                            to={
-                              endField.value
-                                ? new Date(endField.value)
-                                : undefined
-                            }
-                            onSelect={({ from, to }) => {
-                              if (from) {
-                                startField.onChange(from.toISOString());
-                              }
-                              if (to) {
-                                endField.onChange(to.toISOString());
-                              }
-                            }}
-                          />
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  )}
-                />
               )}
             </div>
 

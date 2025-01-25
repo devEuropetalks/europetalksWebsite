@@ -167,7 +167,6 @@ export default function EventSignupForm({
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0" align="start">
                       <Calendar
-                        mode="single"
                         selected={
                           formField.value
                             ? new Date(formField.value)
