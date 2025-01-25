@@ -1,13 +1,12 @@
 import { EventSignupsList } from "@/components/admin/EventSignupsList";
 import { db } from "@/lib/db";
 
-interface PageProps {
-  params: {
-    eventId: string;
-  };
-}
+type Props = {
+  params: { eventId: string };
+  searchParams: Record<string, string | string[] | undefined>;
+};
 
-export default async function EventSignupsPage({ params }: PageProps) {
+export default async function EventSignupsPage({ params }: Props) {
   const event = await db.event.findUnique({
     where: { id: params.eventId },
     include: {
