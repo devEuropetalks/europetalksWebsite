@@ -15,6 +15,12 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
+    // Delete all signups for this event first
+    await db.eventSignup.deleteMany({
+      where: { eventId: context.params.eventId },
+    });
+
+    // Then delete the event
     await db.event.delete({
       where: { id: context.params.eventId },
     });
