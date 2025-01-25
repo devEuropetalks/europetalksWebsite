@@ -6,29 +6,41 @@ import { z } from "zod";
 const formSchemaSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  fields: z.array(z.object({
-    type: z.string(),
-    label: z.string(),
-    name: z.string(),
-    required: z.boolean(),
-    placeholder: z.string().optional(),
-    description: z.string().optional(),
-    options: z.array(z.object({
+  fields: z.array(
+    z.object({
+      id: z.string(),
+      type: z.string(),
       label: z.string(),
-      value: z.string()
-    })).optional(),
-    validation: z.object({
-      min: z.number().optional(),
-      max: z.number().optional(),
-      pattern: z.string().optional(),
-      customMessage: z.string().optional()
-    }).optional(),
-    order: z.number()
-  })),
-  terms: z.array(z.object({
-    text: z.string(),
-    order: z.number()
-  }))
+      name: z.string(),
+      required: z.boolean(),
+      placeholder: z.string().optional(),
+      description: z.string().optional(),
+      options: z
+        .array(
+          z.object({
+            label: z.string(),
+            value: z.string(),
+          })
+        )
+        .optional(),
+      validation: z
+        .object({
+          min: z.number().optional(),
+          max: z.number().optional(),
+          pattern: z.string().optional(),
+          customMessage: z.string().optional(),
+        })
+        .optional(),
+      order: z.number(),
+    })
+  ),
+  terms: z.array(
+    z.object({
+      id: z.string(),
+      text: z.string(),
+      order: z.number(),
+    })
+  ),
 });
 
 export async function GET() {
@@ -42,11 +54,11 @@ export async function GET() {
     const schemas = await db.formSchema.findMany({
       include: {
         fields: true,
-        terms: true
+        terms: true,
       },
       orderBy: {
-        createdAt: "desc"
-      }
+        createdAt: "desc",
+      },
     });
 
     return NextResponse.json(schemas);
@@ -72,7 +84,7 @@ export async function POST(request: Request) {
         name: body.name,
         description: body.description,
         fields: {
-          create: body.fields.map(field => ({
+          create: body.fields.map((field) => ({
             type: field.type,
             label: field.label,
             name: field.name,
@@ -81,20 +93,20 @@ export async function POST(request: Request) {
             description: field.description,
             options: field.options || [],
             validation: field.validation || {},
-            order: field.order
-          }))
+            order: field.order,
+          })),
         },
         terms: {
-          create: body.terms.map(term => ({
+          create: body.terms.map((term) => ({
             text: term.text,
-            order: term.order
-          }))
-        }
+            order: term.order,
+          })),
+        },
       },
       include: {
         fields: true,
-        terms: true
-      }
+        terms: true,
+      },
     });
 
     return NextResponse.json(schema);
@@ -105,4 +117,4 @@ export async function POST(request: Request) {
     }
     return new NextResponse("Internal error", { status: 500 });
   }
-} 
+}

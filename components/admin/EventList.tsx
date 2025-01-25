@@ -21,6 +21,19 @@ type Event = {
   startDate: Date;
   endDate?: Date;
   location: string | null;
+  formSchema?: {
+    fields: Array<{
+      id: string;
+      label: string;
+      name: string;
+      type: string;
+    }>;
+    terms: Array<{
+      id: string;
+      text: string;
+      order: number;
+    }>;
+  };
 };
 
 export function EventList() {
@@ -72,7 +85,9 @@ export function EventList() {
           {events.map((event) => (
             <TableRow key={event.id}>
               <TableCell>{event.title}</TableCell>
-              <TableCell>{formatEventDate(event.startDate, event.endDate)}</TableCell>
+              <TableCell>
+                {formatEventDate(event.startDate, event.endDate)}
+              </TableCell>
               <TableCell>{event.location || "N/A"}</TableCell>
               <TableCell>
                 <div className="flex space-x-2">
@@ -104,10 +119,20 @@ export function EventList() {
       </Table>
 
       <EditEventDialog
-        event={selectedEvent}
+        event={
+          selectedEvent
+            ? {
+                ...selectedEvent,
+                startDate: selectedEvent.startDate.toISOString(),
+                endDate:
+                  selectedEvent.endDate?.toISOString() ||
+                  selectedEvent.startDate.toISOString(),
+              }
+            : undefined
+        }
         open={showEditDialog}
         onOpenChange={setShowEditDialog}
-        onEventUpdated={fetchEvents}
+        onSuccess={fetchEvents}
       />
 
       <DeleteEventDialog

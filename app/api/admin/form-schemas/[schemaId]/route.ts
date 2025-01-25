@@ -6,29 +6,41 @@ import { z } from "zod";
 const formSchemaSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  fields: z.array(z.object({
-    type: z.string(),
-    label: z.string(),
-    name: z.string(),
-    required: z.boolean(),
-    placeholder: z.string().optional(),
-    description: z.string().optional(),
-    options: z.array(z.object({
+  fields: z.array(
+    z.object({
+      id: z.string(),
+      type: z.string(),
       label: z.string(),
-      value: z.string()
-    })).optional(),
-    validation: z.object({
-      min: z.number().optional(),
-      max: z.number().optional(),
-      pattern: z.string().optional(),
-      customMessage: z.string().optional()
-    }).optional(),
-    order: z.number()
-  })),
-  terms: z.array(z.object({
-    text: z.string(),
-    order: z.number()
-  }))
+      name: z.string(),
+      required: z.boolean(),
+      placeholder: z.string().optional(),
+      description: z.string().optional(),
+      options: z
+        .array(
+          z.object({
+            label: z.string(),
+            value: z.string(),
+          })
+        )
+        .optional(),
+      validation: z
+        .object({
+          min: z.number().optional(),
+          max: z.number().optional(),
+          pattern: z.string().optional(),
+          customMessage: z.string().optional(),
+        })
+        .optional(),
+      order: z.number(),
+    })
+  ),
+  terms: z.array(
+    z.object({
+      id: z.string(),
+      text: z.string(),
+      order: z.number(),
+    })
+  ),
 });
 
 type RouteContext = {
@@ -37,10 +49,7 @@ type RouteContext = {
   };
 };
 
-export async function PATCH(
-  request: Request,
-  context: RouteContext
-) {
+export async function PATCH(request: Request, context: RouteContext) {
   const { userId } = await auth();
 
   if (!userId) {
@@ -53,10 +62,10 @@ export async function PATCH(
 
     // Delete existing fields and terms
     await db.formField.deleteMany({
-      where: { schemaId: context.params.schemaId }
+      where: { schemaId: context.params.schemaId },
     });
     await db.eventTerm.deleteMany({
-      where: { schemaId: context.params.schemaId }
+      where: { schemaId: context.params.schemaId },
     });
 
     // Update schema with new fields and terms
@@ -66,7 +75,7 @@ export async function PATCH(
         name: body.name,
         description: body.description,
         fields: {
-          create: body.fields.map(field => ({
+          create: body.fields.map((field) => ({
             type: field.type,
             label: field.label,
             name: field.name,
@@ -75,20 +84,20 @@ export async function PATCH(
             description: field.description,
             options: field.options || [],
             validation: field.validation || {},
-            order: field.order
-          }))
+            order: field.order,
+          })),
         },
         terms: {
-          create: body.terms.map(term => ({
+          create: body.terms.map((term) => ({
             text: term.text,
-            order: term.order
-          }))
-        }
+            order: term.order,
+          })),
+        },
       },
       include: {
         fields: true,
-        terms: true
-      }
+        terms: true,
+      },
     });
 
     return NextResponse.json(schema);
@@ -101,10 +110,7 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
-  request: Request,
-  context: RouteContext
-) {
+export async function DELETE(request: Request, context: RouteContext) {
   const { userId } = await auth();
 
   if (!userId) {
@@ -113,7 +119,7 @@ export async function DELETE(
 
   try {
     await db.formSchema.delete({
-      where: { id: context.params.schemaId }
+      where: { id: context.params.schemaId },
     });
 
     return new NextResponse(null, { status: 204 });
@@ -121,4 +127,4 @@ export async function DELETE(
     console.error("[FORM_SCHEMA_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
-} 
+}

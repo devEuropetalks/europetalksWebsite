@@ -24,7 +24,7 @@ interface EventCardProps {
     endDate: Date | string;
     location: string;
     imageUrl?: string;
-    formFields?: {
+    formSchema?: {
       fields: FormField[];
       terms: EventTerms[];
     };
@@ -143,8 +143,8 @@ export function EventCard({ event }: EventCardProps) {
         <EventSignupForm
           eventId={event.id}
           eventTitle={event.title}
-          formFields={event.formFields?.fields || []}
-          terms={event.formFields?.terms || []}
+          formFields={event.formSchema?.fields || []}
+          terms={event.formSchema?.terms || []}
           isOpen={isSignupOpen}
           onClose={() => setIsSignupOpen(false)}
         />

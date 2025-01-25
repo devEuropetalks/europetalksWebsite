@@ -81,6 +81,12 @@ export default function EventSignupForm({
       fullName: user?.fullName || "",
       email: user?.primaryEmailAddress?.emailAddress || "",
       termsAgreement: [],
+      ...Object.fromEntries(
+        formFields.map((field) => [
+          field.name,
+          field.type === "checkbox" ? [] : field.type === "date" ? null : "",
+        ])
+      ),
     },
   });
 
@@ -126,7 +132,6 @@ export default function EventSignupForm({
     const commonProps = {
       control: form.control,
       name: field.name,
-      key: field.id,
     };
 
     const renderField = ({
@@ -168,11 +173,9 @@ export default function EventSignupForm({
                             ? new Date(formField.value)
                             : undefined
                         }
-                        onSelect={(date) => {
-                          if (date) {
-                            formField.onChange(date.toISOString());
-                          }
-                        }}
+                        onSelect={(date) =>
+                          formField.onChange(date ? date.toISOString() : null)
+                        }
                         initialFocus
                       />
                     </PopoverContent>
@@ -286,15 +289,14 @@ export default function EventSignupForm({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent
-        aria-describedby="event-signup-description"
-      >
+      <DialogContent aria-describedby="event-signup-description">
         <DialogHeader>
           <DialogTitle>
             {t("signUp.title")} {eventTitle}
           </DialogTitle>
           <DialogDescription id="event-signup-description">
-            Complete this form to register for {eventTitle}. Please provide your personal information and any required event-specific details.
+            Complete this form to register for {eventTitle}. Please provide your
+            personal information and any required event-specific details.
           </DialogDescription>
         </DialogHeader>
 

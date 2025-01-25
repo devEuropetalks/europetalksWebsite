@@ -18,36 +18,46 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { FormFieldsEditor } from "./FormFieldsEditor";
-import { Loader2 } from "lucide-react";
+import { Loader2, PlusCircle, Trash2 } from "lucide-react";
 
 const formSchemaSchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().optional(),
-  fields: z.array(z.object({
-    id: z.string(),
-    type: z.string(),
-    label: z.string(),
-    name: z.string(),
-    required: z.boolean(),
-    placeholder: z.string().optional(),
-    description: z.string().optional(),
-    options: z.array(z.object({
+  fields: z.array(
+    z.object({
+      id: z.string(),
+      type: z.string(),
       label: z.string(),
-      value: z.string()
-    })).optional(),
-    validation: z.object({
-      min: z.number().optional(),
-      max: z.number().optional(),
-      pattern: z.string().optional(),
-      customMessage: z.string().optional()
-    }).optional(),
-    order: z.number()
-  })),
-  terms: z.array(z.object({
-    id: z.string(),
-    text: z.string(),
-    order: z.number()
-  }))
+      name: z.string(),
+      required: z.boolean(),
+      placeholder: z.string().optional(),
+      description: z.string().optional(),
+      options: z
+        .array(
+          z.object({
+            label: z.string(),
+            value: z.string(),
+          })
+        )
+        .optional(),
+      validation: z
+        .object({
+          min: z.number().optional(),
+          max: z.number().optional(),
+          pattern: z.string().optional(),
+          customMessage: z.string().optional(),
+        })
+        .optional(),
+      order: z.number(),
+    })
+  ),
+  terms: z.array(
+    z.object({
+      id: z.string(),
+      text: z.string(),
+      order: z.number(),
+    })
+  ),
 });
 
 type FormSchemaData = z.infer<typeof formSchemaSchema>;
@@ -87,7 +97,10 @@ interface FormSchemaFormProps {
   onSuccess?: () => void;
 }
 
-export function FormSchemaForm({ defaultValues, onSuccess }: FormSchemaFormProps) {
+export function FormSchemaForm({
+  defaultValues,
+  onSuccess,
+}: FormSchemaFormProps) {
   const { toast } = useToast();
   const form = useForm<FormSchemaData>({
     resolver: zodResolver(formSchemaSchema),
@@ -95,8 +108,8 @@ export function FormSchemaForm({ defaultValues, onSuccess }: FormSchemaFormProps
       name: defaultValues?.name || "",
       description: defaultValues?.description || "",
       fields: defaultValues?.fields || [],
-      terms: defaultValues?.terms || []
-    }
+      terms: defaultValues?.terms || [],
+    },
   });
 
   const onSubmit = async (data: FormSchemaData) => {
@@ -118,7 +131,9 @@ export function FormSchemaForm({ defaultValues, onSuccess }: FormSchemaFormProps
 
       toast({
         title: "Success",
-        description: `Form schema ${defaultValues?.id ? "updated" : "created"} successfully`,
+        description: `Form schema ${
+          defaultValues?.id ? "updated" : "created"
+        } successfully`,
       });
 
       onSuccess?.();
@@ -130,6 +145,26 @@ export function FormSchemaForm({ defaultValues, onSuccess }: FormSchemaFormProps
         variant: "destructive",
       });
     }
+  };
+
+  const addTerm = () => {
+    const currentTerms = form.getValues("terms");
+    form.setValue("terms", [
+      ...currentTerms,
+      {
+        id: crypto.randomUUID(),
+        text: "",
+        order: currentTerms.length,
+      },
+    ]);
+  };
+
+  const removeTerm = (index: number) => {
+    const currentTerms = form.getValues("terms");
+    form.setValue(
+      "terms",
+      currentTerms.filter((_, i) => i !== index)
+    );
   };
 
   return (
@@ -181,14 +216,59 @@ export function FormSchemaForm({ defaultValues, onSuccess }: FormSchemaFormProps
                 onChange={(fields) => form.setValue("fields", fields)}
               />
             </div>
+
+            <div className="mt-6 pt-6 border-t">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-medium">Terms and Conditions</h3>
+                  <Button type="button" variant="outline" onClick={addTerm}>
+                    <PlusCircle className="h-4 w-4 mr-2" />
+                    Add Term
+                  </Button>
+                </div>
+
+                <div className="space-y-4">
+                  {form.watch("terms").map((term, index) => (
+                    <Card key={term.id} className="p-4">
+                      <div className="flex items-start gap-4">
+                        <div className="flex-1">
+                          <FormField
+                            control={form.control}
+                            name={`terms.${index}.text`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Term Text</FormLabel>
+                                <FormControl>
+                                  <Textarea
+                                    {...field}
+                                    placeholder="Enter the term text that users must agree to"
+                                    rows={3}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeTerm(index)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </Card>
 
         <div className="flex justify-end">
-          <Button
-            type="submit"
-            disabled={form.formState.isSubmitting}
-          >
+          <Button type="submit" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting && (
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
             )}
@@ -198,4 +278,4 @@ export function FormSchemaForm({ defaultValues, onSuccess }: FormSchemaFormProps
       </form>
     </Form>
   );
-} 
+}

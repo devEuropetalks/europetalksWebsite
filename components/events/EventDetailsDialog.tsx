@@ -23,7 +23,7 @@ interface EventDetailsDialogProps {
     endDate: Date | string;
     location: string;
     imageUrl?: string;
-    formFields?: {
+    formSchema?: {
       fields: FormField[];
       terms: EventTerms[];
     };
@@ -73,7 +73,8 @@ export default function EventDetailsDialog({
         <DialogHeader>
           <DialogTitle>{event.title}</DialogTitle>
           <DialogDescription id="event-details-description">
-            View details and information about this event, including date, location, and description.
+            View details and information about this event, including date,
+            location, and description.
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-full">
@@ -145,8 +146,8 @@ export default function EventDetailsDialog({
         <EventSignupForm
           eventId={event.id}
           eventTitle={event.title}
-          formFields={event.formFields?.fields || []}
-          terms={event.formFields?.terms || []}
+          formFields={event.formSchema?.fields || []}
+          terms={event.formSchema?.terms || []}
           isOpen={isSignupOpen}
           onClose={() => setIsSignupOpen(false)}
         />
