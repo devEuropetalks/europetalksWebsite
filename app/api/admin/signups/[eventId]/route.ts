@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  context: { params: { eventId: string } }
+  context: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -13,9 +13,11 @@ export async function GET(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const { eventId } = await context.params;
+
     const signups = await db.eventSignup.findMany({
       where: {
-        eventId: context.params.eventId,
+        eventId: eventId,
       },
       orderBy: {
         createdAt: "desc",
@@ -24,14 +26,14 @@ export async function GET(
 
     return NextResponse.json(signups);
   } catch (error) {
-    console.error("[EVENT_SIGNUPS_GET]", error);
+    console.error("[EVENT_SIGNUPS]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
 export async function DELETE(
   request: Request,
-  context: { params: { eventId: string } }
+  context: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -40,15 +42,17 @@ export async function DELETE(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const { eventId } = await context.params;
+
     await db.eventSignup.deleteMany({
       where: {
-        eventId: context.params.eventId,
+        eventId: eventId,
       },
     });
 
-    return NextResponse.json({ success: true });
+    return new NextResponse("Signups deleted successfully", { status: 200 });
   } catch (error) {
-    console.error("[EVENT_SIGNUPS_DELETE]", error);
+    console.error("[DELETE_EVENT_SIGNUPS]", error);
     return new NextResponse("Internal error", { status: 500 });
   }
 }

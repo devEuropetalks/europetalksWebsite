@@ -43,55 +43,60 @@ const formSchemaSchema = z.object({
   ),
 });
 
-type RouteContext = {
-  params: {
-    schemaId: string;
-  };
-};
-
-export async function PATCH(request: Request, context: RouteContext) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
-
+export async function PATCH(
+  request: Request,
+  context: { params: Promise<{ schemaId: string }> }
+) {
   try {
-    const json = await request.json();
-    const body = formSchemaSchema.parse(json);
+    const { userId } = await auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const { schemaId } = await context.params;
+    const body = await request.json();
+
+    const validatedData = formSchemaSchema.parse(body);
 
     // Delete existing fields and terms
     await db.formField.deleteMany({
-      where: { schemaId: context.params.schemaId },
-    });
-    await db.eventTerm.deleteMany({
-      where: { schemaId: context.params.schemaId },
+      where: {
+        schemaId: schemaId,
+      },
     });
 
-    // Update schema with new fields and terms
-    const schema = await db.formSchema.update({
-      where: { id: context.params.schemaId },
+    await db.formSchema.update({
+      where: {
+        id: schemaId,
+      },
       data: {
-        name: body.name,
-        description: body.description,
+        name: validatedData.name,
+        description: validatedData.description,
         fields: {
-          create: body.fields.map((field) => ({
-            type: field.type,
-            label: field.label,
-            name: field.name,
-            required: field.required,
-            placeholder: field.placeholder,
-            description: field.description,
-            options: field.options || [],
-            validation: field.validation || {},
-            order: field.order,
-          })),
+          createMany: {
+            data: validatedData.fields.map((field) => ({
+              type: field.type,
+              label: field.label,
+              name: field.name,
+              required: field.required,
+              placeholder: field.placeholder,
+              description: field.description,
+              options: field.options || [],
+              validation: field.validation || {},
+              order: field.order,
+              schemaId: schemaId,
+            })),
+          },
         },
         terms: {
-          create: body.terms.map((term) => ({
-            text: term.text,
-            order: term.order,
-          })),
+          createMany: {
+            data: validatedData.terms.map((term, index) => ({
+              text: term.text,
+              order: index,
+              schemaId: schemaId,
+            })),
+          },
         },
       },
       include: {
@@ -100,29 +105,35 @@ export async function PATCH(request: Request, context: RouteContext) {
       },
     });
 
-    return NextResponse.json(schema);
+    return NextResponse.json({ success: true });
   } catch (error) {
     console.error("[FORM_SCHEMA_PATCH]", error);
-    if (error instanceof z.ZodError) {
-      return new NextResponse(JSON.stringify(error.errors), { status: 400 });
-    }
     return new NextResponse("Internal error", { status: 500 });
   }
 }
 
-export async function DELETE(request: Request, context: RouteContext) {
-  const { userId } = await auth();
-
-  if (!userId) {
-    return new NextResponse("Unauthorized", { status: 401 });
-  }
-
+export async function DELETE(
+  request: Request,
+  context: { params: Promise<{ schemaId: string }> }
+) {
   try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const { schemaId } = await context.params;
+
     await db.formSchema.delete({
-      where: { id: context.params.schemaId },
+      where: {
+        id: schemaId,
+      },
     });
 
-    return new NextResponse(null, { status: 204 });
+    return new NextResponse("Form schema deleted successfully", {
+      status: 200,
+    });
   } catch (error) {
     console.error("[FORM_SCHEMA_DELETE]", error);
     return new NextResponse("Internal error", { status: 500 });

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(
   request: Request,
-  context: { params: { eventId: string } }
+  context: { params: Promise<{ eventId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -13,9 +13,11 @@ export async function GET(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const { eventId } = await context.params;
+
     // Fetch event details with form schema
     const event = await db.event.findUnique({
-      where: { id: context.params.eventId },
+      where: { id: eventId },
       include: {
         formSchema: {
           include: {
@@ -33,7 +35,7 @@ export async function GET(
     // Fetch all signups for the event
     const signups = await db.eventSignup.findMany({
       where: {
-        eventId: context.params.eventId,
+        eventId: eventId,
       },
       orderBy: {
         createdAt: "desc",
