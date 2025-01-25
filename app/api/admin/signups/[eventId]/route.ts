@@ -28,3 +28,27 @@ export async function GET(
     return new NextResponse("Internal error", { status: 500 });
   }
 }
+
+export async function DELETE(
+  request: Request,
+  context: { params: { eventId: string } }
+) {
+  try {
+    const { userId } = await auth();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    await db.eventSignup.deleteMany({
+      where: {
+        eventId: context.params.eventId,
+      },
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("[EVENT_SIGNUPS_DELETE]", error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}

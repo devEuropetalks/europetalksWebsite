@@ -11,8 +11,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 interface Event {
   id: string;
@@ -27,21 +37,23 @@ interface Event {
 export default function SignupsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
+
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch("/api/admin/signups");
+      if (!response.ok) throw new Error("Failed to fetch events");
+      const data = await response.json();
+      setEvents(data);
+    } catch (error) {
+      console.error("Failed to fetch events:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const response = await fetch("/api/admin/signups");
-        if (!response.ok) throw new Error("Failed to fetch events");
-        const data = await response.json();
-        setEvents(data);
-      } catch (error) {
-        console.error("Failed to fetch events:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchEvents();
   }, []);
 
@@ -51,7 +63,6 @@ export default function SignupsPage() {
       if (!response.ok) throw new Error("Failed to export data");
       const blob = await response.blob();
 
-      // Create download link
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -64,6 +75,24 @@ export default function SignupsPage() {
       document.body.removeChild(a);
     } catch (error) {
       console.error("Failed to download CSV:", error);
+    }
+  };
+
+  const deleteSignups = async (eventId: string) => {
+    try {
+      const response = await fetch(`/api/admin/signups/${eventId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete signups");
+
+      toast.success("All signups deleted successfully");
+      fetchEvents();
+    } catch (error) {
+      console.error("Failed to delete signups:", error);
+      toast.error("Failed to delete signups");
+    } finally {
+      setShowDeleteDialog(false);
+      setSelectedEvent(null);
     }
   };
 
@@ -107,12 +136,45 @@ export default function SignupsPage() {
                   >
                     <Download className="h-4 w-4" />
                   </Button>
+                  {event._count.signups > 0 && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setSelectedEvent(event);
+                        setShowDeleteDialog(true);
+                      }}
+                    >
+                      <Trash2 className="h-4 w-4 text-destructive" />
+                    </Button>
+                  )}
                 </div>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete all signups?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete all signups for event &quot;
+              {selectedEvent?.title}&quot;. This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <Button
+              variant="destructive"
+              onClick={() => selectedEvent && deleteSignups(selectedEvent.id)}
+            >
+              Delete All Signups
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

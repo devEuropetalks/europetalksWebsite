@@ -11,15 +11,24 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import { useEffect, useState } from "react";
-import { DeleteEventDialog } from "./DeleteEventDialog";
 import { EditEventDialog } from "./EditEventDialog";
+import { Trash2 } from "lucide-react";
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
-type Event = {
+type EventResponse = {
   id: string;
   title: string;
   description: string;
-  startDate: Date;
-  endDate?: Date;
+  startDate: string;
+  endDate?: string;
   location: string | null;
   formSchema?: {
     fields: Array<{
@@ -34,6 +43,11 @@ type Event = {
       order: number;
     }>;
   };
+};
+
+type Event = Omit<EventResponse, "startDate" | "endDate"> & {
+  startDate: Date;
+  endDate?: Date;
 };
 
 export function EventList() {
@@ -51,11 +65,32 @@ export function EventList() {
     try {
       const response = await fetch("/api/admin/events");
       const data = await response.json();
-      setEvents(data);
+      setEvents(
+        data.map((event: EventResponse) => ({
+          ...event,
+          startDate: new Date(event.startDate),
+          endDate: event.endDate ? new Date(event.endDate) : undefined,
+        }))
+      );
     } catch (error) {
       console.error("Failed to fetch events:", error);
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const deleteEvent = async (eventId: string) => {
+    try {
+      const response = await fetch(`/api/admin/events/${eventId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("Failed to delete event");
+      fetchEvents();
+    } catch (error) {
+      console.error("Failed to delete event:", error);
+    } finally {
+      setShowDeleteDialog(false);
+      setSelectedEvent(null);
     }
   };
 
@@ -102,14 +137,14 @@ export function EventList() {
                     Edit
                   </Button>
                   <Button
-                    variant="destructive"
+                    variant="outline"
                     size="sm"
                     onClick={() => {
                       setSelectedEvent(event);
                       setShowDeleteDialog(true);
                     }}
                   >
-                    Delete
+                    <Trash2 className="h-4 w-4 text-destructive" />
                   </Button>
                 </div>
               </TableCell>
@@ -135,12 +170,27 @@ export function EventList() {
         onSuccess={fetchEvents}
       />
 
-      <DeleteEventDialog
-        event={selectedEvent}
-        open={showDeleteDialog}
-        onOpenChange={setShowDeleteDialog}
-        onEventDeleted={fetchEvents}
-      />
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete event?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This will permanently delete the event &quot;
+              {selectedEvent?.title}&quot; and all its signups. This action
+              cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <Button
+              variant="destructive"
+              onClick={() => selectedEvent && deleteEvent(selectedEvent.id)}
+            >
+              Delete Event
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

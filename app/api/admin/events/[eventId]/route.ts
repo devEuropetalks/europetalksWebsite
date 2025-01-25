@@ -10,6 +10,7 @@ export async function DELETE(
 ) {
   try {
     const { userId } = await auth();
+    const { eventId } = await context.params;
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -17,12 +18,12 @@ export async function DELETE(
 
     // Delete all signups for this event first
     await db.eventSignup.deleteMany({
-      where: { eventId: context.params.eventId },
+      where: { eventId },
     });
 
     // Then delete the event
     await db.event.delete({
-      where: { id: context.params.eventId },
+      where: { id: eventId },
     });
 
     return NextResponse.json({ success: true });

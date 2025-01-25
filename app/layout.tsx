@@ -8,6 +8,7 @@ import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { TranslationsProvider } from "@/components/providers/TranslationsProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { Toaster as SonnerToaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -51,6 +52,7 @@ export default function RootLayout({
                 <main className="min-h-screen">{children}</main>
                 <Footer />
                 <Toaster />
+                <SonnerToaster />
               </TranslationsProvider>
             </I18nextProvider>
           </ClerkThemeProvider>
