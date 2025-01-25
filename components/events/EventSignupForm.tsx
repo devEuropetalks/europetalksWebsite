@@ -49,6 +49,7 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
+import { BirthdayPicker } from "@/components/ui/birthday-picker";
 
 interface EventSignupFormProps {
   eventId: string;
@@ -145,6 +146,26 @@ export default function EventSignupForm({
           {(() => {
             switch (field.type) {
               case "date":
+                // Check if the field is for birthdate based on name or label
+                const isBirthdate =
+                  field.name.toLowerCase().includes("birth") ||
+                  field.label.toLowerCase().includes("birth") ||
+                  field.placeholder?.toLowerCase().includes("birth");
+
+                if (isBirthdate) {
+                  return (
+                    <BirthdayPicker
+                      date={
+                        formField.value ? new Date(formField.value) : undefined
+                      }
+                      onSelect={(date) =>
+                        formField.onChange(date ? date.toISOString() : null)
+                      }
+                      placeholder={field.placeholder}
+                    />
+                  );
+                }
+
                 return (
                   <Popover>
                     <PopoverTrigger asChild>

@@ -33,6 +33,8 @@ import {
 } from "@/components/ui/select";
 
 const TIMEZONE = "Europe/Vienna";
+const DEFAULT_START_TIME = "09:00";
+const DEFAULT_END_TIME = "17:00";
 
 interface EventFormProps {
   onSubmit: (data: EventFormData & { imageUrl?: string }) => void;
@@ -47,7 +49,12 @@ export function EventForm({
   isSubmitting,
   formSchemas,
 }: EventFormProps) {
-  const [isMultiDay, setIsMultiDay] = useState(false);
+  const [isMultiDay, setIsMultiDay] = useState(
+    defaultValues?.startDate && defaultValues?.endDate
+      ? new Date(defaultValues.startDate).toDateString() !==
+          new Date(defaultValues.endDate).toDateString()
+      : false
+  );
   const [imageUrl, setImageUrl] = useState<string | undefined>(
     defaultValues?.imageUrl
   );
@@ -74,6 +81,16 @@ export function EventForm({
       ...data,
       imageUrl,
     });
+  };
+
+  const setDefaultTimes = (date: Date, isStart: boolean) => {
+    if (isMultiDay) {
+      const [hours, minutes] = (
+        isStart ? DEFAULT_START_TIME : DEFAULT_END_TIME
+      ).split(":");
+      date.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+    }
+    return date;
   };
 
   return (
@@ -132,6 +149,19 @@ export function EventForm({
                   if (!checked) {
                     const startDate = form.getValues("startDate");
                     form.setValue("endDate", startDate);
+                  } else {
+                    const startDate = new Date(form.getValues("startDate"));
+                    const endDate = new Date(startDate);
+                    endDate.setDate(endDate.getDate() + 1);
+
+                    form.setValue(
+                      "startDate",
+                      setDefaultTimes(startDate, true).toISOString()
+                    );
+                    form.setValue(
+                      "endDate",
+                      setDefaultTimes(endDate, false).toISOString()
+                    );
                   }
                 }}
                 id="multi-day"
@@ -213,7 +243,7 @@ export function EventForm({
                     name="startDate"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Start Date and Time</FormLabel>
+                        <FormLabel>Start Date</FormLabel>
                         <div className="flex flex-col gap-2">
                           <DatePicker
                             date={
@@ -221,45 +251,11 @@ export function EventForm({
                             }
                             setDate={(date) => {
                               if (date) {
-                                const currentTime = field.value
-                                  ? new Date(field.value)
-                                  : new Date();
-                                date.setHours(
-                                  currentTime.getHours(),
-                                  currentTime.getMinutes()
-                                );
-                                field.onChange(date.toISOString());
+                                const newDate = setDefaultTimes(date, true);
+                                field.onChange(newDate.toISOString());
                               }
                             }}
                           />
-                          <div className="flex items-center gap-2">
-                            <Input
-                              type="time"
-                              className="w-[140px]"
-                              value={
-                                field.value
-                                  ? formatInTimeZone(
-                                      new Date(field.value),
-                                      TIMEZONE,
-                                      "HH:mm"
-                                    )
-                                  : ""
-                              }
-                              onChange={(e) => {
-                                const [hours, minutes] =
-                                  e.target.value.split(":");
-                                const date = field.value
-                                  ? new Date(field.value)
-                                  : new Date();
-                                date.setHours(
-                                  parseInt(hours),
-                                  parseInt(minutes)
-                                );
-                                field.onChange(date.toISOString());
-                              }}
-                            />
-                            <Clock className="h-4 w-4 opacity-50" />
-                          </div>
                         </div>
                         <FormMessage />
                       </FormItem>
@@ -271,7 +267,7 @@ export function EventForm({
                     name="endDate"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>End Date and Time</FormLabel>
+                        <FormLabel>End Date</FormLabel>
                         <div className="flex flex-col gap-2">
                           <DatePicker
                             date={
@@ -279,45 +275,11 @@ export function EventForm({
                             }
                             setDate={(date) => {
                               if (date) {
-                                const currentTime = field.value
-                                  ? new Date(field.value)
-                                  : new Date();
-                                date.setHours(
-                                  currentTime.getHours(),
-                                  currentTime.getMinutes()
-                                );
-                                field.onChange(date.toISOString());
+                                const newDate = setDefaultTimes(date, false);
+                                field.onChange(newDate.toISOString());
                               }
                             }}
                           />
-                          <div className="flex items-center gap-2">
-                            <Input
-                              type="time"
-                              className="w-[140px]"
-                              value={
-                                field.value
-                                  ? formatInTimeZone(
-                                      new Date(field.value),
-                                      TIMEZONE,
-                                      "HH:mm"
-                                    )
-                                  : ""
-                              }
-                              onChange={(e) => {
-                                const [hours, minutes] =
-                                  e.target.value.split(":");
-                                const date = field.value
-                                  ? new Date(field.value)
-                                  : new Date();
-                                date.setHours(
-                                  parseInt(hours),
-                                  parseInt(minutes)
-                                );
-                                field.onChange(date.toISOString());
-                              }}
-                            />
-                            <Clock className="h-4 w-4 opacity-50" />
-                          </div>
                         </div>
                         <FormMessage />
                       </FormItem>

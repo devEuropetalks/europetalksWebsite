@@ -5,7 +5,6 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { formatInTimeZone } from "date-fns-tz";
 import { CalendarIcon, MapPinIcon } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -13,8 +12,7 @@ import { useState } from "react";
 import EventSignupForm from "./EventSignupForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FormField, EventTerms } from "@/lib/types/event-form";
-
-const TIMEZONE = "Europe/Vienna";
+import { format } from "date-fns";
 
 interface EventDetailsDialogProps {
   event: {
@@ -52,16 +50,16 @@ export default function EventDetailsDialog({
   ) => {
     const startDate = new Date(start);
     const endDate = end ? new Date(end) : undefined;
+    const isSameDay =
+      endDate && startDate.toDateString() === endDate.toDateString();
 
-    if (!endDate || startDate.toDateString() === endDate.toDateString()) {
-      return formatInTimeZone(startDate, TIMEZONE, "PPp (zzz)");
+    if (!endDate || isSameDay) {
+      // For single-day events, show date and time in local timezone
+      return format(startDate, "PPp");
     }
 
-    return `${formatInTimeZone(
-      startDate,
-      TIMEZONE,
-      "PP p"
-    )} - ${formatInTimeZone(endDate, TIMEZONE, "PP p (zzz)")}`;
+    // For multi-day events, show only dates
+    return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
   };
 
   const isEventEnded = () => {

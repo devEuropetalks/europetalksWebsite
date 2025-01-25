@@ -47,11 +47,15 @@ export function EventCard({ event }: EventCardProps) {
   ) => {
     const startDate = new Date(start);
     const endDate = end ? new Date(end) : undefined;
+    const isSameDay =
+      endDate && startDate.toDateString() === endDate.toDateString();
 
-    if (!endDate || startDate.toDateString() === endDate.toDateString()) {
+    if (!endDate || isSameDay) {
+      // For single-day events, show date and time in local timezone
       return format(startDate, "PPp");
     }
 
+    // For multi-day events, show only dates
     return `${format(startDate, "PP")} - ${format(endDate, "PP")}`;
   };
 
