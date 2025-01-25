@@ -50,18 +50,16 @@ export async function PATCH(
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
         signup_period_json: validatedData.signupPeriodJson,
-        ...(validatedData.formSchemaId ? {
-          formSchemaId: validatedData.formSchemaId
-        } : {})
+        formSchemaId: validatedData.formSchemaId,
       },
       include: {
         formSchema: {
           include: {
             fields: true,
-            terms: true
-          }
-        }
-      }
+            terms: true,
+          },
+        },
+      },
     });
 
     return NextResponse.json(event);
