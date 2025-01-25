@@ -5,11 +5,10 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft } from "lucide-react";
 
-export default async function EventSignupsPage({
-  params,
-}: {
-  params: { eventId: string };
+export default async function EventSignupsPage(props: {
+  params: Promise<{ eventId: string }>;
 }) {
+  const params = await props.params;
   const event = await db.event.findUnique({
     where: { id: params.eventId },
     include: {
