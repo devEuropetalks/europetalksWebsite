@@ -18,9 +18,15 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { UploadButton } from "@/utils/uploadthing";
 import { useState } from "react";
-import { DatePicker } from "@/components/ui/date-picker";
-import { formatInTimeZone } from "date-fns-tz";
-import { Clock, Loader2, Trash2 } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon, Clock, ImageIcon, Loader2, X } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
@@ -32,13 +38,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const TIMEZONE = "Europe/Vienna";
-const DEFAULT_START_TIME = "09:00";
-const DEFAULT_END_TIME = "17:00";
-
 interface EventFormProps {
-  onSubmit: (data: EventFormData & { imageUrl?: string }) => void;
-  defaultValues?: EventFormData & { imageUrl?: string };
+  onSubmit: (
+    data: EventFormData & { imageUrl?: string; formSchemaId?: string }
+  ) => void;
+  defaultValues?: EventFormData & {
+    imageUrl?: string;
+    formSchemaId?: string;
+  };
   isSubmitting?: boolean;
   formSchemas: Array<{ id: string; name: string }>;
 }
@@ -49,15 +56,16 @@ export function EventForm({
   isSubmitting,
   formSchemas,
 }: EventFormProps) {
-  const [isMultiDay, setIsMultiDay] = useState(
-    defaultValues?.startDate && defaultValues?.endDate
-      ? new Date(defaultValues.startDate).toDateString() !==
-          new Date(defaultValues.endDate).toDateString()
-      : false
-  );
   const [imageUrl, setImageUrl] = useState<string | undefined>(
     defaultValues?.imageUrl
   );
+
+  const [isMultiDay, setIsMultiDay] = useState(() => {
+    if (!defaultValues?.startDate || !defaultValues?.endDate) return false;
+    const startDate = new Date(defaultValues.startDate);
+    const endDate = new Date(defaultValues.endDate);
+    return startDate.toDateString() !== endDate.toDateString();
+  });
   const [isUploading, setIsUploading] = useState(false);
 
   const form = useForm<EventFormData>({
@@ -65,32 +73,27 @@ export function EventForm({
     defaultValues: {
       title: defaultValues?.title || "",
       description: defaultValues?.description || "",
-      startDate: defaultValues?.startDate || new Date().toISOString(),
-      endDate: defaultValues?.endDate || new Date().toISOString(),
+      startDate: defaultValues?.startDate || "",
+      endDate: defaultValues?.endDate || defaultValues?.startDate || "",
       location: defaultValues?.location || "",
       formSchemaId: defaultValues?.formSchemaId || "",
-      signupPeriodJson: {
-        startDate: defaultValues?.signupPeriodJson?.startDate || null,
-        endDate: defaultValues?.signupPeriodJson?.endDate || null,
-      },
     },
   });
 
-  const handleSubmit = async (data: EventFormData) => {
-    onSubmit({
-      ...data,
-      imageUrl,
-    });
-  };
-
-  const setDefaultTimes = (date: Date, isStart: boolean) => {
-    if (isMultiDay) {
-      const [hours, minutes] = (
-        isStart ? DEFAULT_START_TIME : DEFAULT_END_TIME
-      ).split(":");
-      date.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+  const handleSubmit = async (values: EventFormData) => {
+    let endDate = values.endDate;
+    if (!isMultiDay && values.startDate) {
+      // For single-day events, set endDate to the end of the selected day
+      const date = new Date(values.startDate);
+      date.setHours(23, 59, 59, 999);
+      endDate = date.toISOString();
     }
-    return date;
+    onSubmit({
+      ...values,
+      endDate,
+      imageUrl: imageUrl,
+      formSchemaId: values.formSchemaId,
+    });
   };
 
   return (
@@ -149,19 +152,6 @@ export function EventForm({
                   if (!checked) {
                     const startDate = form.getValues("startDate");
                     form.setValue("endDate", startDate);
-                  } else {
-                    const startDate = new Date(form.getValues("startDate"));
-                    const endDate = new Date(startDate);
-                    endDate.setDate(endDate.getDate() + 1);
-
-                    form.setValue(
-                      "startDate",
-                      setDefaultTimes(startDate, true).toISOString()
-                    );
-                    form.setValue(
-                      "endDate",
-                      setDefaultTimes(endDate, false).toISOString()
-                    );
                   }
                 }}
                 id="multi-day"
@@ -171,121 +161,154 @@ export function EventForm({
               </label>
             </div>
 
-            <div className="grid grid-cols-1 gap-4">
-              {!isMultiDay ? (
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="startDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Date and Time</FormLabel>
-                        <div className="flex flex-col gap-2">
-                          <DatePicker
-                            date={
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FormField
+                control={form.control}
+                name="startDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <FormLabel>
+                      {isMultiDay ? "Start Date" : "Date and Time"}
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "pl-3 text-left font-normal w-full md:w-[280px]",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(
+                                new Date(field.value),
+                                isMultiDay ? "PPP" : "PPP p"
+                              )
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <div>
+                          <Calendar
+                            mode="single"
+                            selected={
                               field.value ? new Date(field.value) : undefined
                             }
-                            setDate={(date) => {
+                            onSelect={(date) => {
                               if (date) {
-                                const currentTime = field.value
-                                  ? new Date(field.value)
-                                  : new Date();
-                                date.setHours(
-                                  currentTime.getHours(),
-                                  currentTime.getMinutes()
-                                );
-                                const newDate = date.toISOString();
-                                field.onChange(newDate);
-                                form.setValue("endDate", newDate);
+                                if (isMultiDay) {
+                                  date.setHours(0, 0, 0, 0);
+                                } else {
+                                  const currentDate = new Date();
+                                  date.setHours(
+                                    currentDate.getHours(),
+                                    currentDate.getMinutes()
+                                  );
+                                }
+                                field.onChange(date.toISOString());
                               }
                             }}
+                            initialFocus
                           />
-                          <div className="flex items-center gap-2">
-                            <Input
-                              type="time"
-                              className="w-[140px]"
-                              value={
-                                field.value
-                                  ? formatInTimeZone(
-                                      new Date(field.value),
-                                      TIMEZONE,
-                                      "HH:mm"
-                                    )
-                                  : ""
-                              }
-                              onChange={(e) => {
-                                const [hours, minutes] =
-                                  e.target.value.split(":");
-                                const date = field.value
-                                  ? new Date(field.value)
-                                  : new Date();
-                                date.setHours(
-                                  parseInt(hours),
-                                  parseInt(minutes)
-                                );
-                                const newDate = date.toISOString();
-                                field.onChange(newDate);
-                                form.setValue("endDate", newDate);
-                              }}
-                            />
-                            <Clock className="h-4 w-4 opacity-50" />
-                          </div>
+                          {!isMultiDay && (
+                            <div className="p-3 border-t flex items-center gap-2">
+                              <Clock className="h-4 w-4 opacity-50" />
+                              <input
+                                type="time"
+                                className="w-full min-w-[150px] px-2 py-1 rounded-md border"
+                                onChange={(e) => {
+                                  const date = field.value
+                                    ? new Date(field.value)
+                                    : new Date();
+                                  const [hours, minutes] =
+                                    e.target.value.split(":");
+                                  date.setHours(
+                                    parseInt(hours),
+                                    parseInt(minutes)
+                                  );
+                                  field.onChange(date.toISOString());
+                                }}
+                                value={
+                                  field.value
+                                    ? format(new Date(field.value), "HH:mm")
+                                    : ""
+                                }
+                              />
+                            </div>
+                          )}
                         </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="startDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Start Date</FormLabel>
-                        <div className="flex flex-col gap-2">
-                          <DatePicker
-                            date={
-                              field.value ? new Date(field.value) : undefined
-                            }
-                            setDate={(date) => {
-                              if (date) {
-                                const newDate = setDefaultTimes(date, true);
-                                field.onChange(newDate.toISOString());
-                              }
-                            }}
-                          />
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                      </PopoverContent>
+                    </Popover>
+                    <FormDescription>
+                      {isMultiDay
+                        ? "Select the start date of your event"
+                        : "Select the date and time of your event"}
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                  <FormField
-                    control={form.control}
-                    name="endDate"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>End Date</FormLabel>
-                        <div className="flex flex-col gap-2">
-                          <DatePicker
-                            date={
-                              field.value ? new Date(field.value) : undefined
-                            }
-                            setDate={(date) => {
-                              if (date) {
-                                const newDate = setDefaultTimes(date, false);
-                                field.onChange(newDate.toISOString());
+              {isMultiDay && (
+                <FormField
+                  control={form.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>End Date</FormLabel>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <FormControl>
+                            <Button
+                              variant="outline"
+                              className={cn(
+                                "pl-3 text-left font-normal w-full md:w-[280px]",
+                                !field.value && "text-muted-foreground"
+                              )}
+                            >
+                              {field.value ? (
+                                format(new Date(field.value), "PPP")
+                              ) : (
+                                <span>Pick a date</span>
+                              )}
+                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                            </Button>
+                          </FormControl>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0" align="start">
+                          <div>
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value ? new Date(field.value) : undefined
                               }
-                            }}
-                          />
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                              onSelect={(date) => {
+                                if (date) {
+                                  date.setHours(23, 59, 59, 999);
+                                  field.onChange(date.toISOString());
+                                }
+                              }}
+                              disabled={(date) => {
+                                const startDate = form.getValues("startDate");
+                                return startDate && date < new Date(startDate);
+                              }}
+                              initialFocus
+                            />
+                          </div>
+                        </PopoverContent>
+                      </Popover>
+                      <FormDescription>
+                        Select the end date of your multi-day event
+                      </FormDescription>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               )}
             </div>
 
@@ -341,72 +364,79 @@ export function EventForm({
               )}
             />
 
-            <div className="space-y-4">
-              <div>
-                <FormLabel>Event Image</FormLabel>
-                <FormDescription>
-                  Upload an image for your event. Recommended size: 1200x630px
-                </FormDescription>
-              </div>
-
-              {imageUrl ? (
-                <div className="relative w-full max-w-3xl aspect-[1.91/1] rounded-lg overflow-hidden">
-                  <Image
-                    src={imageUrl}
-                    alt="Event cover"
-                    fill
-                    className="object-cover"
-                  />
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    size="icon"
-                    className="absolute top-2 right-2"
-                    onClick={() => setImageUrl(undefined)}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ) : (
-                <div className="flex items-center justify-center w-full max-w-3xl aspect-[1.91/1] rounded-lg border border-dashed">
-                  {isUploading ? (
-                    <div className="flex items-center gap-2">
-                      <Loader2 className="h-4 w-4 animate-spin" />
-                      <span>Uploading...</span>
-                    </div>
-                  ) : (
-                    <UploadButton
-                      endpoint="imageUploader"
-                      onClientUploadComplete={(res) => {
-                        setImageUrl(res?.[0]?.url);
-                        setIsUploading(false);
-                        toast({
-                          title: "Image uploaded successfully",
-                        });
-                      }}
-                      onUploadError={(error: Error) => {
-                        toast({
-                          title: "Error uploading image",
-                          description: error.message,
-                          variant: "destructive",
-                        });
-                        setIsUploading(false);
-                      }}
-                      onUploadBegin={() => {
-                        setIsUploading(true);
-                      }}
+            <div className="space-y-3">
+              <FormLabel>Event Image</FormLabel>
+              <div className="flex items-center gap-4">
+                {imageUrl ? (
+                  <div className="relative w-40 h-40 rounded-lg overflow-hidden group">
+                    <Image
+                      src={imageUrl}
+                      alt="Event preview"
+                      className="object-cover"
+                      fill
                     />
-                  )}
+                    <button
+                      type="button"
+                      onClick={() => setImageUrl(undefined)}
+                      className="absolute top-2 right-2 p-1 bg-background/80 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                ) : (
+                  <Card className="w-40 h-40 flex items-center justify-center">
+                    <ImageIcon className="h-10 w-10 text-muted-foreground" />
+                  </Card>
+                )}
+                <div className="space-y-2">
+                  <UploadButton
+                    endpoint="imageUploader"
+                    onUploadBegin={() => {
+                      setIsUploading(true);
+                    }}
+                    onClientUploadComplete={(res) => {
+                      if (res?.[0]) {
+                        setImageUrl(res[0].url);
+                        toast({
+                          title: "Image uploaded",
+                          description:
+                            "Your event image has been uploaded successfully.",
+                        });
+                      }
+                      setIsUploading(false);
+                    }}
+                    onUploadError={(error: Error) => {
+                      toast({
+                        title: "Upload failed",
+                        description: error.message,
+                        variant: "destructive",
+                      });
+                      setIsUploading(false);
+                    }}
+                  />
+                  <FormDescription>
+                    Upload an image for your event. Recommended size: 1200x800px
+                  </FormDescription>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </Card>
 
-        <div className="flex justify-end gap-4">
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Save Event
+        <div className="flex justify-end">
+          <Button
+            type="submit"
+            disabled={isSubmitting || isUploading}
+            className="w-full md:w-auto"
+          >
+            {isSubmitting ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                Saving...
+              </>
+            ) : (
+              "Save Event"
+            )}
           </Button>
         </div>
       </form>
