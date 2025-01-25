@@ -1,11 +1,13 @@
 import { EventSignupsList } from "@/components/admin/EventSignupsList";
 import { db } from "@/lib/db";
 
-export default async function EventSignupsPage({
-  params,
-}: {
-  params: { eventId: string };
-}) {
+interface PageProps {
+  params: {
+    eventId: string;
+  };
+}
+
+export default async function EventSignupsPage({ params }: PageProps) {
   const event = await db.event.findUnique({
     where: { id: params.eventId },
     include: {
