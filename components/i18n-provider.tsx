@@ -34,6 +34,26 @@ const popupTranslations = {
     available: "Questo sito è disponibile nella tua lingua!",
     switchTo: "Passa a {{language}}",
   },
+  pt: {
+    available: "Este site está disponível em sua língua!",
+    switchTo: "Mudar para {{language}}",
+  },
+  nl: {
+    available: "Deze website is beschikbaar in uw taal!",
+    switchTo: "Wijzigen naar {{language}}",
+  },
+  uk: {
+    available: "Цей сайт доступний у вашій мові!",
+    switchTo: "Перейти на {{language}}",
+  },
+  lv: {
+    available: "Šī vietne ir pieejama jūsu valodā!",
+    switchTo: "Pāriet uz {{language}}",
+  },
+  hr: {
+    available: "Ova stranica je dostupna na vašoj jeziku!",
+    switchTo: "Prelazak na {{language}}",
+  },
 } as const;
 
 const namespaces = [
@@ -47,6 +67,14 @@ const namespaces = [
   "auth",
   "other",
 ];
+
+// Cache for translations to avoid unnecessary API calls
+const translationsCache: Record<
+  string,
+  Record<string, Record<string, unknown>>
+> = {
+  en: initialTranslations.en,
+};
 
 // Add this function to reload resources
 i18n.reloadResources = async (language: string, namespace?: string) => {
@@ -76,12 +104,40 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
       return;
     }
 
+    // Check cache first
+    if (translationsCache[language]) {
+      if (namespace) {
+        if (translationsCache[language][namespace]) {
+          i18n.addResourceBundle(
+            language,
+            namespace,
+            translationsCache[language][namespace],
+            true,
+            true
+          );
+          return;
+        }
+      } else {
+        Object.entries(translationsCache[language]).forEach(
+          ([ns, translations]) => {
+            i18n.addResourceBundle(language, ns, translations, true, true);
+          }
+        );
+        return;
+      }
+    }
+
     // If no specific namespace is provided, load all namespaces
     const namespacesToLoad = namespace ? [namespace] : namespaces;
 
     for (const ns of namespacesToLoad) {
       const response = await fetch(
-        `/api/translations?language=${language}&namespace=${ns}`
+        `/api/translations?language=${language}&namespace=${ns}`,
+        {
+          // Add cache headers for development
+          cache:
+            process.env.NODE_ENV === "development" ? "no-cache" : "force-cache",
+        }
       );
 
       if (!response.ok) {
@@ -98,7 +154,13 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
       // The response is now the namespace content directly when requesting a specific namespace
       const content = namespace ? data : data[ns];
       if (content) {
-        console.log(`Adding ${language}/${ns} translations:`, content);
+        // Update cache
+        if (!translationsCache[language]) {
+          translationsCache[language] = {};
+        }
+        translationsCache[language][ns] = content;
+
+        // Add to i18next
         i18n.addResourceBundle(language, ns, content, true, true);
       }
     }
@@ -155,6 +217,11 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
     fr: "Français",
     es: "Español",
     it: "Italiano",
+    pt: "Português",
+    nl: "Nederlands",
+    uk: "Українська",
+    lv: "Latviešu",
+    hr: "Hrvatski",
   } as const;
 
   useEffect(() => {
@@ -173,6 +240,13 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
 
       setDetectedLanguage(browserLang);
       setShowLanguageHint(true);
+
+      // Prefetch translations for detected language
+      try {
+        await i18n.reloadResources(browserLang);
+      } catch (error) {
+        console.warn("Failed to prefetch translations:", error);
+      }
     };
 
     detectAndPrefetchLanguage();
@@ -181,26 +255,6 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
   const handleLanguageSwitch = async () => {
     if (detectedLanguage) {
       try {
-        // First, fetch all translations for the new language
-        const response = await fetch(
-          `/api/translations?language=${detectedLanguage}`
-        );
-        if (!response.ok) throw new Error("Failed to fetch translations");
-
-        const data = await response.json();
-
-        // Add all resources to i18next
-        Object.entries(data).forEach(([namespace, content]) => {
-          i18n.addResourceBundle(
-            detectedLanguage,
-            namespace,
-            content,
-            true,
-            true
-          );
-        });
-
-        // Change the language after resources are loaded
         await i18n.changeLanguage(detectedLanguage);
         await reloadTranslations();
         setShowLanguageHint(false);
@@ -213,32 +267,21 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
   return (
     <Provider i18n={i18n}>
       {showLanguageHint && detectedLanguage && (
-        <div className="fixed bottom-4 right-4 p-4 bg-primary text-primary-foreground rounded-lg shadow-lg z-50 max-w-sm">
+        <div className="fixed bottom-4 right-4 z-50 max-w-sm bg-background border rounded-lg shadow-lg p-4">
           <button
             onClick={() => setShowLanguageHint(false)}
-            className="absolute top-2 right-2 text-primary-foreground/80 hover:text-primary-foreground"
+            className="absolute top-2 right-2 text-muted-foreground hover:text-foreground"
           >
-            <X size={16} />
+            <X className="h-4 w-4" />
           </button>
           <p className="mb-3">
-            {
-              popupTranslations[
-                detectedLanguage as keyof typeof popupTranslations
-              ].available
-            }
+            {i18n.t("components:languageDetection.available")}
           </p>
-          <Button
-            onClick={handleLanguageSwitch}
-            variant="secondary"
-            className="w-full"
-          >
-            {popupTranslations[
-              detectedLanguage as keyof typeof popupTranslations
-            ].switchTo.replace(
-              "{{language}}",
-              languageNames[detectedLanguage as keyof typeof languageNames] ||
-                detectedLanguage
-            )}
+          <Button onClick={handleLanguageSwitch} className="w-full">
+            {i18n.t("components:languageDetection.switchTo", {
+              language:
+                languageNames[detectedLanguage as keyof typeof languageNames],
+            })}
           </Button>
         </div>
       )}

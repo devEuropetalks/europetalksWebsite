@@ -10,8 +10,9 @@ import {
 import { useToast } from "@/hooks/use-toast";
 import type { EventFormData } from "@/lib/validations/event";
 import { EventForm } from "./EventForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { EventFormConfig } from "@/lib/types/event-form";
+import { Button } from "@/components/ui/button";
 
 interface EditEventDialogProps {
   event?: {
@@ -41,6 +42,34 @@ export function EditEventDialog({
 }: EditEventDialogProps) {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formSchemas, setFormSchemas] = useState<
+    Array<{ id: string; name: string }>
+  >([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFormSchemas = async () => {
+      try {
+        const response = await fetch("/api/admin/form-schemas");
+        if (!response.ok) throw new Error("Failed to fetch form schemas");
+        const data = await response.json();
+        setFormSchemas(data);
+      } catch (error) {
+        console.error("Error fetching form schemas:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load form schemas",
+          variant: "destructive",
+        });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (open) {
+      fetchFormSchemas();
+    }
+  }, [open, toast]);
 
   const handleUpdateEvent = async (
     data: EventFormData & { imageUrl?: string; formFields?: EventFormConfig }
@@ -82,33 +111,51 @@ export function EditEventDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent 
+      <DialogContent
         className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto"
         aria-describedby="edit-event-description"
       >
         <DialogHeader>
           <DialogTitle>Edit Event</DialogTitle>
           <DialogDescription id="edit-event-description">
-            Make changes to your event details, including title, description, dates, location, and registration settings.
+            {formSchemas.length === 0 && !isLoading ? (
+              <>
+                Please create a form schema first in the Form Schemas section
+                before editing an event. This will define the registration form
+                that attendees will fill out.
+              </>
+            ) : (
+              "Make changes to your event details, including title, description, dates, location, and registration settings."
+            )}
           </DialogDescription>
         </DialogHeader>
-        <EventForm
-          onSubmit={handleUpdateEvent}
-          defaultValues={{
-            title: event.title,
-            description: event.description,
-            startDate: event.startDate,
-            endDate: event.endDate,
-            location: event.location,
-            imageUrl: event.imageUrl,
-            signupPeriodJson: {
-              startDate: event.signupPeriodJson?.startDate,
-              endDate: event.signupPeriodJson?.endDate,
-            },
-            formSchemaId: event.formSchemaId,
-          }}
-          isSubmitting={isSubmitting}
-        />
+        {(formSchemas.length > 0 || isLoading) && (
+          <EventForm
+            onSubmit={handleUpdateEvent}
+            defaultValues={{
+              title: event.title,
+              description: event.description,
+              startDate: event.startDate,
+              endDate: event.endDate,
+              location: event.location,
+              imageUrl: event.imageUrl,
+              signupPeriodJson: {
+                startDate: event.signupPeriodJson?.startDate,
+                endDate: event.signupPeriodJson?.endDate,
+              },
+              formSchemaId: event.formSchemaId || "",
+            }}
+            isSubmitting={isSubmitting}
+            formSchemas={formSchemas}
+          />
+        )}
+        {formSchemas.length === 0 && !isLoading && (
+          <div className="p-6">
+            <Button asChild>
+              <a href="/admin/form-schemas">Create Form Schema</a>
+            </Button>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );

@@ -1,15 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
+  FormDescription,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -17,8 +16,19 @@ import { eventFormSchema, type EventFormData } from "@/lib/validations/event";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { Loader2, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { UploadButton } from "@/utils/uploadthing";
+import { useState } from "react";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { CalendarIcon, Loader2, Trash2 } from "lucide-react";
+import { Switch } from "@/components/ui/switch";
+import { Card } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import {
   Select,
@@ -27,111 +37,47 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { format } from "date-fns";
-import { CalendarIcon, Clock } from "lucide-react";
-import { Switch } from "@/components/ui/switch";
-import { UploadButton } from "@/utils/uploadthing";
-import { cn } from "@/lib/utils";
 
 interface EventFormProps {
-  onSubmit: (
-    data: EventFormData & { imageUrl?: string }
-  ) => void;
-  defaultValues?: EventFormData & {
-    imageUrl?: string;
-  };
+  onSubmit: (data: EventFormData & { imageUrl?: string }) => void;
+  defaultValues?: EventFormData & { imageUrl?: string };
   isSubmitting?: boolean;
+  formSchemas: Array<{ id: string; name: string }>;
 }
 
 export function EventForm({
   onSubmit,
   defaultValues,
   isSubmitting,
+  formSchemas,
 }: EventFormProps) {
+  const [isMultiDay, setIsMultiDay] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | undefined>(
     defaultValues?.imageUrl
   );
-  const [isMultiDay, setIsMultiDay] = useState(() => {
-    if (!defaultValues?.startDate || !defaultValues?.endDate) return false;
-    const startDate = new Date(defaultValues.startDate);
-    const endDate = new Date(defaultValues.endDate);
-    return startDate.toDateString() !== endDate.toDateString();
-  });
   const [isUploading, setIsUploading] = useState(false);
-  const [schemas, setSchemas] = useState<Array<{
-    id: string;
-    name: string;
-    description?: string;
-  }>>([]);
-
-  useEffect(() => {
-    const fetchSchemas = async () => {
-      try {
-        const response = await fetch("/api/admin/form-schemas");
-        if (!response.ok) throw new Error("Failed to fetch schemas");
-        const data = await response.json();
-        setSchemas(data);
-      } catch (error) {
-        console.error("Error fetching schemas:", error);
-        toast({
-          title: "Error",
-          description: "Failed to load form schemas",
-          variant: "destructive",
-        });
-      }
-    };
-
-    fetchSchemas();
-  }, []);
 
   const form = useForm<EventFormData>({
     resolver: zodResolver(eventFormSchema),
     defaultValues: {
       title: defaultValues?.title || "",
       description: defaultValues?.description || "",
-      startDate: defaultValues?.startDate || "",
-      endDate: defaultValues?.endDate || defaultValues?.startDate || "",
+      startDate: defaultValues?.startDate || new Date().toISOString(),
+      endDate: defaultValues?.endDate || new Date().toISOString(),
       location: defaultValues?.location || "",
       formSchemaId: defaultValues?.formSchemaId || "",
-      signupPeriodJson: defaultValues?.signupPeriodJson || {
-        startDate: null,
-        endDate: null
-      }
+      signupPeriodJson: {
+        startDate: defaultValues?.signupPeriodJson?.startDate || null,
+        endDate: defaultValues?.signupPeriodJson?.endDate || null,
+      },
     },
   });
 
-  const handleSubmit = async (values: EventFormData) => {
-    try {
-      let endDate = values.endDate;
-      if (!isMultiDay && values.startDate) {
-        const date = new Date(values.startDate);
-        date.setHours(23, 59, 59, 999);
-        endDate = date.toISOString();
-      }
-
-      if (!endDate) {
-        endDate = values.startDate;
-      }
-
-      onSubmit({
-        ...values,
-        endDate,
-        imageUrl
-      });
-    } catch (error) {
-      console.error('Error submitting form:', error);
-      toast({
-        title: "Error",
-        description: "Failed to save event. Please check all required fields are filled correctly.",
-        variant: "destructive",
-      });
-    }
+  const handleSubmit = async (data: EventFormData) => {
+    onSubmit({
+      ...data,
+      imageUrl,
+    });
   };
 
   return (
@@ -146,8 +92,15 @@ export function EventForm({
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="Event title" {...field} />
+                    <Input
+                      {...field}
+                      placeholder="Enter event title"
+                      className="max-w-3xl"
+                    />
                   </FormControl>
+                  <FormDescription>
+                    Choose a clear and descriptive title for your event
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -161,15 +114,36 @@ export function EventForm({
                   <FormLabel>Description</FormLabel>
                   <FormControl>
                     <Textarea
-                      placeholder="Event description"
-                      className="resize-none"
                       {...field}
+                      placeholder="Describe your event..."
+                      className="min-h-[150px] max-w-3xl"
                     />
                   </FormControl>
+                  <FormDescription>
+                    Provide detailed information about the event, including what
+                    attendees can expect
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            <div className="flex items-center space-x-2">
+              <Switch
+                checked={isMultiDay}
+                onCheckedChange={(checked) => {
+                  setIsMultiDay(checked);
+                  if (!checked) {
+                    const startDate = form.getValues("startDate");
+                    form.setValue("endDate", startDate);
+                  }
+                }}
+                id="multi-day"
+              />
+              <label htmlFor="multi-day" className="text-sm font-medium">
+                Multi-day event
+              </label>
+            </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
@@ -177,57 +151,15 @@ export function EventForm({
                 name="startDate"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Start Date</FormLabel>
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <FormControl>
-                          <Button
-                            variant={"outline"}
-                            className={cn(
-                              "w-full pl-3 text-left font-normal",
-                              !field.value && "text-muted-foreground"
-                            )}
-                          >
-                            {field.value ? (
-                              format(new Date(field.value), "PPP")
-                            ) : (
-                              <span>Pick a date</span>
-                            )}
-                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                          </Button>
-                        </FormControl>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          mode="single"
-                          selected={field.value ? new Date(field.value) : undefined}
-                          onSelect={(date) =>
-                            field.onChange(date?.toISOString() || "")
-                          }
-                          disabled={(date) => date < new Date()}
-                          initialFocus
-                        />
-                      </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              {isMultiDay && (
-                <FormField
-                  control={form.control}
-                  name="endDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>End Date</FormLabel>
+                    <FormLabel>{isMultiDay ? "Start Date" : "Date"}</FormLabel>
+                    <div className="flex flex-col gap-2">
                       <Popover>
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
-                              variant={"outline"}
+                              variant="outline"
                               className={cn(
-                                "w-full pl-3 text-left font-normal",
+                                "pl-3 text-left font-normal w-full md:w-[280px]",
                                 !field.value && "text-muted-foreground"
                               )}
                             >
@@ -246,140 +178,83 @@ export function EventForm({
                             selected={
                               field.value ? new Date(field.value) : undefined
                             }
-                            onSelect={(date) =>
-                              field.onChange(date?.toISOString() || "")
-                            }
-                            disabled={(date) =>
-                              date < new Date(form.getValues("startDate"))
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
-            </div>
-
-            <div className="flex items-center space-x-2">
-              <Switch
-                id="multi-day"
-                checked={isMultiDay}
-                onCheckedChange={setIsMultiDay}
-              />
-              <label
-                htmlFor="multi-day"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Multi-day event
-              </label>
-            </div>
-
-            <div className="mt-6 pt-6 border-t">
-              <h3 className="text-lg font-medium mb-4">Registration Period</h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <FormField
-                  control={form.control}
-                  name="signupPeriodJson.startDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Registration Start</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(new Date(field.value), "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <Clock className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={
-                              field.value ? new Date(field.value) : undefined
-                            }
-                            onSelect={(date) =>
-                              field.onChange(date?.toISOString() || null)
-                            }
-                            initialFocus
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormDescription>
-                        When should registration open?
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="signupPeriodJson.endDate"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <FormLabel>Registration End</FormLabel>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-full pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground"
-                              )}
-                            >
-                              {field.value ? (
-                                format(new Date(field.value), "PPP")
-                              ) : (
-                                <span>Pick a date</span>
-                              )}
-                              <Clock className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={
-                              field.value ? new Date(field.value) : undefined
-                            }
-                            onSelect={(date) =>
-                              field.onChange(date?.toISOString() || null)
-                            }
-                            disabled={(date) => {
-                              const startDate = form.getValues(
-                                "signupPeriodJson.startDate"
-                              );
-                              return startDate
-                                ? date < new Date(startDate)
-                                : false;
+                            onSelect={(date) => {
+                              if (date) {
+                                const currentValue = field.value
+                                  ? new Date(field.value)
+                                  : new Date();
+                                date.setHours(
+                                  currentValue.getHours(),
+                                  currentValue.getMinutes()
+                                );
+                                field.onChange(date.toISOString());
+                              }
                             }}
                             initialFocus
                           />
                         </PopoverContent>
                       </Popover>
-                      <FormDescription>
-                        When should registration close?
-                      </FormDescription>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {isMultiDay && (
+                <FormField
+                  control={form.control}
+                  name="endDate"
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col">
+                      <FormLabel>End Date</FormLabel>
+                      <div className="flex flex-col gap-2">
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant="outline"
+                                className={cn(
+                                  "pl-3 text-left font-normal w-full md:w-[280px]",
+                                  !field.value && "text-muted-foreground"
+                                )}
+                              >
+                                {field.value ? (
+                                  format(new Date(field.value), "PPP")
+                                ) : (
+                                  <span>Pick a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
+                              onSelect={(date) => {
+                                if (date) {
+                                  const currentValue = field.value
+                                    ? new Date(field.value)
+                                    : new Date();
+                                  date.setHours(
+                                    currentValue.getHours(),
+                                    currentValue.getMinutes()
+                                  );
+                                  field.onChange(date.toISOString());
+                                }
+                              }}
+                              initialFocus
+                            />
+                          </PopoverContent>
+                        </Popover>
+                      </div>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
+              )}
             </div>
 
             <FormField
@@ -389,48 +264,98 @@ export function EventForm({
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input placeholder="Event location" {...field} />
+                    <Input
+                      {...field}
+                      placeholder="Enter event location"
+                      className="max-w-3xl"
+                    />
                   </FormControl>
+                  <FormDescription>
+                    Specify where the event will take place
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <div className="mt-6 pt-6 border-t">
-              <h3 className="text-lg font-medium mb-4">Event Image</h3>
-              <div className="flex flex-col gap-4">
-                {imageUrl ? (
-                  <div className="relative aspect-video rounded-lg overflow-hidden">
-                    <div className="absolute top-2 right-2 z-10">
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        onClick={() => setImageUrl(undefined)}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
+            <FormField
+              control={form.control}
+              name="formSchemaId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Registration Form</FormLabel>
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="max-w-3xl">
+                        <SelectValue placeholder="Select a form schema" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {formSchemas.map((schema) => (
+                        <SelectItem key={schema.id} value={schema.id}>
+                          {schema.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Choose the registration form that attendees will fill out
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <div className="space-y-4">
+              <div>
+                <FormLabel>Event Image</FormLabel>
+                <FormDescription>
+                  Upload an image for your event. Recommended size: 1200x630px
+                </FormDescription>
+              </div>
+
+              {imageUrl ? (
+                <div className="relative w-full max-w-3xl aspect-[1.91/1] rounded-lg overflow-hidden">
+                  <Image
+                    src={imageUrl}
+                    alt="Event cover"
+                    fill
+                    className="object-cover"
+                  />
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    size="icon"
+                    className="absolute top-2 right-2"
+                    onClick={() => setImageUrl(undefined)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center justify-center w-full max-w-3xl aspect-[1.91/1] rounded-lg border border-dashed">
+                  {isUploading ? (
+                    <div className="flex items-center gap-2">
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <span>Uploading...</span>
                     </div>
-                    <Image
-                      src={imageUrl}
-                      alt="Event image"
-                      className="object-cover"
-                      fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex items-center justify-center w-full">
+                  ) : (
                     <UploadButton
                       endpoint="imageUploader"
                       onClientUploadComplete={(res) => {
-                        setImageUrl(res[0].url);
+                        setImageUrl(res?.[0]?.url);
                         setIsUploading(false);
+                        toast({
+                          title: "Image uploaded successfully",
+                        });
                       }}
                       onUploadError={(error: Error) => {
-                        console.error("Error uploading image:", error);
                         toast({
-                          title: "Error",
-                          description: "Failed to upload image",
+                          title: "Error uploading image",
+                          description: error.message,
                           variant: "destructive",
                         });
                         setIsUploading(false);
@@ -439,58 +364,17 @@ export function EventForm({
                         setIsUploading(true);
                       }}
                     />
-                  </div>
-                )}
-              </div>
-            </div>
-
-            <FormField
-              control={form.control}
-              name="formSchemaId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Form Schema</FormLabel>
-                  <Select
-                    value={field.value}
-                    onValueChange={field.onChange}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select a form schema" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {schemas.map((schema) => (
-                        <SelectItem key={schema.id} value={schema.id}>
-                          {schema.name}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormDescription>
-                    Choose a form schema for event registration
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
+                  )}
+                </div>
               )}
-            />
+            </div>
           </div>
         </Card>
 
-        <div className="flex justify-end">
-          <Button
-            type="submit"
-            disabled={isSubmitting || isUploading}
-            className="w-full md:w-auto"
-          >
-            {isSubmitting ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Saving...
-              </>
-            ) : (
-              "Save Event"
-            )}
+        <div className="flex justify-end gap-4">
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            Save Event
           </Button>
         </div>
       </form>
