@@ -44,12 +44,22 @@ export async function POST(request: Request) {
     const json = await request.json();
     const validatedData = eventFormSchema.parse(json);
 
+    console.log("Creating event with data:", {
+      ...validatedData,
+      startDate: new Date(validatedData.startDate),
+      endDate: validatedData.endDate
+        ? new Date(validatedData.endDate)
+        : undefined,
+    });
+
     const event = await db.event.create({
       data: {
         title: validatedData.title,
         description: validatedData.description,
         startDate: new Date(validatedData.startDate),
-        endDate: new Date(validatedData.endDate),
+        endDate: validatedData.endDate
+          ? new Date(validatedData.endDate)
+          : undefined,
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
         signup_period_json: validatedData.signupPeriodJson,
@@ -69,8 +79,8 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[EVENTS_POST]", error);
     if (error instanceof z.ZodError) {
-      return new NextResponse(JSON.stringify(error.errors), { status: 400 });
+      return NextResponse.json({ errors: error.errors }, { status: 400 });
     }
-    return new NextResponse("Internal error", { status: 500 });
+    return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }
 }

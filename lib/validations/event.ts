@@ -5,7 +5,7 @@ export const eventFormSchema = z
     title: z.string().min(1, "Title is required"),
     description: z.string().min(1, "Description is required"),
     startDate: z.string().min(1, "Start date is required"),
-    endDate: z.string().min(1, "End date is required"),
+    endDate: z.string().optional(),
     location: z.string().min(1, "Location is required"),
     formSchemaId: z.string().min(1, "Form schema is required"),
     imageUrl: z.string().url().optional(),

@@ -39,6 +39,7 @@ export async function PATCH(
 ) {
   try {
     const { userId } = await auth();
+    const { eventId } = await context.params;
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -47,13 +48,23 @@ export async function PATCH(
     const json = await request.json();
     const validatedData = eventFormSchema.parse(json);
 
+    console.log("Updating event with data:", {
+      ...validatedData,
+      startDate: new Date(validatedData.startDate),
+      endDate: validatedData.endDate
+        ? new Date(validatedData.endDate)
+        : undefined,
+    });
+
     const event = await db.event.update({
-      where: { id: context.params.eventId },
+      where: { id: eventId },
       data: {
         title: validatedData.title,
         description: validatedData.description,
         startDate: new Date(validatedData.startDate),
-        endDate: new Date(validatedData.endDate),
+        endDate: validatedData.endDate
+          ? new Date(validatedData.endDate)
+          : undefined,
         location: validatedData.location,
         imageUrl: validatedData.imageUrl,
         signup_period_json: validatedData.signupPeriodJson,
