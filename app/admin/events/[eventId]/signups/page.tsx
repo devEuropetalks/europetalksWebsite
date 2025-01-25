@@ -1,13 +1,13 @@
 import { EventSignupsList } from "@/components/admin/EventSignupsList";
 import { db } from "@/lib/db";
 
-type PageProps = {
+export default async function EventSignupsPage({
+  params,
+}: {
   params: { eventId: string };
-};
-
-async function getEvent(eventId: string) {
-  return await db.event.findUnique({
-    where: { id: eventId },
+}) {
+  const event = await db.event.findUnique({
+    where: { id: params.eventId },
     include: {
       formSchema: {
         include: {
@@ -17,10 +17,6 @@ async function getEvent(eventId: string) {
       },
     },
   });
-}
-
-export default async function EventSignupsPage({ params }: PageProps) {
-  const event = await getEvent(params.eventId);
 
   if (!event) return <div>Event not found</div>;
 
