@@ -60,10 +60,10 @@ export default withUt({
   		},
   		opacity: {
   			'15': '0.15',
-            '25': '0.25',
-  		},
+  			'25': '0.25'
+  		}
   	}
   },
-  plugins: [animate],
+  plugins: [animate, require("tailwindcss-animate")],
 } satisfies Config);
 

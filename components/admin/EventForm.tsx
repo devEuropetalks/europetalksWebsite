@@ -77,6 +77,10 @@ export function EventForm({
       endDate: defaultValues?.endDate || defaultValues?.startDate || "",
       location: defaultValues?.location || "",
       formSchemaId: defaultValues?.formSchemaId || "",
+      signupPeriodJson: defaultValues?.signupPeriodJson || {
+        startDate: null,
+        endDate: null,
+      },
     },
   });
 
@@ -174,6 +178,7 @@ export function EventForm({
                       <PopoverTrigger asChild>
                         <FormControl>
                           <Button
+                            type="button"
                             variant="outline"
                             className={cn(
                               "pl-3 text-left font-normal w-full md:w-[280px]",
@@ -201,18 +206,30 @@ export function EventForm({
                             }
                             onSelect={(date) => {
                               if (date) {
+                                const newDate = new Date(date);
                                 if (isMultiDay) {
-                                  date.setHours(0, 0, 0, 0);
+                                  newDate.setHours(0, 0, 0, 0);
                                 } else {
-                                  const currentDate = new Date();
-                                  date.setHours(
-                                    currentDate.getHours(),
-                                    currentDate.getMinutes()
+                                  const now = new Date();
+                                  newDate.setHours(
+                                    now.getHours(),
+                                    now.getMinutes(),
+                                    0,
+                                    0
                                   );
                                 }
-                                field.onChange(date.toISOString());
+                                field.onChange(newDate.toISOString());
+                                if (!isMultiDay) {
+                                  form.setValue(
+                                    "endDate",
+                                    newDate.toISOString()
+                                  );
+                                }
                               }
                             }}
+                            disabled={(date) =>
+                              date < new Date(new Date().setHours(0, 0, 0, 0))
+                            }
                             initialFocus
                           />
                           {!isMultiDay && (
@@ -229,14 +246,22 @@ export function EventForm({
                                     e.target.value.split(":");
                                   date.setHours(
                                     parseInt(hours),
-                                    parseInt(minutes)
+                                    parseInt(minutes),
+                                    0,
+                                    0
                                   );
                                   field.onChange(date.toISOString());
+                                  if (!isMultiDay) {
+                                    form.setValue(
+                                      "endDate",
+                                      date.toISOString()
+                                    );
+                                  }
                                 }}
                                 value={
                                   field.value
                                     ? format(new Date(field.value), "HH:mm")
-                                    : ""
+                                    : format(new Date(), "HH:mm")
                                 }
                               />
                             </div>

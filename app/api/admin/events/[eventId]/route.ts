@@ -48,39 +48,65 @@ export async function PATCH(
     const json = await request.json();
     const validatedData = eventFormSchema.parse(json);
 
-    console.log("Updating event with data:", {
-      ...validatedData,
-      startDate: new Date(validatedData.startDate),
-      endDate: validatedData.endDate
-        ? new Date(validatedData.endDate)
-        : undefined,
+    // Get the current event to check if form schema is changing
+    const currentEvent = await db.event.findUnique({
+      where: { id: eventId },
+      select: { formSchemaId: true },
     });
 
-    const event = await db.event.update({
-      where: { id: eventId },
-      data: {
-        title: validatedData.title,
-        description: validatedData.description,
-        startDate: new Date(validatedData.startDate),
-        endDate: validatedData.endDate
-          ? new Date(validatedData.endDate)
-          : undefined,
-        location: validatedData.location,
-        imageUrl: validatedData.imageUrl,
-        signup_period_json: validatedData.signupPeriodJson,
-        formSchemaId: validatedData.formSchemaId,
-      },
-      include: {
-        formSchema: {
-          include: {
-            fields: true,
-            terms: true,
+    if (!currentEvent) {
+      return NextResponse.json({ error: "Event not found" }, { status: 404 });
+    }
+
+    // If form schema is changing, we need to clear existing signups
+    const isFormSchemaChanging =
+      currentEvent.formSchemaId !== validatedData.formSchemaId;
+
+    const result = await db.$transaction(async (tx) => {
+      // If form schema is changing, delete all existing signups
+      if (isFormSchemaChanging) {
+        await tx.eventSignup.deleteMany({
+          where: { eventId },
+        });
+      }
+
+      // Update the event
+      const updatedEvent = await tx.event.update({
+        where: { id: eventId },
+        data: {
+          title: validatedData.title,
+          description: validatedData.description,
+          startDate: new Date(validatedData.startDate),
+          endDate: validatedData.endDate
+            ? new Date(validatedData.endDate)
+            : undefined,
+          location: validatedData.location,
+          imageUrl: validatedData.imageUrl,
+          signup_period_json: validatedData.signupPeriodJson,
+          formSchemaId: validatedData.formSchemaId,
+        },
+        include: {
+          formSchema: {
+            include: {
+              fields: {
+                orderBy: {
+                  order: "asc",
+                },
+              },
+              terms: {
+                orderBy: {
+                  order: "asc",
+                },
+              },
+            },
           },
         },
-      },
+      });
+
+      return updatedEvent;
     });
 
-    return NextResponse.json(event);
+    return NextResponse.json(result);
   } catch (error) {
     console.error("[EVENT_PATCH]", error);
     if (error instanceof z.ZodError) {

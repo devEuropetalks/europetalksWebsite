@@ -74,17 +74,22 @@ export default function EventDetailsDialog({
         className="max-w-3xl h-[90vh] p-0 bg-background"
         aria-describedby="event-details-description"
       >
-        <DialogHeader>
-          <DialogTitle>{event.title}</DialogTitle>
-          <DialogDescription id="event-details-description">
+        <DialogHeader className="p-4 pb-2">
+          <DialogTitle className="text-3xl font-semibold">
+            {event.title}
+          </DialogTitle>
+          <DialogDescription
+            id="event-details-description"
+            className="text-sm mt-1"
+          >
             View details and information about this event, including date,
             location, and description.
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-full">
-          <div className="flex flex-col h-full">
+          <div className="flex flex-col">
             {/* Image Section */}
-            <div className="relative w-full aspect-video">
+            <div className="relative w-full aspect-[16/9] flex items-center justify-center bg-muted">
               {event.imageUrl ? (
                 <Image
                   src={event.imageUrl}
@@ -97,11 +102,9 @@ export default function EventDetailsDialog({
                   onLoadingComplete={() => setIsImageLoading(false)}
                 />
               ) : (
-                <div className="w-full h-full bg-muted flex items-center justify-center">
-                  <span className="text-muted-foreground">
-                    No image available
-                  </span>
-                </div>
+                <span className="text-muted-foreground">
+                  No image available
+                </span>
               )}
               {isImageLoading && event.imageUrl && (
                 <div className="absolute inset-0 bg-muted animate-pulse" />
@@ -109,10 +112,8 @@ export default function EventDetailsDialog({
             </div>
 
             {/* Content Section */}
-            <div className="flex flex-col p-6">
-              <div className="space-y-4">
-                <h2 className="text-2xl font-semibold">{event.title}</h2>
-
+            <div className="p-4">
+              <div className="space-y-3">
                 <div className="flex flex-col gap-2 text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <CalendarIcon className="h-5 w-5" />
@@ -132,7 +133,7 @@ export default function EventDetailsDialog({
               </div>
 
               {!isEventEnded() && (
-                <div className="pt-6 mt-auto border-t">
+                <div className="pt-4 mt-4 border-t">
                   <Button
                     className="w-full"
                     onClick={() => setIsSignupOpen(true)}

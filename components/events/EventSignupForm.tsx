@@ -41,7 +41,7 @@ import {
   EventTerms,
 } from "@/lib/types/event-form";
 import { format } from "date-fns";
-import { BirthdayPicker } from "@/components/ui/birthday-picker";
+import { PhoneInput } from "@/components/ui/phone-input";
 
 interface EventSignupFormProps {
   eventId: string;
@@ -50,6 +50,7 @@ interface EventSignupFormProps {
   terms: EventTerms[];
   isOpen: boolean;
   onClose: () => void;
+  onSuccess?: () => void;
 }
 
 export default function EventSignupForm({
@@ -59,6 +60,7 @@ export default function EventSignupForm({
   terms,
   isOpen,
   onClose,
+  onSuccess,
 }: EventSignupFormProps) {
   const { t } = useTranslation("events");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -109,6 +111,7 @@ export default function EventSignupForm({
 
       form.reset();
       onClose();
+      onSuccess?.();
     } catch (error) {
       console.error("Error signing up:", error);
       toast({
@@ -137,27 +140,16 @@ export default function EventSignupForm({
         <FormControl>
           {(() => {
             switch (field.type) {
+              case "tel":
+                return (
+                  <PhoneInput
+                    value={formField.value}
+                    onChange={formField.onChange}
+                    defaultCountry="DE"
+                    placeholder={field.placeholder}
+                  />
+                );
               case "date":
-                // Check if the field is for birthdate based on name or label
-                const isBirthdate =
-                  field.name.toLowerCase().includes("birth") ||
-                  field.label.toLowerCase().includes("birth") ||
-                  field.placeholder?.toLowerCase().includes("birth");
-
-                if (isBirthdate) {
-                  return (
-                    <BirthdayPicker
-                      date={
-                        formField.value ? new Date(formField.value) : undefined
-                      }
-                      onSelect={(date) =>
-                        formField.onChange(date ? date.toISOString() : null)
-                      }
-                      placeholder={field.placeholder}
-                    />
-                  );
-                }
-
                 return (
                   <Input
                     {...formField}
@@ -284,13 +276,14 @@ export default function EventSignupForm({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent aria-describedby="event-signup-description">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto my-4">
         <DialogHeader>
           <DialogTitle>
             {t("signUp.title")} {eventTitle}
           </DialogTitle>
           <DialogDescription id="event-signup-description">
-            Complete this form to register for {eventTitle}. Please provide your
+            Complete this form to register for{" "}
+            {eventTitle.trim().replace(/[.?!]?\s*$/, ".")} Please provide your
             personal information and any required event-specific details.
           </DialogDescription>
         </DialogHeader>

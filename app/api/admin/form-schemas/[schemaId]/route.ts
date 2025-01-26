@@ -59,23 +59,31 @@ export async function PATCH(
 
     const validatedData = formSchemaSchema.parse(body);
 
-    // Delete existing fields and terms
-    await db.formField.deleteMany({
-      where: {
-        schemaId: schemaId,
-      },
-    });
+    // Wrap operations in a transaction
+    const result = await db.$transaction(async (tx) => {
+      // Delete existing fields and terms
+      await tx.formField.deleteMany({
+        where: {
+          schemaId: schemaId,
+        },
+      });
 
-    await db.formSchema.update({
-      where: {
-        id: schemaId,
-      },
-      data: {
-        name: validatedData.name,
-        description: validatedData.description,
-        fields: {
-          createMany: {
-            data: validatedData.fields.map((field) => ({
+      await tx.eventTerm.deleteMany({
+        where: {
+          schemaId: schemaId,
+        },
+      });
+
+      // Update the schema with new fields and terms
+      const updatedSchema = await tx.formSchema.update({
+        where: {
+          id: schemaId,
+        },
+        data: {
+          name: validatedData.name,
+          description: validatedData.description,
+          fields: {
+            create: validatedData.fields.map((field) => ({
               type: field.type,
               label: field.label,
               name: field.name,
@@ -85,30 +93,52 @@ export async function PATCH(
               options: field.options || [],
               validation: field.validation || {},
               order: field.order,
-              schemaId: schemaId,
             })),
           },
-        },
-        terms: {
-          createMany: {
-            data: validatedData.terms.map((term, index) => ({
+          terms: {
+            create: validatedData.terms.map((term) => ({
               text: term.text,
-              order: index,
-              schemaId: schemaId,
+              order: term.order,
             })),
           },
         },
-      },
-      include: {
-        fields: true,
-        terms: true,
-      },
+        include: {
+          fields: {
+            orderBy: {
+              order: "asc",
+            },
+          },
+          terms: {
+            orderBy: {
+              order: "asc",
+            },
+          },
+        },
+      });
+
+      return updatedSchema;
     });
 
-    return NextResponse.json({ success: true });
+    if (!result) {
+      return NextResponse.json(
+        { error: "Failed to update form schema" },
+        { status: 500 }
+      );
+    }
+
+    return NextResponse.json(result);
   } catch (error) {
-    console.error("[FORM_SCHEMA_PATCH]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.error(
+      "[FORM_SCHEMA_PATCH]",
+      error instanceof Error ? error.message : "Unknown error"
+    );
+    if (error instanceof z.ZodError) {
+      return NextResponse.json({ errors: error.errors }, { status: 400 });
+    }
+    return NextResponse.json(
+      { error: "Failed to save form schema" },
+      { status: 500 }
+    );
   }
 }
 
