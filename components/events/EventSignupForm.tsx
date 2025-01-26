@@ -41,14 +41,6 @@ import {
   EventTerms,
 } from "@/lib/types/event-form";
 import { format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
-import { CalendarIcon } from "lucide-react";
 import { BirthdayPicker } from "@/components/ui/birthday-picker";
 
 interface EventSignupFormProps {
@@ -167,39 +159,22 @@ export default function EventSignupForm({
                 }
 
                 return (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant="outline"
-                          className={cn(
-                            "w-full pl-3 text-left font-normal",
-                            !formField.value && "text-muted-foreground"
-                          )}
-                        >
-                          {formField.value ? (
-                            format(new Date(formField.value), "PPP")
-                          ) : (
-                            <span>{field.placeholder || "Pick a date"}</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        selected={
-                          formField.value
-                            ? new Date(formField.value)
-                            : undefined
-                        }
-                        onSelect={(date) =>
-                          formField.onChange(date ? date.toISOString() : null)
-                        }
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
+                  <Input
+                    {...formField}
+                    type="date"
+                    placeholder={field.placeholder}
+                    onChange={(e) => {
+                      const date = e.target.value
+                        ? new Date(e.target.value)
+                        : null;
+                      formField.onChange(date ? date.toISOString() : null);
+                    }}
+                    value={
+                      formField.value
+                        ? format(new Date(formField.value), "yyyy-MM-dd")
+                        : ""
+                    }
+                  />
                 );
               case "textarea":
                 return (
