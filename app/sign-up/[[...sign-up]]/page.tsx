@@ -1,38 +1,42 @@
+"use client";
+
 import { SignUp } from "@clerk/nextjs";
-import Image from "next/image";
+import ContentWrapper from "@/components/ContentWrapper";
+import { useTranslation } from "react-i18next";
+import { useEffect } from "react";
+import { i18n } from "@/components/i18n-provider";
 
 export default function SignUpPage() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <Image
-            src="/logo.png"
-            alt="EuropeTalks Logo"
-            width={48}
-            height={48}
-            className="h-12 w-auto"
-          />
-        </div>
-        <h2 className="mt-6 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Create your account
-        </h2>
-      </div>
+  const { t } = useTranslation("auth");
 
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+  useEffect(() => {
+    // Reload auth translations when the page loads
+    i18n.reloadResources(i18n.language, "auth");
+  }, []);
+
+  return (
+    <ContentWrapper>
+      <div className="min-h-[80vh] flex items-center justify-center">
+        <div className="w-full max-w-md p-6">
+          <h1 className="text-3xl font-bold text-center mb-8">
+            {t("signUp.title")}
+          </h1>
           <SignUp
             appearance={{
               elements: {
-                formButtonPrimary:
-                  "bg-primary hover:bg-primary/90 text-primary-foreground shadow",
-                card: "bg-transparent shadow-none p-0",
-                footer: "hidden",
+                rootBox: "mx-auto w-full",
+                card: "bg-background border rounded-xl shadow-lg",
+                headerTitle: "text-foreground",
+                headerSubtitle: "text-muted-foreground",
+                socialButtonsBlockButton: "text-foreground",
+                formFieldLabel: "text-foreground",
+                formFieldInput: "bg-background text-foreground border",
+                footerActionLink: "text-primary hover:text-primary/80",
               },
             }}
           />
         </div>
       </div>
-    </div>
+    </ContentWrapper>
   );
 }
