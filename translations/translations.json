@@ -56,6 +56,12 @@
         "success": "Successfully signed in",
         "error": "Failed to sign in"
       },
+      "signUp": {
+        "title": "Sign Up",
+        "subtitle": "Welcome to EuropeTalks",
+        "success": "Successfully signed up",
+        "error": "Failed to sign up"
+      },
       "signOut": {
         "success": "Successfully signed out",
         "error": "Failed to sign out"
