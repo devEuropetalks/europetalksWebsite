@@ -5,8 +5,6 @@
       "@/*": [
         "./*"
       ]
-      // or if using src directory:
-      // "@/*": ["./src/*"]
     },
     "jsx": "preserve",
     "target": "ES2017",
