@@ -25,6 +25,30 @@ export const eventFormSchema = z
       message: "End date must be after or equal to start date",
       path: ["endDate"],
     }
+  )
+  .refine(
+    (data) => {
+      if (!data.signupPeriodJson.endDate) return true;
+      const signupEnd = new Date(data.signupPeriodJson.endDate);
+      const eventStart = new Date(data.startDate);
+      return signupEnd <= eventStart;
+    },
+    {
+      message: "Registration end date must be before or equal to event start date",
+      path: ["signupPeriodJson.endDate"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (!data.signupPeriodJson.startDate || !data.signupPeriodJson.endDate) return true;
+      const signupStart = new Date(data.signupPeriodJson.startDate);
+      const signupEnd = new Date(data.signupPeriodJson.endDate);
+      return signupEnd >= signupStart;
+    },
+    {
+      message: "Registration end date must be after or equal to registration start date",
+      path: ["signupPeriodJson.endDate"],
+    }
   );
 
 export type EventFormData = z.infer<typeof eventFormSchema>;
