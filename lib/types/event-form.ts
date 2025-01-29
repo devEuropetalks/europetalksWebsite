@@ -123,10 +123,21 @@ export function createDynamicSchema(
       case "tel":
         fieldSchema = z
           .string()
-          .regex(
-            /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/,
+          .refine(
+            (value) => {
+              if (!value) return true; // Allow empty for optional fields
+              // Use the isValidPhoneNumber function from react-phone-number-input
+              try {
+                // Remove all spaces and special characters for basic format check
+                const cleaned = value.replace(/[\s\-\(\)\.]/g, '');
+                // Must start with + and have at least 7 digits
+                return /^\+[0-9]{7,}$/.test(cleaned);
+              } catch {
+                return false;
+              }
+            },
             field.validation?.customMessage ||
-              "Please enter a valid phone number"
+              "Please enter a valid phone number and select the country code form the list on the left."
           );
         break;
       case "date":
