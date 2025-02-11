@@ -8,12 +8,14 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { format } from "date-fns";
-import { CalendarIcon, MapPinIcon } from "lucide-react";
+import { CalendarIcon, MapPinIcon, Clock } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
 import { FormField } from "@/lib/types/event-form";
 import { EventTerms } from "@/lib/types/event-form";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 
 interface EventCardProps {
   event: {
@@ -65,7 +67,7 @@ export function EventCard({ event }: EventCardProps) {
     return endDate < now;
   };
 
-  const isRegistrationOpen = () => {
+  const getRegistrationStatus = () => {
     const now = new Date();
     const signupStart = event.signupPeriod?.startDate
       ? new Date(event.signupPeriod.startDate)
@@ -74,7 +76,30 @@ export function EventCard({ event }: EventCardProps) {
       ? new Date(event.signupPeriod.endDate)
       : new Date(event.startDate); // If not set, registration closes at event start
 
-    return now >= signupStart && now <= signupEnd;
+    if (now < signupStart) {
+      return "not_started";
+    } else if (now > signupEnd) {
+      return "closed";
+    }
+    return "open";
+  };
+
+  const registrationStatus = getRegistrationStatus();
+  const isRegistrationOpen = registrationStatus === "open";
+
+  const getRegistrationPeriodText = () => {
+    if (!event.signupPeriod?.startDate && !event.signupPeriod?.endDate) {
+      return "Registration open until event starts";
+    }
+
+    const start = event.signupPeriod.startDate
+      ? format(new Date(event.signupPeriod.startDate), "PPp")
+      : "now";
+    const end = event.signupPeriod.endDate
+      ? format(new Date(event.signupPeriod.endDate), "PPp")
+      : format(new Date(event.startDate), "PPp");
+
+    return `Registration: ${start} - ${end}`;
   };
 
   return (
@@ -102,7 +127,17 @@ export function EventCard({ event }: EventCardProps) {
           </div>
         )}
         <CardHeader>
-          <h3 className="text-lg font-semibold">{event.title}</h3>
+          <div className="flex justify-between items-start">
+            <h3 className="text-lg font-semibold">{event.title}</h3>
+            <Badge variant={
+              registrationStatus === "open" ? "default" :
+              registrationStatus === "not_started" ? "secondary" : "destructive"
+            }>
+              {registrationStatus === "open" ? "Registration Open" :
+               registrationStatus === "not_started" ? "Registration Not Started" :
+               "Registration Closed"}
+            </Badge>
+          </div>
           <div className="flex flex-col gap-1 text-sm text-muted-foreground">
             <div className="flex items-center gap-1">
               <CalendarIcon className="h-4 w-4" />
@@ -114,10 +149,23 @@ export function EventCard({ event }: EventCardProps) {
               <MapPinIcon className="h-4 w-4" />
               <span>{event.location}</span>
             </div>
+            <div className="flex items-center gap-1">
+              <Clock className="h-4 w-4" />
+              <span className="text-xs">{getRegistrationPeriodText()}</span>
+            </div>
           </div>
         </CardHeader>
         <CardContent>
           <p className="text-sm line-clamp-3">{event.description}</p>
+          {!isRegistrationOpen && (
+            <Alert variant="destructive" className="mt-4">
+              <AlertDescription>
+                {registrationStatus === "not_started"
+                  ? "Registration has not started yet. Please check back later."
+                  : "Registration period has ended. No more signups are being accepted."}
+              </AlertDescription>
+            </Alert>
+          )}
         </CardContent>
         <CardFooter>
           <Button
@@ -126,12 +174,15 @@ export function EventCard({ event }: EventCardProps) {
               e.stopPropagation();
               setIsSignupOpen(true);
             }}
-            disabled={isEventEnded() || !isRegistrationOpen()}
+            disabled={isEventEnded() || !isRegistrationOpen}
+            variant={isRegistrationOpen ? "default" : "secondary"}
           >
             {isEventEnded()
               ? t("eventCard.eventEnded")
-              : !isRegistrationOpen()
-              ? t("eventCard.registrationClosed")
+              : !isRegistrationOpen
+              ? registrationStatus === "not_started"
+                ? "Registration Not Started"
+                : "Registration Closed"
               : t("eventCard.signUp")}
           </Button>
         </CardFooter>
@@ -143,7 +194,7 @@ export function EventCard({ event }: EventCardProps) {
         onClose={() => setIsDetailsOpen(false)}
       />
 
-      {!isEventEnded() && (
+      {!isEventEnded() && isRegistrationOpen && (
         <EventSignupForm
           eventId={event.id}
           eventTitle={event.title}

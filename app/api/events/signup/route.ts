@@ -3,6 +3,12 @@ import nodemailer from "nodemailer";
 import { db } from "@/lib/db";
 import { format } from "date-fns";
 
+// Define the type for the signup period JSON structure
+type SignupPeriodJson = {
+  startDate: string | null;
+  endDate: string | null;
+};
+
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_SERVER_HOST,
   port: Number(process.env.EMAIL_SERVER_PORT),
@@ -32,6 +38,48 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { eventId, fullName, email, ...formData } = body;
 
+    // Get event details and check registration period
+    const event = await db.event.findUnique({
+      where: { id: eventId },
+      select: { 
+        title: true,
+        startDate: true,
+        signup_period_json: true,
+        formSchema: {
+          include: {
+            fields: true,
+            terms: true
+          }
+        }
+      },
+    });
+
+    if (!event) {
+      return NextResponse.json(
+        { error: "Event not found" },
+        { status: 404 }
+      );
+    }
+
+    // Parse the signup period JSON
+    const signupPeriod = event.signup_period_json as SignupPeriodJson;
+
+    // Check if registration is still open
+    const now = new Date();
+    const signupStart = signupPeriod?.startDate
+      ? new Date(signupPeriod.startDate)
+      : new Date(0); // If not set, registration is open from the beginning
+    const signupEnd = signupPeriod?.endDate
+      ? new Date(signupPeriod.endDate)
+      : new Date(event.startDate); // If not set, registration closes at event start
+
+    if (now < signupStart || now > signupEnd) {
+      return NextResponse.json(
+        { error: "Registration period is closed" },
+        { status: 403 }
+      );
+    }
+
     // Format any date fields in the form data
     const formattedFormData = Object.entries(formData).reduce(
       (acc, [key, value]) => {
@@ -60,24 +108,6 @@ export async function POST(request: Request) {
         formData: formattedFormData,
       },
     });
-
-    // Get event details for the email
-    const event = await db.event.findUnique({
-      where: { id: eventId },
-      select: { 
-        title: true,
-        formSchema: {
-          include: {
-            fields: true,
-            terms: true
-          }
-        }
-      },
-    });
-
-    if (!event) {
-      throw new Error("Event not found");
-    }
 
     // Send confirmation email to user
     await transporter.sendMail({
