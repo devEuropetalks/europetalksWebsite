@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
-import { CalendarIcon, MapPinIcon } from "lucide-react";
+import { CalendarIcon, MapPinIcon, Clock } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -13,6 +13,8 @@ import EventSignupForm from "./EventSignupForm";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { FormField, EventTerms } from "@/lib/types/event-form";
 import { format } from "date-fns";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 
 interface EventDetailsDialogProps {
   event: {
@@ -27,9 +29,9 @@ interface EventDetailsDialogProps {
       fields: FormField[];
       terms: EventTerms[];
     };
-    signupPeriod?: {
-      startDate: string;
-      endDate: string;
+    signup_period_json?: {
+      startDate: string | null;
+      endDate: string | null;
     };
   };
   isOpen: boolean;
@@ -68,6 +70,64 @@ export default function EventDetailsDialog({
     return endDate < now;
   };
 
+  const getRegistrationStatus = () => {
+    const now = new Date();
+    
+    if (!event.signup_period_json) {
+      return now > new Date(event.startDate) ? "closed" : "open";
+    }
+
+    // If both dates are set in signup_period_json, use them directly
+    if (event.signup_period_json.startDate && event.signup_period_json.endDate) {
+      const signupStart = new Date(event.signup_period_json.startDate);
+      const signupEnd = new Date(event.signup_period_json.endDate);
+
+      if (now < signupStart) {
+        return "not_started";
+      } else if (now > signupEnd) {
+        return "closed";
+      }
+      return "open";
+    }
+
+    // Fallback behavior for when only some dates are set
+    const signupStart = event.signup_period_json.startDate
+      ? new Date(event.signup_period_json.startDate)
+      : new Date(0); // If not set, registration is open from the beginning
+    const signupEnd = event.signup_period_json.endDate
+      ? new Date(event.signup_period_json.endDate)
+      : new Date(event.startDate); // If not set, registration closes at event start
+
+    if (now < signupStart) {
+      return "not_started";
+    } else if (now > signupEnd) {
+      return "closed";
+    }
+    return "open";
+  };
+
+  const registrationStatus = getRegistrationStatus();
+  const isRegistrationOpen = registrationStatus === "open";
+
+  const getRegistrationPeriodText = () => {
+    if (!event.signup_period_json) {
+      return `Registration open until event starts (${format(new Date(event.startDate), "PPp")})`;
+    }
+
+    if (!event.signup_period_json.startDate && !event.signup_period_json.endDate) {
+      return "Registration open until event starts";
+    }
+
+    const start = event.signup_period_json.startDate
+      ? format(new Date(event.signup_period_json.startDate), "PPp")
+      : "now";
+    const end = event.signup_period_json.endDate
+      ? format(new Date(event.signup_period_json.endDate), "PPp")
+      : format(new Date(event.startDate), "PPp");
+
+    return `Registration: ${start} - ${end}`;
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
@@ -75,9 +135,19 @@ export default function EventDetailsDialog({
         aria-describedby="event-details-description"
       >
         <DialogHeader className="p-4 pb-2">
-          <DialogTitle className="text-3xl font-semibold">
-            {event.title}
-          </DialogTitle>
+          <div className="flex justify-between items-start">
+            <DialogTitle className="text-3xl font-semibold">
+              {event.title}
+            </DialogTitle>
+            <Badge variant={
+              registrationStatus === "open" ? "default" :
+              registrationStatus === "not_started" ? "secondary" : "destructive"
+            }>
+              {registrationStatus === "open" ? "Registration Open" :
+               registrationStatus === "not_started" ? "Registration Not Started" :
+               "Registration Closed"}
+            </Badge>
+          </div>
           <DialogDescription
             id="event-details-description"
             className="text-sm mt-1"
@@ -125,6 +195,10 @@ export default function EventDetailsDialog({
                     <MapPinIcon className="h-5 w-5" />
                     <span>{event.location}</span>
                   </div>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-5 w-5" />
+                    <span>{getRegistrationPeriodText()}</span>
+                  </div>
                 </div>
 
                 <div className="prose prose-sm max-w-none">
@@ -134,11 +208,26 @@ export default function EventDetailsDialog({
 
               {!isEventEnded() && (
                 <div className="pt-4 mt-4 border-t">
+                  {!isRegistrationOpen && (
+                    <Alert variant="destructive" className="mb-4">
+                      <AlertDescription>
+                        {registrationStatus === "not_started"
+                          ? "Registration has not started yet. Please check back later."
+                          : "Registration period has ended. No more signups are being accepted."}
+                      </AlertDescription>
+                    </Alert>
+                  )}
                   <Button
                     className="w-full"
                     onClick={() => setIsSignupOpen(true)}
+                    disabled={!isRegistrationOpen}
+                    variant={isRegistrationOpen ? "default" : "secondary"}
                   >
-                    Sign Up
+                    {registrationStatus === "not_started"
+                      ? "Registration Not Started"
+                      : registrationStatus === "closed"
+                      ? "Registration Closed"
+                      : "Sign Up"}
                   </Button>
                 </div>
               )}
@@ -147,7 +236,7 @@ export default function EventDetailsDialog({
         </ScrollArea>
       </DialogContent>
 
-      {!isEventEnded() && (
+      {!isEventEnded() && isRegistrationOpen && (
         <EventSignupForm
           eventId={event.id}
           eventTitle={event.title}
