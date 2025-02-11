@@ -135,26 +135,29 @@ export default function EventDetailsDialog({
         aria-describedby="event-details-description"
       >
         <DialogHeader className="p-4 pb-2">
-          <div className="flex justify-between items-start">
-            <DialogTitle className="text-3xl font-semibold">
-              {event.title}
-            </DialogTitle>
-            <Badge variant={
-              registrationStatus === "open" ? "default" :
-              registrationStatus === "not_started" ? "secondary" : "destructive"
-            }>
+          <DialogTitle className="text-3xl font-semibold">
+            {event.title}
+          </DialogTitle>
+          <div className="flex flex-col gap-2">
+            <DialogDescription
+              id="event-details-description"
+              className="text-sm"
+            >
+              View details and information about this event, including date,
+              location, and description.
+            </DialogDescription>
+            <Badge 
+              variant={
+                registrationStatus === "open" ? "default" :
+                registrationStatus === "not_started" ? "secondary" : "destructive"
+              }
+              className="w-fit"
+            >
               {registrationStatus === "open" ? "Registration Open" :
                registrationStatus === "not_started" ? "Registration Not Started" :
                "Registration Closed"}
             </Badge>
           </div>
-          <DialogDescription
-            id="event-details-description"
-            className="text-sm mt-1"
-          >
-            View details and information about this event, including date,
-            location, and description.
-          </DialogDescription>
         </DialogHeader>
         <ScrollArea className="h-full">
           <div className="flex flex-col">
