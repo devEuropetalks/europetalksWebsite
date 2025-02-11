@@ -30,9 +30,9 @@ interface EventCardProps {
       fields: FormField[];
       terms: EventTerms[];
     };
-    signupPeriod?: {
-      startDate: string;
-      endDate: string;
+    signup_period_json?: {
+      startDate: string | null;
+      endDate: string | null;
     };
   };
 }
@@ -69,11 +69,30 @@ export function EventCard({ event }: EventCardProps) {
 
   const getRegistrationStatus = () => {
     const now = new Date();
-    const signupStart = event.signupPeriod?.startDate
-      ? new Date(event.signupPeriod.startDate)
+    
+    if (!event.signup_period_json) {
+      return now > new Date(event.startDate) ? "closed" : "open";
+    }
+
+    // If both dates are set in signup_period_json, use them directly
+    if (event.signup_period_json.startDate && event.signup_period_json.endDate) {
+      const signupStart = new Date(event.signup_period_json.startDate);
+      const signupEnd = new Date(event.signup_period_json.endDate);
+
+      if (now < signupStart) {
+        return "not_started";
+      } else if (now > signupEnd) {
+        return "closed";
+      }
+      return "open";
+    }
+
+    // Fallback behavior for when only some dates are set
+    const signupStart = event.signup_period_json.startDate
+      ? new Date(event.signup_period_json.startDate)
       : new Date(0); // If not set, registration is open from the beginning
-    const signupEnd = event.signupPeriod?.endDate
-      ? new Date(event.signupPeriod.endDate)
+    const signupEnd = event.signup_period_json.endDate
+      ? new Date(event.signup_period_json.endDate)
       : new Date(event.startDate); // If not set, registration closes at event start
 
     if (now < signupStart) {
@@ -88,15 +107,19 @@ export function EventCard({ event }: EventCardProps) {
   const isRegistrationOpen = registrationStatus === "open";
 
   const getRegistrationPeriodText = () => {
-    if (!event.signupPeriod?.startDate && !event.signupPeriod?.endDate) {
+    if (!event.signup_period_json) {
+      return `Registration open until event starts (${format(new Date(event.startDate), "PPp")})`;
+    }
+
+    if (!event.signup_period_json.startDate && !event.signup_period_json.endDate) {
       return "Registration open until event starts";
     }
 
-    const start = event.signupPeriod.startDate
-      ? format(new Date(event.signupPeriod.startDate), "PPp")
+    const start = event.signup_period_json.startDate
+      ? format(new Date(event.signup_period_json.startDate), "PPp")
       : "now";
-    const end = event.signupPeriod.endDate
-      ? format(new Date(event.signupPeriod.endDate), "PPp")
+    const end = event.signup_period_json.endDate
+      ? format(new Date(event.signup_period_json.endDate), "PPp")
       : format(new Date(event.startDate), "PPp");
 
     return `Registration: ${start} - ${end}`;
