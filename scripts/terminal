@@ -1,0 +1,4 @@
+#for python 3.12.9
+pip install --upgrade pip
+pip install asyncpg transformers spacy deep-translator python-dotenv torch sentencepiece sacremoses
+python -m spacy download en_core_web_sm

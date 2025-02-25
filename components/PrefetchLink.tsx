@@ -2,27 +2,42 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ComponentProps, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import { cn } from '@/lib/utils';
+import { preload } from 'swr';
+import { fetcher } from '@/lib/api-client';
 
-type PrefetchLinkProps = ComponentProps<typeof Link>;
+interface PrefetchLinkProps extends React.ComponentPropsWithoutRef<typeof Link> {
+  children: React.ReactNode;
+  className?: string;
+  prefetch?: boolean;
+  prefetchData?: string; // API endpoint to prefetch
+}
 
-export function PrefetchLink({ href, ...props }: PrefetchLinkProps) {
+export function PrefetchLink({
+  children,
+  className,
+  prefetch = true,
+  prefetchData,
+  ...props
+}: PrefetchLinkProps) {
   const router = useRouter();
   const timeoutRef = useRef<NodeJS.Timeout>();
 
-  const prefetchData = useCallback(async () => {
-    // If it's the events page, prefetch the events data
-    if (href === "/events") {
-      try {
-        await fetch("/api/events");
-      } catch (error) {
-        console.error("Error prefetching events:", error);
-      }
+  const prefetchResources = useCallback(() => {
+    // Prefetch the page
+    if (prefetch && props.href) {
+      router.prefetch(props.href.toString());
     }
     
-    // Prefetch the page
-    router.prefetch(href.toString());
-  }, [href, router]);
+    // Prefetch API data if specified
+    if (prefetchData) {
+      preload(prefetchData, fetcher);
+    } else if (props.href === "/events") {
+      // Default prefetch for events page
+      preload('/api/events', fetcher);
+    }
+  }, [prefetch, prefetchData, props.href, router]);
 
   const handleMouseEnter = () => {
     // Clear any existing timeout
@@ -31,7 +46,7 @@ export function PrefetchLink({ href, ...props }: PrefetchLinkProps) {
     }
 
     // Set a new timeout to prefetch after a short delay
-    timeoutRef.current = setTimeout(prefetchData, 100);
+    timeoutRef.current = setTimeout(prefetchResources, 100);
   };
 
   const handleMouseLeave = () => {
@@ -52,10 +67,13 @@ export function PrefetchLink({ href, ...props }: PrefetchLinkProps) {
 
   return (
     <Link
-      href={href}
+      className={cn(className)}
+      prefetch={prefetch}
+      {...props}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      {...props}
-    />
+    >
+      {children}
+    </Link>
   );
 } 

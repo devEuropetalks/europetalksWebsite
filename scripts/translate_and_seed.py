@@ -1,6 +1,20 @@
 import json
 import asyncio
 import asyncpg
+import sys
+
+# Check for PyTorch installation
+try:
+    import torch
+    if not torch.cuda.is_available():
+        print("PyTorch is installed but CUDA is not available. Using CPU for translations (slower).")
+except ImportError:
+    print("PyTorch is not installed. Please install it with one of these commands:")
+    print("For CPU only: pip install torch")
+    print("For CUDA support (recommended): pip install torch --index-url https://download.pytorch.org/whl/cu118")
+    print("\nAfter installing PyTorch, run this script again.")
+    sys.exit(1)
+
 from transformers import (
     MarianMTModel,
     MarianTokenizer,
@@ -38,7 +52,7 @@ LANGUAGES = {
 
 def string_similarity(a: str, b: str) -> float:
     """Calculate similarity ratio between two strings"""
-    return SequenceMatcher(None, a.lower(), b.lower()).ratio()
+    return SequenceMatcher(None, a, b).ratio()
 
 
 class MultiTranslator:
@@ -47,6 +61,9 @@ class MultiTranslator:
         model_name = LANGUAGES[target_lang]["model"]
         self.tokenizer = MarianTokenizer.from_pretrained(model_name)
         self.model = MarianMTModel.from_pretrained(model_name)
+        
+        # Store target language
+        self.target_lang = target_lang
 
         # Initialize NLLB
         self.nllb_model_name = "facebook/nllb-200-distilled-600M"
@@ -83,7 +100,6 @@ class MultiTranslator:
 
         # Load English NER model
         self.nlp = spacy.load("en_core_web_sm")
-        self.target_lang = target_lang
 
     def get_entities(self, text: str) -> Set[str]:
         """Extract named entities from text"""
@@ -281,7 +297,7 @@ async def ensure_table_exists(conn):
 
 def generate_cuid2() -> str:
     """Generate a CUID2-like ID"""
-    return f"cm{uuid.uuid4().hex[:24]}"
+    return str(uuid.uuid4())
 
 
 async def translate_and_seed():
@@ -306,7 +322,7 @@ async def translate_and_seed():
             # Process each target language
             for lang_code, lang_info in LANGUAGES.items():
                 print(f"\nProcessing {lang_info['name']} ({lang_code})...")
-
+                
                 # Check for existing translation
                 existing = await conn.fetchrow(
                     'SELECT id, content FROM "Translation" WHERE language = $1',
@@ -383,6 +399,7 @@ async def translate_and_seed():
 
         finally:
             await conn.close()
+            print("Database connection closed")
 
     except Exception as e:
         print(f"Error during translation and seeding: {e}")

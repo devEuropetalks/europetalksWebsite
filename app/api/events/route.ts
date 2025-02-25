@@ -45,12 +45,32 @@ export async function GET() {
       }
     });
 
-    return NextResponse.json({
-      upcoming: upcomingEvents,
-      past: pastEvents,
-    });
+    // Return with caching headers
+    return NextResponse.json(
+      { upcoming: upcomingEvents, past: pastEvents },
+      {
+        headers: {
+          'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+        },
+      }
+    );
   } catch (error) {
     console.error("Error fetching events:", error);
-    return new NextResponse("Internal Server Error", { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to fetch events' },
+      { status: 500 }
+    );
   }
+}
+
+// This is a placeholder function - replace with your actual database query
+async function fetchEventsFromDatabase() {
+  // Implement your database query here
+  // For example, using Prisma:
+  // return prisma.event.findMany({
+  //   orderBy: { date: 'asc' },
+  // });
+  
+  // Placeholder return
+  return [];
 }

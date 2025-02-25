@@ -28,7 +28,7 @@ export default function AboutPage() {
               <h2 className="text-3xl font-semibold mb-4">{t("leadership.title")}</h2>
               <p>{t("leadership.intro")}</p>
               <div className="flex items-start gap-6 my-6 justify-center">
-                <div className="w-24 h-24 flex-shrink-0">
+                <div className="w-24 h-24 shrink-0">
                   <Image
                     src="/images/vivien-costanzo.jpeg"
                     alt={t("leadership.name")}
