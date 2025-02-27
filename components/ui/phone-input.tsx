@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { CheckIcon, ChevronsUpDown } from "lucide-react";
 import * as RPNInput from "react-phone-number-input";
@@ -42,11 +40,20 @@ const PhoneInput: React.ForwardRefExoticComponent<PhoneInputProps> =
           countrySelectComponent={CountrySelect}
           inputComponent={InputComponent}
           smartCaret={false}
+          /**
+           * Handles the onChange event.
+           *
+           * react-phone-number-input might trigger the onChange event as undefined
+           * when a valid phone number is not entered. To prevent this,
+           * the value is coerced to an empty string.
+           *
+           * @param {E164Number | undefined} value - The entered value
+           */
           onChange={(value) => onChange?.(value || ("" as RPNInput.Value))}
           {...props}
         />
       );
-    }
+    },
   );
 PhoneInput.displayName = "PhoneInput";
 
@@ -62,11 +69,13 @@ const InputComponent = React.forwardRef<
 ));
 InputComponent.displayName = "InputComponent";
 
+type CountryEntry = { label: string; value: RPNInput.Country | undefined };
+
 type CountrySelectProps = {
   disabled?: boolean;
   value: RPNInput.Country;
-  options: { label: string; value: RPNInput.Country | undefined }[];
-  onChange: (value: RPNInput.Country) => void;
+  options: CountryEntry[];
+  onChange: (country: RPNInput.Country) => void;
 };
 
 const CountrySelect = ({
@@ -91,7 +100,7 @@ const CountrySelect = ({
           <ChevronsUpDown
             className={cn(
               "-mr-2 size-4 opacity-50",
-              disabled ? "hidden" : "opacity-100"
+              disabled ? "hidden" : "opacity-100",
             )}
           />
         </Button>
@@ -112,7 +121,7 @@ const CountrySelect = ({
                       selectedCountry={selectedCountry}
                       onChange={onChange}
                     />
-                  ) : null
+                  ) : null,
                 )}
               </CommandGroup>
             </ScrollArea>
@@ -125,7 +134,7 @@ const CountrySelect = ({
 
 interface CountrySelectOptionProps extends RPNInput.FlagProps {
   selectedCountry: RPNInput.Country;
-  onChange: (value: RPNInput.Country) => void;
+  onChange: (country: RPNInput.Country) => void;
 }
 
 const CountrySelectOption = ({
@@ -138,13 +147,9 @@ const CountrySelectOption = ({
     <CommandItem className="gap-2" onSelect={() => onChange(country)}>
       <FlagComponent country={country} countryName={countryName} />
       <span className="flex-1 text-sm">{countryName}</span>
-      <span className="text-sm text-foreground/50">{`+${RPNInput.getCountryCallingCode(
-        country
-      )}`}</span>
+      <span className="text-sm text-foreground/50">{`+${RPNInput.getCountryCallingCode(country)}`}</span>
       <CheckIcon
-        className={`ml-auto size-4 ${
-          country === selectedCountry ? "opacity-100" : "opacity-0"
-        }`}
+        className={`ml-auto size-4 ${country === selectedCountry ? "opacity-100" : "opacity-0"}`}
       />
     </CommandItem>
   );
