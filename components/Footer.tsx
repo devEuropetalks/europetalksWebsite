@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-background w-full h-64 bg-gray-900 flex justify-center items-center">
+    <footer className="border-t w-full h-64 bg-gray-900 flex justify-center items-center">
       <div className="container py-6">
         <div className="flex flex-col items-center gap-4">
           {/* Social Media Links */}
