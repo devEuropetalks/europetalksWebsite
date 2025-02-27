@@ -15,7 +15,7 @@ export default function HomePage() {
 
   return (
     <div>
-      <ContentWrapper disableContainer>
+      <ContentWrapper fullBleed>
         {/* Hero Section */}
         <section className="relative w-full min-h-[60vh] -mt-14 pt-14">
           <div className="absolute inset-0">
@@ -139,15 +139,20 @@ export default function HomePage() {
           <h2 className="text-3xl font-bold mb-4 text-center">{t("getToKnowUs.title")}</h2>
           <Slideshow interval={5000} />
         </section>
-        {/* CTA Section */}
-        <section className="py-16 text-center bg-muted rounded-lg">
-          <h2 className="text-3xl font-bold mb-4">{t("cta.title")}</h2>
-          <p className="text-muted-foreground mb-8">{t("cta.description")}</p>
-          <div className="flex gap-4 justify-center">
-            <Button variant="outline" asChild>
-              <Link href="/contact">{t("cta.buttons.contact")}</Link>
-            </Button>
-          </div>
+      </ContentWrapper>
+      
+      {/* CTA Section - Full Width */}
+      <ContentWrapper fullBleed>
+        <section className="py-16 text-center bg-muted">
+          <ContentWrapper>
+            <h2 className="text-3xl font-bold mb-4">{t("cta.title")}</h2>
+            <p className="text-muted-foreground mb-8">{t("cta.description")}</p>
+            <div className="flex gap-4 justify-center">
+              <Button variant="outline" asChild>
+                <Link href="/contact">{t("cta.buttons.contact")}</Link>
+              </Button>
+            </div>
+          </ContentWrapper>
         </section>
       </ContentWrapper>
     </div>

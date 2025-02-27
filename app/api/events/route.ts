@@ -62,15 +62,3 @@ export async function GET() {
     );
   }
 }
-
-// This is a placeholder function - replace with your actual database query
-async function fetchEventsFromDatabase() {
-  // Implement your database query here
-  // For example, using Prisma:
-  // return prisma.event.findMany({
-  //   orderBy: { date: 'asc' },
-  // });
-  
-  // Placeholder return
-  return [];
-}
