@@ -48,6 +48,7 @@ interface EventFormProps {
   };
   isSubmitting?: boolean;
   formSchemas: Array<{ id: string; name: string }>;
+  isEditMode?: boolean;
 }
 
 export function EventForm({
@@ -55,6 +56,7 @@ export function EventForm({
   defaultValues,
   isSubmitting,
   formSchemas,
+  isEditMode = false,
 }: EventFormProps) {
   const [imageUrl, setImageUrl] = useState<string | undefined>(
     defaultValues?.imageUrl
@@ -77,9 +79,9 @@ export function EventForm({
       endDate: defaultValues?.endDate || defaultValues?.startDate || "",
       location: defaultValues?.location || "",
       formSchemaId: defaultValues?.formSchemaId || "",
-      signupPeriodJson: defaultValues?.signupPeriodJson || {
-        startDate: null,
-        endDate: null,
+      signupPeriodJson: {
+        startDate: defaultValues?.signupPeriodJson?.startDate || null,
+        endDate: defaultValues?.signupPeriodJson?.endDate || null,
       },
     },
   });
@@ -227,7 +229,7 @@ export function EventForm({
                                 }
                               }
                             }}
-                            disabled={(date) =>
+                            disabled={isEditMode ? undefined : (date) =>
                               date < new Date(new Date().setHours(0, 0, 0, 0))
                             }
                             initialFocus
@@ -320,7 +322,7 @@ export function EventForm({
                               }}
                               disabled={(date) => {
                                 const startDate = form.getValues("startDate");
-                                return startDate && date < new Date(startDate);
+                                return startDate ? date < new Date(startDate) : false;
                               }}
                               initialFocus
                             />
@@ -376,8 +378,13 @@ export function EventForm({
                                   const now = new Date();
                                   date.setHours(now.getHours(), now.getMinutes(), 0, 0);
                                   field.onChange(date.toISOString());
+                                } else {
+                                  field.onChange(null);
                                 }
                               }}
+                              disabled={isEditMode ? undefined : (date) => 
+                                date < new Date(new Date().setHours(0, 0, 0, 0))
+                              }
                               initialFocus
                             />
                             <div className="p-3 border-t flex items-center gap-2">
@@ -447,11 +454,16 @@ export function EventForm({
                                   const now = new Date();
                                   date.setHours(now.getHours(), now.getMinutes(), 0, 0);
                                   field.onChange(date.toISOString());
+                                } else {
+                                  field.onChange(null);
                                 }
                               }}
                               disabled={(date) => {
                                 const startDate = form.getValues("signupPeriodJson.startDate");
-                                return startDate && date < new Date(startDate);
+                                if (startDate) {
+                                  return date < new Date(startDate);
+                                }
+                                return isEditMode ? false : date < new Date(new Date().setHours(0, 0, 0, 0));
                               }}
                               initialFocus
                             />

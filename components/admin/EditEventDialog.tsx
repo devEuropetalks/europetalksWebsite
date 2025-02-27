@@ -139,14 +139,15 @@ export function EditEventDialog({
               endDate: event.endDate,
               location: event.location,
               imageUrl: event.imageUrl,
-              signupPeriodJson: {
-                startDate: event.signupPeriodJson?.startDate,
-                endDate: event.signupPeriodJson?.endDate,
-              },
               formSchemaId: event.formSchemaId || "",
+              signupPeriodJson: event.signupPeriodJson || {
+                startDate: null,
+                endDate: null,
+              },
             }}
             isSubmitting={isSubmitting}
             formSchemas={formSchemas}
+            isEditMode={true}
           />
         )}
         {formSchemas.length === 0 && !isLoading && (

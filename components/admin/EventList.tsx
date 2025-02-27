@@ -30,6 +30,12 @@ type EventResponse = {
   startDate: string;
   endDate?: string;
   location: string | null;
+  imageUrl?: string;
+  formSchemaId?: string;
+  signup_period_json?: {
+    startDate: string | null;
+    endDate: string | null;
+  };
   formSchema?: {
     fields: Array<{
       id: string;
@@ -45,9 +51,13 @@ type EventResponse = {
   };
 };
 
-type Event = Omit<EventResponse, "startDate" | "endDate"> & {
+type Event = Omit<EventResponse, "startDate" | "endDate" | "signup_period_json"> & {
   startDate: Date;
   endDate?: Date;
+  signupPeriodJson?: {
+    startDate: string | null;
+    endDate: string | null;
+  };
 };
 
 export function EventList() {
@@ -70,6 +80,7 @@ export function EventList() {
           ...event,
           startDate: new Date(event.startDate),
           endDate: event.endDate ? new Date(event.endDate) : undefined,
+          signupPeriodJson: event.signup_period_json || { startDate: null, endDate: null }
         }))
       );
     } catch (error) {
@@ -162,6 +173,10 @@ export function EventList() {
                 endDate:
                   selectedEvent.endDate?.toISOString() ||
                   selectedEvent.startDate.toISOString(),
+                signupPeriodJson: selectedEvent.signupPeriodJson || {
+                  startDate: null,
+                  endDate: null
+                }
               }
             : undefined
         }
