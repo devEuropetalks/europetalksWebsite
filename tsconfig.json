@@ -18,9 +18,9 @@
     "strict": false,
     "noEmit": true,
     "incremental": true,
-    "module": "node16",
+    "module": "esnext",
     "esModuleInterop": true,
-    "moduleResolution": "node16",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "plugins": [

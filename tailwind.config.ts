@@ -3,7 +3,7 @@ import animate from "tailwindcss-animate"
 import { withUt } from "uploadthing/tw";
 
 export default withUt({
-    darkMode: ["class"],
+    darkMode: "class",
     content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -64,6 +64,6 @@ export default withUt({
   		}
   	}
   },
-  plugins: [animate, require("tailwindcss-animate")],
+  plugins: [animate, animate],
 } satisfies Config);
 
