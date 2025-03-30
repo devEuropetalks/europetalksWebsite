@@ -47,6 +47,8 @@ LANGUAGES = {
     "uk": {"name": "Українська", "model": "Helsinki-NLP/opus-mt-en-uk"},
     "lv": {"name": "Latviešu", "model": "Helsinki-NLP/opus-mt-en-sla"},
     "hr": {"name": "Hrvatski", "model": "Helsinki-NLP/opus-mt-en-sla"},
+    "hu": {"name": "Magyar", "model": "Helsinki-NLP/opus-mt-en-sla"},
+    "el": {"name": "Greek", "model": "Helsinki-NLP/opus-mt-en-sla"},
 }
 
 
@@ -81,6 +83,8 @@ class MultiTranslator:
             "uk": "ukr_Latn",
             "lv": "lav_Latn",
             "hr": "hrv_Latn",
+            "hu": "hun_Latn",
+            "el": "ell_Grek",
         }
 
         # Initialize Google Translate

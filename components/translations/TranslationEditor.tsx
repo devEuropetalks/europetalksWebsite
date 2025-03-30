@@ -30,6 +30,8 @@ export function TranslationEditor() {
     { code: "uk", name: "Українська" },
     { code: "lv", name: "Latviešu" },
     { code: "hr", name: "Hrvatski" },
+    { code: "hu", name: "Magyar" },
+    { code: "el", name: "Greek" },
   ];
 
   const namespaces = [

@@ -54,6 +54,10 @@ const popupTranslations = {
     available: "Ova stranica je dostupna na vašoj jeziku!",
     switchTo: "Prelazak na {{language}}",
   },
+  hu: {
+    available: "Ez az oldal elérhető a nyelveden!",
+    switchTo: "Átváltás {{language}} nyelvre",
+  },
 } as const;
 
 const namespaces = [
@@ -222,6 +226,8 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
     uk: "Українська",
     lv: "Latviešu",
     hr: "Hrvatski",
+    hu: "Magyar",
+    el: "Greek",
   } as const;
 
   useEffect(() => {

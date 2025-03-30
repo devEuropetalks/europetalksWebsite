@@ -36,6 +36,8 @@ export function MemberTranslationEditor({
     uk: "Українська",
     lv: "Latviešu",
     hr: "Hrvatski",
+    hu: "Magyar",
+    el: "Greek",
   } as const;
 
   const namespaces = [
