@@ -58,6 +58,10 @@ const popupTranslations = {
     available: "Ez az oldal elérhető a nyelveden!",
     switchTo: "Átváltás {{language}} nyelvre",
   },
+  el: {
+    available: "Αυτή η ιστοσελίδα είναι διαθέσιμη στην γλώσσα σας!",
+    switchTo: "Αλλαγή στη {{language}}",
+  },
 } as const;
 
 const namespaces = [
@@ -281,13 +285,13 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
             <X className="h-4 w-4" />
           </button>
           <p className="mb-3">
-            {i18n.t("components:languageDetection.available")}
+            {popupTranslations[detectedLanguage as keyof typeof popupTranslations]?.available}
           </p>
           <Button onClick={handleLanguageSwitch} className="w-full">
-            {i18n.t("components:languageDetection.switchTo", {
-              language:
-                languageNames[detectedLanguage as keyof typeof languageNames],
-            })}
+            {popupTranslations[detectedLanguage as keyof typeof popupTranslations]?.switchTo.replace(
+              "{{language}}",
+              languageNames[detectedLanguage as keyof typeof languageNames]
+            )}
           </Button>
         </div>
       )}
