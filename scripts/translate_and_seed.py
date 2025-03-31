@@ -344,26 +344,40 @@ async def translate_and_seed():
                     )
                     print(f"Found existing translations for {lang_code}")
 
-                    # Only translate missing namespaces or keys
-                    updated_content = existing_content.copy()
+                    # Update translations with missing keys
+                    updated_content = {}
                     for namespace, translations in en_content.items():
-                        if namespace not in existing_content:
-                            print(f"Translating missing namespace: {namespace}")
-                            updated_content[namespace] = translate_dict(
-                                translations, translator
-                            )
-                        else:
-                            # Check for missing keys in existing namespaces
-                            for key, value in translations.items():
-                                if key not in existing_content[namespace]:
-                                    print(f"Translating missing key: {namespace}.{key}")
-                                    updated_content[namespace][key] = (
-                                        translator.translate(value)
-                                        if isinstance(value, str)
-                                        else value
-                                    )
+                        # Ensure namespace exists in updated_content
+                        if namespace not in updated_content:
+                            if namespace in existing_content:
+                                # If namespace already exists, copy its existing content
+                                updated_content[namespace] = dict(existing_content[namespace])
+                            else:
+                                # Create new namespace
+                                updated_content[namespace] = {}
+                                print(f"Translating missing namespace: {namespace}")
+                                updated_content[namespace] = translate_dict(
+                                    translations, translator
+                                )
+                                continue  # Skip key checking since we translated the whole namespace
+
+                        # Check for missing keys in existing namespaces
+                        for key, value in translations.items():
+                            if namespace in existing_content and key in existing_content[namespace]:
+                                # Key exists, keep the existing translation
+                                updated_content[namespace][key] = existing_content[namespace][key]
+                            else:
+                                # Key doesn't exist or has empty value, translate it
+                                print(f"Translating missing key: {namespace}.{key}")
+                                updated_content[namespace][key] = (
+                                    translator.translate(value)
+                                    if isinstance(value, str)
+                                    else value
+                                )
 
                     if updated_content != existing_content:
+                        # Add debug information
+                        print(f"DEBUG: Content differs - will update database")
                         # Update only if there are changes
                         await conn.execute(
                             """
@@ -377,6 +391,7 @@ async def translate_and_seed():
                         )
                         print(f"✓ Updated missing translations for {lang_info['name']}")
                     else:
+                        print(f"DEBUG: Content identical - no update needed")
                         print(f"✓ No new translations needed for {lang_info['name']}")
                 else:
                     # Create new translation for language
