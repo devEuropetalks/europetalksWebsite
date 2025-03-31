@@ -1,314 +1,200 @@
 {
-    "auth": {
-      "signIn": {
-        "error": "Aanmelden mislukt",
-        "title": "Aanmelden",
-        "success": "Succesvol aangemeld",
-        "subtitle": "Welkom terug"
+  "auth": {
+    "signIn": {
+      "error": "Aanmelden mislukt",
+      "title": "Aanmelden",
+      "success": "Succesvol aangemeld",
+      "subtitle": "Welkom terug"
+    },
+    "signUp": {
+      "error": "Failed to sign up",
+      "title": "Sign Up",
+      "success": "Successfully signed up",
+      "subtitle": "Welcome to EuropeTalks"
+    },
+    "signOut": {
+      "error": "Niet afgemeld",
+      "success": "Succesvol afgemeld"
+    }
+  },
+  "home": {
+    "cta": {
+      "title": "Klaar om mee te doen?",
+      "buttons": {
+        "contact": "Neem contact met ons op",
+        "explore": "Ontdek evenementen",
+        "learnMore": "Meer leren"
       },
-      "signUp": {
-        "error": "Failed to sign up",
-        "title": "Sign Up",
-        "success": "Successfully signed up",
-        "subtitle": "Welcome to EuropeTalks"
+      "description": "Word lid en krijg toegang tot exclusieve evenementen en functies."
+    },
+    "hero": {
+      "title": "Welkom bij EuropeTalks!",
+      "subtitle": "Sluit je aan bij onze gemeenschap van Europeanen, die ideeën en hun cultuur delen en over grenzen heen contacten leggen."
+    },
+    "features": {
+      "cultural": {
+        "title": "Culturele uitwisseling",
+        "description": "Ervaar diverse Europese culturen via onze evenementen en workshops."
       },
-      "signOut": {
-        "error": "Niet afgemeld",
-        "success": "Succesvol afgemeld"
+      "community": {
+        "title": "Gemeenschap",
+        "description": "Kom in contact met gelijkgestemde Europeanen en bouw blijvende netwerken."
+      },
+      "knowledge": {
+        "title": "Kennis delen",
+        "description": "Deel en vergroot je kennis door middel van interactieve discussies, workshops en leer van anderen."
       }
     },
-    "home": {
-      "cta": {
-        "title": "Klaar om mee te doen?",
-        "buttons": {
-          "contact": "Neem contact met ons op",
-          "explore": "Ontdek evenementen",
-          "learnMore": "Meer leren"
-        },
-        "description": "Word lid en krijg toegang tot exclusieve evenementen en functies."
-      },
-      "hero": {
-        "title": "Welkom bij EuropeTalks!",
-        "subtitle": "Sluit je aan bij onze gemeenschap van Europeanen, die ideeën en hun cultuur delen en over grenzen heen contacten leggen."
-      },
-      "features": {
-        "cultural": {
-          "title": "Culturele uitwisseling",
-          "description": "Ervaar diverse Europese culturen via onze evenementen en workshops."
-        },
-        "community": {
-          "title": "Gemeenschap",
-          "description": "Kom in contact met gelijkgestemde Europeanen en bouw blijvende netwerken."
-        },
-        "knowledge": {
-          "title": "Kennis delen",
-          "description": "Deel en vergroot je kennis door middel van interactieve discussies, workshops en leer van anderen."
-        }
-      },
-      "getToKnowUs": {
-        "title": "Leer ons kennen"
-      }
+    "getToKnowUs": {
+      "title": "Leer ons kennen"
+    }
+  },
+  "about": {
+    "title": "Over EuropeTalks",
+    "whoWeAre": {
+      "intro": "Wij zijn een groep activisten uit heel Europa die één doel hebben: Europese samenwerking en solidariteit stimuleren!",
+      "title": "Wie we zijn",
+      "mission": "Ons belangrijkste doel is om een platform te bieden voor European democraten, om gelijkgestemden uit heel Europa en daarbuiten met elkaar in contact te brengen en om samen te werken aan een gemeenschappelijke European visie, gebaseerd op sociaaldemocratische en socialistische waarden. We willen mensen in staat stellen hun waarden en visies te delen over hoe de European Union verder ontwikkeld en vormgegeven kan worden."
     },
-    "about": {
-      "title": "Over EuropeTalks",
-      "whoWeAre": {
-        "intro": "Wij zijn een groep activisten uit heel Europa die één doel hebben: Europese samenwerking en solidariteit stimuleren!",
-        "title": "Wie we zijn",
-        "mission": "Ons belangrijkste doel is om een platform te bieden voor European democraten, om gelijkgestemden uit heel Europa en daarbuiten met elkaar in contact te brengen en om samen te werken aan een gemeenschappelijke European visie, gebaseerd op sociaaldemocratische en socialistische waarden. We willen mensen in staat stellen hun waarden en visies te delen over hoe de European Union verder ontwikkeld en vormgegeven kan worden."
-      },
-      "howWeWork": {
-        "intro": "Wij, als socialisten en sociaaldemocraten, moeten de Europese gedachte belichamen en op elk niveau Europese netwerken creëren. Alleen dan kan Europees beleid geloofwaardig worden vertegenwoordigd en bevorderd.",
-        "title": "Hoe we werken",
-        "method": "Dit doen we door mensen in elke lokale organisatie met elkaar in contact te brengen. Om mensen te helpen verschillende standpunten te begrijpen, politieke ervaringen te delen en samen te werken aan oplossingen voor gemeenschappelijke problemen, organiseren we workshops en evenementen - zowel online als persoonlijk.",
-        "papers": "Deze workshops vormen de basis voor ons gezamenlijke werk en onze positionering met betrekking tot specifieke beleidskwesties. Aan het eind van elke workshop stellen we discussienota's op die worden meegenomen naar de afzonderlijke organisaties en die bedoeld zijn om bij te dragen aan de beleidsvorming in deze organisaties. Dit is de enige manier waarop we ervoor kunnen zorgen dat Europese kwesties in het debat worden opgenomen en met een echt Europees perspectief worden besproken.",
-        "support": "We ondersteunen ook lokale partijorganisaties om met elkaar in contact te komen. Maak je deel uit van een lokaal comité en heb je ondersteuning nodig bij het opbouwen van een Europees netwerk? Schrijf ons dan!",
-        "workshops": "Onze workshops behandelen specifieke kwesties en bieden de mogelijkheid om ideeën uit te wisselen en oplossingen te vinden voor gemeenschappelijke European problemen. Hoe kunnen we op een humane manier omgaan met migratie en vluchtelingen in de European Union? Wat kunnen we doen om huisvesting betaalbaar en duurzaam te maken? Hoe zou een socialistisch internationaal veiligheidsbeleid eruit zien?"
-      },
-      "background": {
-        "title": "Background",
-        "activists": "Activisten uit heel Europa waren uitgenodigd om te praten over gemeenschappelijke thema's zoals sociale ongelijkheid tussen lidstaten en onze Europese identiteit. We zochten naar samenwerking en inspiratie om antwoorden te vinden op de problemen en uitdagingen waar we in heel Europa mee te maken hebben. Op de conferentie zagen we allemaal de noodzaak om samen te blijven werken aan deze en nog veel meer kwesties - direct en zonder tussenpersoon - als een Europese basisbeweging. Aan het einde van ons kick-off evenement werd een resolutie aangenomen in het manifest \"Europe, we need to talk\", dat als basis dient voor verdere samenwerking en gemeenschappelijke beleidsvorming.",
-        "countries": "Wij zijn een groep activisten uit 14 verschillende landen: Spain, France, Lithuania, Belgium, the Netherlands, Germany, Portugal, Poland, Italy, Croatia, Ukraine, Austria, Latvia en het UK. Maar we zijn altijd op zoek naar nieuwe activisten uit heel Europe en daarbuiten. Heb je interesse? Neem dan contact met ons op.",
-        "conference": "Het begon allemaal na de \"Europe, we moeten praten!\" - conferentie in 2018, die werd georganiseerd door de Jusos en SPD Hessen-Süd in Germany. Deze werd gesteund door Udo Bullmann, MEP en Michael Roth, Duits staatsminister voor Europe in het ministerie van Foreigne Zaken.",
-        "perspective": "In onze partijen bespreken we Europa meestal vanuit een nationaal perspectief. Wij willen een Europees perspectief creëren. Elke lokale partij en politieke commissie kan een uitwisseling tot stand brengen via sociaaldemocratische en socialistische partnerorganisaties. Dit kan door lokale uitwisselingsprojecten, digitale netwerken en nog veel meer. We verbinden elke regionale fractie op lange termijn en op duurzame basis om ervoor te zorgen dat Europa centraal staat in ons dagelijks partijwerk."
-      },
-      "leadership": {
-        "name": "Vivien Costanzo",
-        "role": {
-          "party": "Social Democratic Party of Germany",
-          "title": "Member van het European Parliament"
-        },
-        "intro": "Hoofdverantwoordelijk voor EuropeTalks is:",
-        "title": "Leiderschap"
-      },
-      "getToKnowUs": {
-        "title": "Leer ons kennen"
-      }
+    "howWeWork": {
+      "intro": "Wij, als socialisten en sociaaldemocraten, moeten de Europese gedachte belichamen en op elk niveau Europese netwerken creëren. Alleen dan kan Europees beleid geloofwaardig worden vertegenwoordigd en bevorderd.",
+      "title": "Hoe we werken",
+      "method": "Dit doen we door mensen in elke lokale organisatie met elkaar in contact te brengen. Om mensen te helpen verschillende standpunten te begrijpen, politieke ervaringen te delen en samen te werken aan oplossingen voor gemeenschappelijke problemen, organiseren we workshops en evenementen - zowel online als persoonlijk.",
+      "papers": "Deze workshops vormen de basis voor ons gezamenlijke werk en onze positionering met betrekking tot specifieke beleidskwesties. Aan het eind van elke workshop stellen we discussienota's op die worden meegenomen naar de afzonderlijke organisaties en die bedoeld zijn om bij te dragen aan de beleidsvorming in deze organisaties. Dit is de enige manier waarop we ervoor kunnen zorgen dat Europese kwesties in het debat worden opgenomen en met een echt Europees perspectief worden besproken.",
+      "support": "We ondersteunen ook lokale partijorganisaties om met elkaar in contact te komen. Maak je deel uit van een lokaal comité en heb je ondersteuning nodig bij het opbouwen van een Europees netwerk? Schrijf ons dan!",
+      "workshops": "Onze workshops behandelen specifieke kwesties en bieden de mogelijkheid om ideeën uit te wisselen en oplossingen te vinden voor gemeenschappelijke European problemen. Hoe kunnen we op een humane manier omgaan met migratie en vluchtelingen in de European Union? Wat kunnen we doen om huisvesting betaalbaar en duurzaam te maken? Hoe zou een socialistisch internationaal veiligheidsbeleid eruit zien?"
     },
-    "admin": {
-      "dashboard": {
-        "title": "Dashboard",
-        "manageEvents": "Evenementen beheren",
-        "manageTranslations": "Vertalingen beheren"
-      }
+    "background": {
+      "title": "Background",
+      "activists": "Activisten uit heel Europa waren uitgenodigd om te praten over gemeenschappelijke thema's zoals sociale ongelijkheid tussen lidstaten en onze Europese identiteit. We zochten naar samenwerking en inspiratie om antwoorden te vinden op de problemen en uitdagingen waar we in heel Europa mee te maken hebben. Op de conferentie zagen we allemaal de noodzaak om samen te blijven werken aan deze en nog veel meer kwesties - direct en zonder tussenpersoon - als een Europese basisbeweging. Aan het einde van ons kick-off evenement werd een resolutie aangenomen in het manifest \"Europe, we need to talk\", dat als basis dient voor verdere samenwerking en gemeenschappelijke beleidsvorming.",
+      "countries": "Wij zijn een groep activisten uit 14 verschillende landen: Spain, France, Lithuania, Belgium, the Netherlands, Germany, Portugal, Poland, Italy, Croatia, Ukraine, Austria, Latvia en het UK. Maar we zijn altijd op zoek naar nieuwe activisten uit heel Europe en daarbuiten. Heb je interesse? Neem dan contact met ons op.",
+      "conference": "Het begon allemaal na de \"Europe, we moeten praten!\" - conferentie in 2018, die werd georganiseerd door de Jusos en SPD Hessen-Süd in Germany. Deze werd gesteund door Udo Bullmann, MEP en Michael Roth, Duits staatsminister voor Europe in het ministerie van Foreigne Zaken.",
+      "perspective": "In onze partijen bespreken we Europa meestal vanuit een nationaal perspectief. Wij willen een Europees perspectief creëren. Elke lokale partij en politieke commissie kan een uitwisseling tot stand brengen via sociaaldemocratische en socialistische partnerorganisaties. Dit kan door lokale uitwisselingsprojecten, digitale netwerken en nog veel meer. We verbinden elke regionale fractie op lange termijn en op duurzame basis om ervoor te zorgen dat Europa centraal staat in ons dagelijks partijwerk."
     },
+    "leadership": {
+      "name": "Vivien Costanzo",
+      "role": {
+        "party": "Social Democratic Party of Germany",
+        "title": "Member van het European Parliament"
+      },
+      "intro": "Hoofdverantwoordelijk voor EuropeTalks is:",
+      "title": "Leiderschap"
+    },
+    "getToKnowUs": {
+      "title": "Leer ons kennen"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Dashboard",
+      "manageEvents": "Evenementen beheren",
+      "manageTranslations": "Vertalingen beheren"
+    }
+  },
+  "other": {
+    "cities": {},
+    "months": {},
+    "countries": {}
+  },
+  "events": {
+    "events": {
+      "title": "Evenementen",
+      "loading": "Gebeurtenissen aan het laden...",
+      "viewPastEvents": "Bekijk eerdere evenementen"
+    },
+    "signUp": {
+      "email": {
+        "error": "Voer een geldig e-mailadres in",
+        "label": "Email"
+      },
+      "error": "Fout",
+      "phone": {
+        "label": "Phone Number (Optional",
+        "placeholder": "Voer uw telefoonnummer in"
+      },
+      "title": "Aanmelden voor",
+      "submit": "Aanmelden",
+      "success": "Success!",
+      "fullName": {
+        "error": "De volledige naam moet uit minstens 3 tekens bestaan",
+        "label": "Volledige naam"
+      },
+      "motivation": {
+        "error": "Geef ten minste 50 tekens uitleg over je motivatie",
+        "label": "Waarom wil je dit evenement bijwonen?",
+        "placeholder": "Vertel ons waarom je geïnteresseerd bent in deelname..."
+      },
+      "submitting": "Aanmelden...",
+      "errorMessage": "Aanmelden mislukt. Probeer het opnieuw.",
+      "successMessage": "Je hebt je met succes aangemeld voor het evenement."
+    },
+    "eventCard": {
+      "date": "Datum",
+      "time": "Time",
+      "hybrid": "Hybride",
+      "online": "Online",
+      "signUp": "Aanmelden",
+      "inPerson": "Persoonlijk",
+      "location": "Locatie",
+      "readMore": "Meer lezen",
+      "eventEnded": "Evenement beëindigd"
+    },
+    "pastEvents": {
+      "title": "Gebeurtenissen in het verleden",
+      "noEvents": "Geen evenementen gevonden",
+      "viewUpcomingEvents": "Komende evenementen bekijken"
+    }
+  },
+  "header": {
     "other": {
-      "cities": {
-        "bern": "Bern",
-        "lyon": "Lyon",
-        "oslo": "Oslo",
-        "riga": "Riga",
-        "rome": "Rome",
-        "milan": "Milan",
-        "paris": "Paris",
-        "porec": "Porec",
-        "sofia": "Sofia",
-        "split": "Split",
-        "tartu": "Tartu",
-        "turin": "Turin",
-        "zadar": "Zadar",
-        "athens": "Athens",
-        "berlin": "Berlin",
-        "geneva": "Geneva",
-        "hessen": "Hessen",
-        "lisbon": "Lisbon",
-        "london": "London",
-        "madrid": "Madrid",
-        "munich": "Munich",
-        "prague": "Prague",
-        "rijeka": "Rijeka",
-        "skopje": "Skopje",
-        "vienna": "Vienna",
-        "warsaw": "Warsaw",
-        "zagreb": "Zagreb",
-        "zurich": "Zurich",
-        "cologne": "Cologne",
-        "hamburg": "Hamburg",
-        "tallinn": "Tallinn",
-        "vilnius": "Vilnius",
-        "belgrade": "Belgrade",
-        "brussels": "Brussels",
-        "budapest": "Budapest",
-        "helsinki": "Helsinki",
-        "istanbul": "Istanbul",
-        "pristina": "Pristina",
-        "valencia": "Valencia",
-        "amsterdam": "Amsterdam",
-        "barcelona": "Barcelona",
-        "bucharest": "Boekarest",
-        "dubrovnik": "Dubrovnik",
-        "frankfurt": "Frankfurt",
-        "marseille": "Marseille",
-        "stockholm": "Stockholm",
-        "birmingham": "Birmingham",
-        "bratislava": "Bratislava",
-        "dusseldorf": "Dusseldorf",
-        "luxembourg": "Luxembourg",
-        "manchester": "Manchester",
-        "strasbourg": "Strasbourg"
-      },
-      "months": {
-        "may": "Mei",
-        "july": "July",
-        "june": "June",
-        "april": "April",
-        "march": "March",
-        "august": "August",
-        "january": "January",
-        "october": "October",
-        "december": "December",
-        "february": "February",
-        "november": "November",
-        "september": "September"
-      },
-      "countries": {
-        "italy": "Italy",
-        "malta": "Malta",
-        "spain": "Spain",
-        "cyprus": "Cyprus",
-        "france": "France",
-        "greece": "Greece",
-        "kosovo": "Kosovo",
-        "latvia": "Latvia",
-        "monaco": "Monaco",
-        "norway": "Norway",
-        "poland": "Poland",
-        "russia": "Russia",
-        "serbia": "Serbia",
-        "sweden": "Sweden",
-        "turkey": "Turkey",
-        "albania": "Albania",
-        "andorra": "Andorra",
-        "austria": "Austria",
-        "belarus": "Belarus",
-        "belgium": "Belgium",
-        "croatia": "Croatia",
-        "denmark": "Denmark",
-        "estonia": "Estonia",
-        "finland": "Finland",
-        "germany": "Germany",
-        "hungary": "Hungary",
-        "iceland": "Iceland",
-        "ireland": "Ireland",
-        "moldova": "Moldova",
-        "romania": "Romania",
-        "ukraine": "Ukraine",
-        "bulgaria": "Bulgaria",
-        "portugal": "Portugal",
-        "slovakia": "Slovakia",
-        "slovenia": "Slovenia",
-        "lithuania": "Lithuania",
-        "luxembourg": "Luxembourg",
-        "montenegro": "Montenegro",
-        "san_marino": "San Marino",
-        "netherlands": "Netherlands",
-        "switzerland": "Switzerland",
-        "vatican_city": "Vatican City",
-        "liechtenstein": "Liechtenstein",
-        "czech_republic": "Czech Republic",
-        "united_kingdom": "United Kingdom",
-        "north_macedonia": "North Macedonia",
-        "bosnia_and_herzegovina": "Bosnia and Herzegovina"
-      }
+      "menu": "Menu",
+      "signIn": "Aanmelden",
+      "signOut": "Afmelden"
+    },
+    "navigation": {
+      "home": "Home",
+      "about": "Over",
+      "admin": "Admin",
+      "cloud": "Cloud",
+      "events": "Evenementen",
+      "contact": "Neem contact op met",
+      "gallery": "Gallery",
+      "translations": "Vertalingen"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Naam",
+      "email": "Email",
+      "submit": "Send Message",
+      "message": "Bericht",
+      "subject": "Onderwerp"
+    },
+    "info": {
+      "email": "Email ons op:",
+      "title": "Andere manieren om verbinding te maken",
+      "social": "Volg ons op sociale media:"
+    },
+    "title": "Neem contact met ons op",
+    "description": "Neem contact met ons op voor vragen."
+  },
+  "gallery": {
+    "title": "Gallery"
+  },
+  "components": {
+    "theme": {
+      "toggleTheme": "Thema schakelen"
     },
     "events": {
-      "events": {
-        "title": "Evenementen",
-        "loading": "Gebeurtenissen aan het laden...",
-        "viewPastEvents": "Bekijk eerdere evenementen"
-      },
-      "signUp": {
-        "email": {
-          "error": "Voer een geldig e-mailadres in",
-          "label": "Email"
-        },
-        "error": "Fout",
-        "phone": {
-          "label": "Phone Number (Optional",
-          "placeholder": "Voer uw telefoonnummer in"
-        },
-        "title": "Aanmelden voor",
-        "submit": "Aanmelden",
-        "success": "Success!",
-        "fullName": {
-          "error": "De volledige naam moet uit minstens 3 tekens bestaan",
-          "label": "Volledige naam"
-        },
-        "motivation": {
-          "error": "Geef ten minste 50 tekens uitleg over je motivatie",
-          "label": "Waarom wil je dit evenement bijwonen?",
-          "placeholder": "Vertel ons waarom je geïnteresseerd bent in deelname..."
-        },
-        "submitting": "Aanmelden...",
-        "errorMessage": "Aanmelden mislukt. Probeer het opnieuw.",
-        "successMessage": "Je hebt je met succes aangemeld voor het evenement."
-      },
-      "eventCard": {
-        "date": "Datum",
-        "time": "Time",
-        "hybrid": "Hybride",
-        "online": "Online",
-        "signUp": "Aanmelden",
-        "inPerson": "Persoonlijk",
-        "location": "Locatie",
-        "readMore": "Meer lezen",
-        "eventEnded": "Evenement beëindigd"
-      },
-      "pastEvents": {
-        "title": "Gebeurtenissen in het verleden",
-        "noEvents": "Geen evenementen gevonden",
-        "viewUpcomingEvents": "Komende evenementen bekijken"
-      }
+      "signUp": "Aanmelden",
+      "eventEnded": "Evenement beëindigd"
     },
-    "header": {
-      "other": {
-        "menu": "Menu",
-        "signIn": "Aanmelden",
-        "signOut": "Afmelden"
-      },
-      "navigation": {
-        "home": "Home",
-        "about": "Over",
-        "admin": "Admin",
-        "cloud": "Cloud",
-        "events": "Evenementen",
-        "contact": "Neem contact op met",
-        "gallery": "Gallery",
-        "translations": "Vertalingen"
-      }
+    "languageSelector": {
+      "label": "Selecteer taal"
     },
-    "contact": {
-      "form": {
-        "name": "Naam",
-        "email": "Email",
-        "submit": "Send Message",
-        "message": "Bericht",
-        "subject": "Onderwerp"
-      },
-      "info": {
-        "email": "Email ons op:",
-        "title": "Andere manieren om verbinding te maken",
-        "social": "Volg ons op sociale media:"
-      },
-      "title": "Neem contact met ons op",
-      "description": "Neem contact met ons op voor vragen."
-    },
-    "gallery": {
-      "title": "Gallery"
-    },
-    "components": {
-      "theme": {
-        "toggleTheme": "Thema schakelen"
-      },
-      "events": {
-        "signUp": "Aanmelden",
-        "eventEnded": "Evenement beëindigd"
-      },
-      "languageSelector": {
-        "label": "Selecteer taal"
-      },
-      "languageDetection": {
-        "switchTo": "Schakel over naar Nederlands",
-        "available": "Deze website is beschikbaar in jouw taal!"
-      }
+    "languageDetection": {
+      "switchTo": "Schakel over naar {{taal}}",
+      "available": "Deze website is beschikbaar in jouw taal!"
     }
   }
+}

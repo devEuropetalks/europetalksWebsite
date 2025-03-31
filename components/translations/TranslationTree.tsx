@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {
   Tooltip,
@@ -13,11 +14,105 @@ import {
 import { initialTranslations } from "@/translations/initial-translations";
 import { TranslationObject } from "@/types/translations";
 
+// Constants
+const TEXT_LENGTH_THRESHOLD = 50; // Use textarea for text longer than this
+
 interface TranslationTreeProps {
   language: string;
   namespace: string;
   onSave: (translations: TranslationObject) => void;
   isSaving?: boolean;
+}
+
+// Component for rendering a single translation pair
+function TranslationPairItem({ 
+  keyName, 
+  value, 
+  translatedValue, 
+  path, 
+  disabled, 
+  onChange 
+}: { 
+  keyName: string;
+  value: string | object | number | boolean;
+  translatedValue: string;
+  path: string[];
+  disabled: boolean;
+  onChange: (path: string[], value: string) => void;
+}) {
+  const [isExpanded, setIsExpanded] = useState(false);
+  const pathString = path.join(' → ');
+  
+  // Skip if it's not a primitive value we can display
+  if (typeof value !== 'string' && typeof value !== 'number' && typeof value !== 'boolean') return null;
+  
+  // Convert to string if it's a number or boolean
+  const stringValue = typeof value === 'string' ? value : String(value);
+  
+  const isLongText = stringValue.length > TEXT_LENGTH_THRESHOLD || translatedValue.length > TEXT_LENGTH_THRESHOLD;
+  const isVeryLongText = stringValue.length > TEXT_LENGTH_THRESHOLD * 3;
+  
+  // Format the display value for long text
+  let displayValue = stringValue;
+  if (isVeryLongText && !isExpanded) {
+    displayValue = stringValue.substring(0, TEXT_LENGTH_THRESHOLD) + '...';
+  }
+
+  return (
+    <div className={`flex gap-4 ${isLongText ? 'flex-col' : 'items-center'} my-4 pb-4 ${isLongText ? 'border-b' : ''}`}>
+      <div className={`${isLongText ? 'w-full' : 'w-1/2'} flex gap-4`}>
+        <label className="w-48 text-sm font-medium">{keyName}:</label>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className={`${isLongText ? 'w-full' : 'flex-1'} text-muted-foreground cursor-help`}>
+                {isLongText ? (
+                  <div className="whitespace-pre-wrap">
+                    {displayValue}
+                    {isVeryLongText && (
+                      <button 
+                        className="ml-2 text-xs text-blue-500 hover:underline"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setIsExpanded(!isExpanded);
+                        }}
+                      >
+                        {isExpanded ? 'Show less' : 'Show more'}
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  stringValue
+                )}
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p className="text-sm">Path: {pathString}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
+      <div className={isLongText ? 'w-full mt-2' : 'w-1/2'}>
+        {isLongText ? (
+          <Textarea
+            value={translatedValue}
+            onChange={(e) => onChange(path, e.target.value)}
+            className="w-full min-h-[100px] resize-y"
+            placeholder={`Enter ${keyName} translation`}
+            disabled={disabled}
+          />
+        ) : (
+          <Input
+            value={translatedValue}
+            onChange={(e) => onChange(path, e.target.value)}
+            className="w-full"
+            placeholder={`Enter ${keyName} translation`}
+            disabled={disabled}
+          />
+        )}
+      </div>
+    </div>
+  );
 }
 
 export function TranslationTree({ language, namespace, onSave, isSaving }: TranslationTreeProps) {
@@ -108,35 +203,17 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
       }
 
       const translatedValue = translatedObj?.[key] as string || '';
-      const pathString = currentPath.join(' → ');
 
       return (
-        <div key={currentPath.join('.')} className="flex gap-4 items-center my-2">
-          <div className="w-1/2 flex gap-4">
-            <label className="w-48 text-sm font-medium">{key}:</label>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="flex-1 text-muted-foreground cursor-help">
-                    {value as string}
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-sm">Path: {pathString}</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-          <div className="w-1/2">
-            <Input
-              value={translatedValue}
-              onChange={(e) => handleInputChange(currentPath, e.target.value)}
-              className="w-full"
-              placeholder={`Enter ${key} translation`}
-              disabled={language === 'en'}
-            />
-          </div>
-        </div>
+        <TranslationPairItem
+          key={currentPath.join('.')}
+          keyName={key}
+          value={value}
+          translatedValue={translatedValue}
+          path={currentPath}
+          disabled={language === 'en'}
+          onChange={handleInputChange}
+        />
       );
     });
   };

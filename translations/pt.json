@@ -1,314 +1,200 @@
 {
-    "auth": {
-      "signIn": {
-        "error": "Não foi possível iniciar sessão",
-        "title": "Iniciar sessão",
-        "success": "Registo bem sucedido",
-        "subtitle": "Bem-vindo de volta"
+  "auth": {
+    "signIn": {
+      "error": "Não foi possível iniciar sessão",
+      "title": "Iniciar sessão",
+      "success": "Registo bem sucedido",
+      "subtitle": "Bem-vindo de volta"
+    },
+    "signUp": {
+      "error": "Failed to sign up",
+      "title": "Sign Up",
+      "success": "Successfully signed up",
+      "subtitle": "Welcome to EuropeTalks"
+    },
+    "signOut": {
+      "error": "Falha ao terminar a sessão",
+      "success": "Terminar sessão com êxito"
+    }
+  },
+  "home": {
+    "cta": {
+      "title": "Pronto para aderir?",
+      "buttons": {
+        "contact": "Contactar-nos",
+        "explore": "Explorar eventos",
+        "learnMore": "Saiba mais"
       },
-      "signUp": {
-        "error": "Failed to sign up",
-        "title": "Sign Up",
-        "success": "Successfully signed up",
-        "subtitle": "Welcome to EuropeTalks"
+      "description": "Torne-se membro e tenha acesso a eventos e funcionalidades exclusivas."
+    },
+    "hero": {
+      "title": "Bem-vindo ao EuropeTalks!",
+      "subtitle": "Junta-te à nossa comunidade de europeus que partilham ideias, cultura e criam ligações além-fronteiras."
+    },
+    "features": {
+      "cultural": {
+        "title": "Intercâmbio cultural",
+        "description": "Conhece as diversas culturas europeias através dos nossos eventos e workshops."
       },
-      "signOut": {
-        "error": "Falha ao terminar a sessão",
-        "success": "Terminar sessão com êxito"
+      "community": {
+        "title": "Comunidade",
+        "description": "Estabelece contactos com europeus que partilham as mesmas ideias e constrói relações duradouras."
+      },
+      "knowledge": {
+        "title": "Partilhar conhecimentos",
+        "description": "Partilha e expande os teus conhecimentos através de debates interactivos, workshops e aprende com os outros."
       }
     },
-    "home": {
-      "cta": {
-        "title": "Pronto para aderir?",
-        "buttons": {
-          "contact": "Contactar-nos",
-          "explore": "Explorar eventos",
-          "learnMore": "Saiba mais"
-        },
-        "description": "Torne-se membro e tenha acesso a eventos e funcionalidades exclusivas."
-      },
-      "hero": {
-        "title": "Bem-vindo ao EuropeTalks!",
-        "subtitle": "Junta-te à nossa comunidade de europeus que partilham ideias, cultura e criam ligações além-fronteiras."
-      },
-      "features": {
-        "cultural": {
-          "title": "Intercâmbio cultural",
-          "description": "Conhece as diversas culturas europeias através dos nossos eventos e workshops."
-        },
-        "community": {
-          "title": "Comunidade",
-          "description": "Estabelece contactos com europeus que partilham as mesmas ideias e constrói relações duradouras."
-        },
-        "knowledge": {
-          "title": "Partilhar conhecimentos",
-          "description": "Partilha e expande os teus conhecimentos através de debates interactivos, workshops e aprende com os outros."
-        }
-      },
-      "getToKnowUs": {
-        "title": "Conheçe-nos"
-      }
+    "getToKnowUs": {
+      "title": "Conheçe-nos"
+    }
+  },
+  "about": {
+    "title": "Sobre o EuropeTalks",
+    "whoWeAre": {
+      "intro": "Somos um grupo de activistas de toda a Europa que estão unidos por um objetivo: promover a cooperação e a solidariedade europeias!",
+      "title": "Quem somos",
+      "mission": "O nosso objetivo principal é fornecer uma plataforma para democratas europeus, ligar pessoas com ideias semelhantes de toda a Europa e mais além, e trabalhar em conjunto por uma visão europeia comum, baseada em valores sociais-democratas e socialistas. Queremos permitir que as pessoas partilhem os seus valores e visões sobre como desenvolver e moldar ainda mais a União Europeia."
     },
-    "about": {
-      "title": "Sobre o EuropeTalks",
-      "whoWeAre": {
-        "intro": "Somos um grupo de activistas de toda a Europa que estão unidos por um objetivo: promover a cooperação e a solidariedade europeias!",
-        "title": "Quem somos",
-        "mission": "O nosso objetivo principal é fornecer uma plataforma para democratas europeus, ligar pessoas com ideias semelhantes de toda a Europa e mais além, e trabalhar em conjunto por uma visão europeia comum, baseada em valores sociais-democratas e socialistas. Queremos permitir que as pessoas partilhem os seus valores e visões sobre como desenvolver e moldar ainda mais a União Europeia."
-      },
-      "howWeWork": {
-        "intro": "Nós, socialistas e sociais-democratas, devemos encarnar a ideia europeia e criar redes europeias a todos os níveis. Só assim as políticas europeias poderão ser representadas e promovidas de forma credível.",
-        "title": "Como trabalhamos",
-        "method": "Fazemos com que isto aconteça ligando as pessoas em cada organização local. Para ajudar os indivíduos a compreenderem diferentes pontos de vista, a partilharem experiências políticas e a trabalharem em conjunto em soluções para questões comuns, organizamos workshops e eventos - tanto online como presenciais.",
-        "papers": "Estes workshops constituem a base do nosso trabalho conjunto e do nosso posicionamento em termos de questões políticas específicas. No final de cada workshop, elaboramos documentos de discussão, que são levados para as organizações individuais e que se destinam a contribuir para a formação de políticas nessas organizações. Só assim podemos garantir que as questões europeias são incluídas no debate e discutidas numa verdadeira perspetiva europeia.",
-        "support": "Também apoiamos as organizações partidárias locais a estabelecerem contactos entre si. Faz parte de um comité local e precisa de apoio para construir uma rede europeia? Então escreva-nos!",
-        "workshops": "Os nossos workshops abordam questões específicas e oferecem a possibilidade de trocar ideias e encontrar soluções para problemas Europeans comuns. Como é que podemos lidar melhor com a migração e os refugiados nthe European Union de uma forma humana? O que podemos fazer para tornar a habitação acessível e sustentável? Como seria uma política de segurança internacional socialista?"
-      },
-      "background": {
-        "title": "Background",
-        "activists": "Activistas de toda a Europa foram convidados a falar sobre questões comuns, como a desigualdade social entre os Estados-Membros, bem como sobre a nossa identidade europeia. Procurámos colaborações e inspirações para encontrar respostas para os problemas e desafios que enfrentamos em toda a Europa. Na conferência, todos nós vimos a necessidade de continuar a trabalhar em conjunto nestas questões e em muitas outras - diretamente e sem intermediários - como um movimento europeu de base. No final do nosso evento de lançamento, foi adoptada uma resolução no manifesto \"Europa, temos de falar\", que serve de base para uma maior cooperação e para a elaboração de políticas comuns.",
-        "countries": "Somos um grupo de activistas de 14 países diferentes: Spain, France, Lithuania, Belgium, the Netherlands, Germany, Portugal, Polónia, Italy, Croatia, Ukraine, Austria, Letónia e UK. Mas estamos sempre à procura de novos activistas de toda a Europe e não só. Estás interessado? Basta entrar em contacto connosco.",
-        "conference": "Tudo começou após a conferência \"Europa, precisamos de falar!\" - em 2018, organizada pelo Jusos e pelo SPD Hessen-Süd, na Alemanha. Esta conferência foi apoiada por Udo Bullmann, deputado europeu, e Michael Roth, Minister de State para a Europa do Ministry dos Negócios Foreigns alemão.",
-        "perspective": "Normalmente, nos nossos partidos, discutimos a Europa a partir de uma perspetiva nacional. Queremos estabelecer uma perspetiva europeia. Cada partido e comité político local pode criar um intercâmbio através de organizações parceiras social-democratas e socialistas. Isto pode ser conseguido através de projectos locais de intercâmbio, redes digitais e muito mais. Ligamos todos os grupos regionais numa base sustentável e a longo prazo para garantir que a Europa está no centro do trabalho quotidiano dos nossos partidos."
-      },
-      "leadership": {
-        "name": "Vivien Costanzo",
-        "role": {
-          "party": "Partido Social Democrata Alemão",
-          "title": "Deputado do Parlamento Europeu"
-        },
-        "intro": "O principal responsável pelo EuropeTalks é:",
-        "title": "Liderança"
-      },
-      "getToKnowUs": {
-        "title": "Conhece-nos"
-      }
+    "howWeWork": {
+      "intro": "Nós, socialistas e sociais-democratas, devemos encarnar a ideia europeia e criar redes europeias a todos os níveis. Só assim as políticas europeias poderão ser representadas e promovidas de forma credível.",
+      "title": "Como trabalhamos",
+      "method": "Fazemos com que isto aconteça ligando as pessoas em cada organização local. Para ajudar os indivíduos a compreenderem diferentes pontos de vista, a partilharem experiências políticas e a trabalharem em conjunto em soluções para questões comuns, organizamos workshops e eventos - tanto online como presenciais.",
+      "papers": "Estes workshops constituem a base do nosso trabalho conjunto e do nosso posicionamento em termos de questões políticas específicas. No final de cada workshop, elaboramos documentos de discussão, que são levados para as organizações individuais e que se destinam a contribuir para a formação de políticas nessas organizações. Só assim podemos garantir que as questões europeias são incluídas no debate e discutidas numa verdadeira perspetiva europeia.",
+      "support": "Também apoiamos as organizações partidárias locais a estabelecerem contactos entre si. Faz parte de um comité local e precisa de apoio para construir uma rede europeia? Então escreva-nos!",
+      "workshops": "Os nossos workshops abordam questões específicas e oferecem a possibilidade de trocar ideias e encontrar soluções para problemas Europeans comuns. Como é que podemos lidar melhor com a migração e os refugiados nthe European Union de uma forma humana? O que podemos fazer para tornar a habitação acessível e sustentável? Como seria uma política de segurança internacional socialista?"
     },
-    "admin": {
-      "dashboard": {
-        "title": "Dashboard",
-        "manageEvents": "Gerir eventos",
-        "manageTranslations": "Gerir traduções"
-      }
+    "background": {
+      "title": "Background",
+      "activists": "Activistas de toda a Europa foram convidados a falar sobre questões comuns, como a desigualdade social entre os Estados-Membros, bem como sobre a nossa identidade europeia. Procurámos colaborações e inspirações para encontrar respostas para os problemas e desafios que enfrentamos em toda a Europa. Na conferência, todos nós vimos a necessidade de continuar a trabalhar em conjunto nestas questões e em muitas outras - diretamente e sem intermediários - como um movimento europeu de base. No final do nosso evento de lançamento, foi adoptada uma resolução no manifesto \"Europa, temos de falar\", que serve de base para uma maior cooperação e para a elaboração de políticas comuns.",
+      "countries": "Somos um grupo de activistas de 14 países diferentes: Spain, France, Lithuania, Belgium, the Netherlands, Germany, Portugal, Polónia, Italy, Croatia, Ukraine, Austria, Letónia e UK. Mas estamos sempre à procura de novos activistas de toda a Europe e não só. Estás interessado? Basta entrar em contacto connosco.",
+      "conference": "Tudo começou após a conferência \"Europa, precisamos de falar!\" - em 2018, organizada pelo Jusos e pelo SPD Hessen-Süd, na Alemanha. Esta conferência foi apoiada por Udo Bullmann, deputado europeu, e Michael Roth, Minister de State para a Europa do Ministry dos Negócios Foreigns alemão.",
+      "perspective": "Normalmente, nos nossos partidos, discutimos a Europa a partir de uma perspetiva nacional. Queremos estabelecer uma perspetiva europeia. Cada partido e comité político local pode criar um intercâmbio através de organizações parceiras social-democratas e socialistas. Isto pode ser conseguido através de projectos locais de intercâmbio, redes digitais e muito mais. Ligamos todos os grupos regionais numa base sustentável e a longo prazo para garantir que a Europa está no centro do trabalho quotidiano dos nossos partidos."
     },
+    "leadership": {
+      "name": "Vivien Costanzo",
+      "role": {
+        "party": "Partido Social Democrata Alemão",
+        "title": "Deputado do Parlamento Europeu"
+      },
+      "intro": "O principal responsável pelo EuropeTalks é:",
+      "title": "Liderança"
+    },
+    "getToKnowUs": {
+      "title": "Conhece-nos"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Dashboard",
+      "manageEvents": "Gerir eventos",
+      "manageTranslations": "Gerir traduções"
+    }
+  },
+  "other": {
+    "cities": {},
+    "months": {},
+    "countries": {}
+  },
+  "events": {
+    "events": {
+      "title": "Eventos",
+      "loading": "Carregando eventos...",
+      "viewPastEvents": "Ver eventos anteriores"
+    },
+    "signUp": {
+      "email": {
+        "error": "Introduza um endereço de correio eletrónico válido",
+        "label": "Email"
+      },
+      "error": "Erro",
+      "phone": {
+        "label": "Number de telefone (facultativo)",
+        "placeholder": "Introduza o seu número de telefone"
+      },
+      "title": "Inscrever-se para",
+      "submit": "Inscrever-se",
+      "success": "Success!",
+      "fullName": {
+        "error": "O nome completo deve ter, pelo menos, 3 caracteres",
+        "label": "Nome completo"
+      },
+      "motivation": {
+        "error": "Indique pelo menos 50 caracteres para explicar a sua motivação",
+        "label": "Porque é que quer participar neste evento?",
+        "placeholder": "Diga-nos por que razão está interessado em participar..."
+      },
+      "submitting": "Inscrever-se...",
+      "errorMessage": "Não foi possível registar-se. Por favor, tente novamente.",
+      "successMessage": "A sua inscrição no evento foi efectuada com sucesso."
+    },
+    "eventCard": {
+      "date": "Data",
+      "time": "Time",
+      "hybrid": "Híbrido",
+      "online": "Em linha",
+      "signUp": "Inscrever-se",
+      "inPerson": "Pessoalmente",
+      "location": "Localização",
+      "readMore": "Ler mais",
+      "eventEnded": "Evento terminado"
+    },
+    "pastEvents": {
+      "title": "Eventos anteriores",
+      "noEvents": "Nenhum evento encontrado",
+      "viewUpcomingEvents": "Ver eventos futuros"
+    }
+  },
+  "header": {
     "other": {
-      "cities": {
-        "bern": "Bern",
-        "lyon": "Lyon",
-        "oslo": "Oslo",
-        "riga": "Riga",
-        "rome": "Rome",
-        "milan": "Milan",
-        "paris": "Paris",
-        "porec": "Porec",
-        "sofia": "Sofia",
-        "split": "Split",
-        "tartu": "Tartu",
-        "turin": "Turin",
-        "zadar": "Zadar",
-        "athens": "Athens",
-        "berlin": "Berlin",
-        "geneva": "Geneva",
-        "hessen": "Hessen",
-        "lisbon": "Lisbon",
-        "london": "London",
-        "madrid": "Madrid",
-        "munich": "Munich",
-        "prague": "Prague",
-        "rijeka": "Rijeka",
-        "skopje": "Skopje",
-        "vienna": "Vienna",
-        "warsaw": "Warsaw",
-        "zagreb": "Zagreb",
-        "zurich": "Zurich",
-        "cologne": "Cologne",
-        "hamburg": "Hamburg",
-        "tallinn": "Tallinn",
-        "vilnius": "Vilnius",
-        "belgrade": "Belgrade",
-        "brussels": "Brussels",
-        "budapest": "Budapest",
-        "helsinki": "Helsinki",
-        "istanbul": "Istanbul",
-        "pristina": "Pristina",
-        "valencia": "Valencia",
-        "amsterdam": "Amsterdam",
-        "barcelona": "Barcelona",
-        "bucharest": "Bucareste",
-        "dubrovnik": "Dubrovnik",
-        "frankfurt": "Frankfurt",
-        "marseille": "Marseille",
-        "stockholm": "Stockholm",
-        "birmingham": "Birmingham",
-        "bratislava": "Bratislava",
-        "dusseldorf": "Dusseldorf",
-        "luxembourg": "Luxembourg",
-        "manchester": "Manchester",
-        "strasbourg": "Strasbourg"
-      },
-      "months": {
-        "may": "maio",
-        "july": "July",
-        "june": "June",
-        "april": "April",
-        "march": "March",
-        "august": "August",
-        "january": "January",
-        "october": "October",
-        "december": "December",
-        "february": "February",
-        "november": "November",
-        "september": "September"
-      },
-      "countries": {
-        "italy": "Italy",
-        "malta": "Malta",
-        "spain": "Spain",
-        "cyprus": "Cyprus",
-        "france": "France",
-        "greece": "Greece",
-        "kosovo": "Kosovo",
-        "latvia": "Latvia",
-        "monaco": "Monaco",
-        "norway": "Norway",
-        "poland": "Poland",
-        "russia": "Russia",
-        "serbia": "Serbia",
-        "sweden": "Sweden",
-        "turkey": "Turkey",
-        "albania": "Albania",
-        "andorra": "Andorra",
-        "austria": "Austria",
-        "belarus": "Belarus",
-        "belgium": "Belgium",
-        "croatia": "Croatia",
-        "denmark": "Denmark",
-        "estonia": "Estonia",
-        "finland": "Finland",
-        "germany": "Germany",
-        "hungary": "Hungary",
-        "iceland": "Iceland",
-        "ireland": "Ireland",
-        "moldova": "Moldova",
-        "romania": "Romania",
-        "ukraine": "Ukraine",
-        "bulgaria": "Bulgaria",
-        "portugal": "Portugal",
-        "slovakia": "Slovakia",
-        "slovenia": "Slovenia",
-        "lithuania": "Lithuania",
-        "luxembourg": "Luxembourg",
-        "montenegro": "Montenegro",
-        "san_marino": "San Marino",
-        "netherlands": "Netherlands",
-        "switzerland": "Switzerland",
-        "vatican_city": "Vatican City",
-        "liechtenstein": "Liechtenstein",
-        "czech_republic": "Czech Republic",
-        "united_kingdom": "United Kingdom",
-        "north_macedonia": "North Macedonia",
-        "bosnia_and_herzegovina": "Bosnia and Herzegovina"
-      }
+      "menu": "Menu",
+      "signIn": "Iniciar sessão",
+      "signOut": "Sair"
+    },
+    "navigation": {
+      "home": "Início",
+      "about": "Sobre",
+      "admin": "Admin",
+      "cloud": "Cloud",
+      "events": "Eventos",
+      "contact": "Contacto",
+      "gallery": "Gallery",
+      "translations": "Traduções"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Nome",
+      "email": "Email",
+      "submit": "Send Message",
+      "message": "Mensagem",
+      "subject": "Assunto"
+    },
+    "info": {
+      "email": "Envie-nos um e-mail para:",
+      "title": "Outras formas de ligação",
+      "social": "Siga-nos nas redes sociais:"
+    },
+    "title": "Contactar-nos",
+    "description": "Entre em contacto connosco para quaisquer questões ou pedidos de informação."
+  },
+  "gallery": {
+    "title": "Gallery"
+  },
+  "components": {
+    "theme": {
+      "toggleTheme": "Toggle tema"
     },
     "events": {
-      "events": {
-        "title": "Eventos",
-        "loading": "Carregando eventos...",
-        "viewPastEvents": "Ver eventos anteriores"
-      },
-      "signUp": {
-        "email": {
-          "error": "Introduza um endereço de correio eletrónico válido",
-          "label": "Email"
-        },
-        "error": "Erro",
-        "phone": {
-          "label": "Number de telefone (facultativo)",
-          "placeholder": "Introduza o seu número de telefone"
-        },
-        "title": "Inscrever-se para",
-        "submit": "Inscrever-se",
-        "success": "Success!",
-        "fullName": {
-          "error": "O nome completo deve ter, pelo menos, 3 caracteres",
-          "label": "Nome completo"
-        },
-        "motivation": {
-          "error": "Indique pelo menos 50 caracteres para explicar a sua motivação",
-          "label": "Porque é que quer participar neste evento?",
-          "placeholder": "Diga-nos por que razão está interessado em participar..."
-        },
-        "submitting": "Inscrever-se...",
-        "errorMessage": "Não foi possível registar-se. Por favor, tente novamente.",
-        "successMessage": "A sua inscrição no evento foi efectuada com sucesso."
-      },
-      "eventCard": {
-        "date": "Data",
-        "time": "Time",
-        "hybrid": "Híbrido",
-        "online": "Em linha",
-        "signUp": "Inscrever-se",
-        "inPerson": "Pessoalmente",
-        "location": "Localização",
-        "readMore": "Ler mais",
-        "eventEnded": "Evento terminado"
-      },
-      "pastEvents": {
-        "title": "Eventos anteriores",
-        "noEvents": "Nenhum evento encontrado",
-        "viewUpcomingEvents": "Ver eventos futuros"
-      }
+      "signUp": "Inscrever-se",
+      "eventEnded": "Evento terminado"
     },
-    "header": {
-      "other": {
-        "menu": "Menu",
-        "signIn": "Iniciar sessão",
-        "signOut": "Sair"
-      },
-      "navigation": {
-        "home": "Início",
-        "about": "Sobre",
-        "admin": "Admin",
-        "cloud": "Cloud",
-        "events": "Eventos",
-        "contact": "Contacto",
-        "gallery": "Gallery",
-        "translations": "Traduções"
-      }
+    "languageSelector": {
+      "label": "Selecionar a língua"
     },
-    "contact": {
-      "form": {
-        "name": "Nome",
-        "email": "Email",
-        "submit": "Send Message",
-        "message": "Mensagem",
-        "subject": "Assunto"
-      },
-      "info": {
-        "email": "Envie-nos um e-mail para:",
-        "title": "Outras formas de ligação",
-        "social": "Siga-nos nas redes sociais:"
-      },
-      "title": "Contactar-nos",
-      "description": "Entre em contacto connosco para quaisquer questões ou pedidos de informação."
-    },
-    "gallery": {
-      "title": "Gallery"
-    },
-    "components": {
-      "theme": {
-        "toggleTheme": "Toggle tema"
-      },
-      "events": {
-        "signUp": "Inscrever-se",
-        "eventEnded": "Evento terminado"
-      },
-      "languageSelector": {
-        "label": "Selecionar a língua"
-      },
-      "languageDetection": {
-        "switchTo": "Mudar para português",
-        "available": "Este sítio Web está disponível na sua língua!"
-      }
+    "languageDetection": {
+      "switchTo": "Mudar para português",
+      "available": "Este sítio Web está disponível na sua língua!"
     }
   }
+}

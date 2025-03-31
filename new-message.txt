@@ -1,0 +1,9 @@
+Hi,
+
+hope you're doing well! 😊
+I have made some small changes and improvements to the website and cloud and would now please ask you again - if possible to check the translations if you have time. 🙏
+Unused translations have been removed and the editing flow has been improved.
+You can now also use the same login details you use on the website when logging into the cloud. Just use the Login with Europetalks Auth button if promted.
+Logged in, please create a New Folder with the + Button in the top right, give the folder your Name so we know who uploaded the images and then upload the images and Videos.
+
+_Important Note: This Login Method only works for the Browser and doesn't seem to work for the mobile Nextcloud App._

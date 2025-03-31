@@ -1,316 +1,202 @@
 {
-    "auth": {
-      "signIn": {
-        "error": "Nem sikerült bejelentkezni",
-        "title": "Bejelentkezés",
-        "success": "Sikeresen bejelentkezett",
-        "subtitle": "Üdvözöljük újra"
+  "auth": {
+    "signIn": {
+      "error": "Nem sikerült bejelentkezni",
+      "title": "Bejelentkezés",
+      "success": "Sikeresen bejelentkezett",
+      "subtitle": "Üdvözöljük újra"
+    },
+    "signUp": {
+      "error": "Nem sikerült regisztrálni",
+      "title": "Feliratkozás",
+      "success": "Sikeresen regisztrált",
+      "subtitle": "Üdvözöljük az EuropeTalks-on"
+    },
+    "signOut": {
+      "error": "Nem sikerült kijelentkezni",
+      "success": "Sikeresen kijelentkezett"
+    }
+  },
+  "home": {
+    "cta": {
+      "title": "Készen állsz a csatlakozásra?",
+      "buttons": {
+        "contact": "Kapcsolatfelvétel",
+        "explore": "Fedezze fel az eseményeket",
+        "learnMore": "Tudjon meg többet"
       },
-      "signUp": {
-        "error": "Nem sikerült regisztrálni",
-        "title": "Feliratkozás",
-        "success": "Sikeresen regisztrált",
-        "subtitle": "Üdvözöljük az EuropeTalks-on"
+      "description": "Legyen tag, és férjen hozzá exkluzív eseményekhez és funkciókhoz."
+    },
+    "hero": {
+      "title": "Üdvözöljük az EuropeTalks-on!",
+      "subtitle": "Csatlakozzon európaiak közösségéhez, akik megosztják egymással ötleteiket, kultúrájukat és határokon átnyúló kapcsolatokat teremtenek."
+    },
+    "features": {
+      "cultural": {
+        "title": "Cultural csere",
+        "description": "Tapasztalja meg a különböző európai kultúrákat rendezvényeinken és műhelymunkáinkon keresztül."
       },
-      "signOut": {
-        "error": "Nem sikerült kijelentkezni",
-        "success": "Sikeresen kijelentkezett"
+      "community": {
+        "title": "Közösség",
+        "description": "Kapcsolódjon össze hasonlóan gondolkodó európaiakkal, és építsen tartós kapcsolatokat."
+      },
+      "knowledge": {
+        "title": "Tudásmegosztás",
+        "description": "Ossza meg és bővítse ismereteit interaktív beszélgetéseken, workshopokon keresztül, és tanuljon másoktól."
       }
     },
-    "home": {
-      "cta": {
-        "title": "Készen állsz a csatlakozásra?",
-        "buttons": {
-          "contact": "Kapcsolatfelvétel",
-          "explore": "Fedezze fel az eseményeket",
-          "learnMore": "Tudjon meg többet"
-        },
-        "description": "Legyen tag, és férjen hozzá exkluzív eseményekhez és funkciókhoz."
-      },
-      "hero": {
-        "title": "Üdvözöljük az EuropeTalks-on!",
-        "subtitle": "Csatlakozzon európaiak közösségéhez, akik megosztják egymással ötleteiket, kultúrájukat és határokon átnyúló kapcsolatokat teremtenek."
-      },
-      "features": {
-        "cultural": {
-          "title": "Cultural csere",
-          "description": "Tapasztalja meg a különböző európai kultúrákat rendezvényeinken és műhelymunkáinkon keresztül."
-        },
-        "community": {
-          "title": "Közösség",
-          "description": "Kapcsolódjon össze hasonlóan gondolkodó európaiakkal, és építsen tartós kapcsolatokat."
-        },
-        "knowledge": {
-          "title": "Tudásmegosztás",
-          "description": "Ossza meg és bővítse ismereteit interaktív beszélgetéseken, workshopokon keresztül, és tanuljon másoktól."
-        }
-      },
-      "getToKnowUs": {
-        "title": "Ismerjen meg minket"
-      }
+    "getToKnowUs": {
+      "title": "Ismerjen meg minket"
+    }
+  },
+  "about": {
+    "title": "Az EuropeTalksról",
+    "whoWeAre": {
+      "intro": "Mi egy olyan aktivistákból álló csoport vagyunk, akik Europe-szerte egy cél érdekében egyesülnek: az európai együttműködés és szolidaritás erősítése!",
+      "title": "Kik vagyunk",
+      "mission": "Fő célunk, hogy platformot biztosítsunk az European demokraták számára, hogy összekapcsoljuk a hasonlóan gondolkodó embereket Europe-szerte és azon túl, és hogy együtt dolgozzunk egy közös European jövőképért, amely a szociáldemokrata és szocialista értékeken alapul. Lehetővé kívánjuk tenni, hogy az emberek megosszák egymással értékeiket és elképzeléseiket az Europei Union továbbfejlesztéséről és alakításáról."
     },
-    "about": {
-      "title": "Az EuropeTalksról",
-      "whoWeAre": {
-        "intro": "Mi egy olyan aktivistákból álló csoport vagyunk, akik Europe-szerte egy cél érdekében egyesülnek: az európai együttműködés és szolidaritás erősítése!",
-        "title": "Kik vagyunk",
-        "mission": "Fő célunk, hogy platformot biztosítsunk az European demokraták számára, hogy összekapcsoljuk a hasonlóan gondolkodó embereket Europe-szerte és azon túl, és hogy együtt dolgozzunk egy közös European jövőképért, amely a szociáldemokrata és szocialista értékeken alapul. Lehetővé kívánjuk tenni, hogy az emberek megosszák egymással értékeiket és elképzeléseiket az Europei Union továbbfejlesztéséről és alakításáról."
-      },
-      "howWeWork": {
-        "intro": "Nekünk, szocialistáknak és szociáldemokratáknak meg kell testesítenünk az európai eszmét, és minden szinten európai hálózatokat kell létrehoznunk. Csak így lehet hitelesen képviselni és támogatni az európai politikákat.",
-        "title": "Hogyan dolgozunk",
-        "method": "Ezt úgy érjük el, hogy minden helyi szervezetben összekötjük az embereket. Annak érdekében, hogy támogassuk az egyéneket a különböző nézőpontok megértésében, a politikai tapasztalatok megosztásában és a közös problémák megoldásának közös kidolgozásában, workshopokat és rendezvényeket szervezünk - online és személyesen is.",
-        "papers": "Ezek a munkaértekezletek képezik közös munkánk és a konkrét szakpolitikai kérdésekkel kapcsolatos álláspontunk alapját. Minden egyes műhelymunka végén vitaanyagokat készítünk, amelyeket az egyes szervezetekbe viszünk, és amelyek célja, hogy hozzájáruljanak az adott szervezetekben a politika kialakításához. Csak így tudjuk biztosítani, hogy az európai kérdések bekerüljenek a vitába, és valódi európai perspektívával vitassuk meg őket.",
-        "support": "Támogatjuk a helyi pártszervezeteket is, hogy összekapcsolódjanak egymással. Ön egy helyi bizottság tagja, és támogatásra van szüksége az európai hálózat kiépítéséhez? Akkor írjon nekünk!",
-        "workshops": "Műhelytalálkozóink konkrét kérdésekkel foglalkoznak, és lehetőséget nyújtanak az eszmecserére és a közös European problémák megoldására. Hogyan kezelhetjük humánusabban a migrációt és a menekülteket az Európai Unionban? Mit tehetünk azért, hogy a lakhatás megfizethető és fenntartható legyen? Hogyan nézne ki egy szocialista nemzetközi biztonságpolitika?"
-      },
-      "background": {
-        "title": "Background",
-        "activists": "Az egész Európából érkező aktivistákat meghívták, hogy beszéljenek olyan közös kérdésekről, mint a tagállamok közötti társadalmi egyenlőtlenségek, valamint az európai identitásunk. Együttműködéseket és inspirációkat kerestünk, hogy válaszokat találjunk az Europe-szerte felmerülő problémákra és kihívásokra. A konferencián mindannyian láttuk, hogy szükség van arra, hogy továbbra is együtt dolgozzunk ezeken és még sok más kérdésen - közvetlenül és közvetítők nélkül - európai alulról szerveződő mozgalomként. A nyitórendezvényünk végén elfogadtunk egy állásfoglalást, az \"Europe, beszélnünk kell\" című kiáltványt, amely a további együttműködés és a közös politikaalkotás alapjául szolgál.",
-        "countries": "Mi 14 különböző országból származó aktivisták csoportja vagyunk: Spain, France, Lithuania, Belgium, Netherlands, Germany, Portugal, Poland, Italy, Croatia, Ukraine, Austria, Latvia, valamint az Egyesült Királyság. De mindig keresünk új aktivistákat egész Európából és azon túlról. Érdekli az érdeklődés? Csak vedd fel velünk a kapcsolatot.",
-        "conference": "Az egész az \"Europe, beszélnünk kell!\" után kezdődött. - konferencia után, amelyet a németországi Jusos és az SPD Hessen-Süd szervezett 2018-ban. Ezt támogatta Udo Bullmann európai parlamenti képviselő és Michael Roth, a német külügyminisztérium Európáért felelős államtitkára.",
-        "perspective": "Pártjainkban általában nemzeti szempontból beszélünk Európáról. Mi európai perspektívát akarunk kialakítani. Minden helyi párt és politikai bizottság a szociáldemokrata és szocialista partnerszervezeteken keresztül teremtheti meg a cserét. Ezt helyi csereprojekteken, digitális hálózatépítésen és sok máson keresztül lehet elérni. Minden regionális csoportot hosszú távon és fenntartható módon kapcsolunk össze annak érdekében, hogy a mindennapi pártmunkában Europe álljon a középpontban."
-      },
-      "leadership": {
-        "name": "Vivien Costanzo",
-        "role": {
-          "party": "Social Democratic Party of Germany",
-          "title": "Az Európai Parliament tagja"
-        },
-        "intro": "A EuropeTalks fő felelőse:",
-        "title": "Vezetés"
-      },
-      "getToKnowUs": {
-        "title": "Ismerjen meg minket"
-      }
+    "howWeWork": {
+      "intro": "Nekünk, szocialistáknak és szociáldemokratáknak meg kell testesítenünk az európai eszmét, és minden szinten európai hálózatokat kell létrehoznunk. Csak így lehet hitelesen képviselni és támogatni az európai politikákat.",
+      "title": "Hogyan dolgozunk",
+      "method": "Ezt úgy érjük el, hogy minden helyi szervezetben összekötjük az embereket. Annak érdekében, hogy támogassuk az egyéneket a különböző nézőpontok megértésében, a politikai tapasztalatok megosztásában és a közös problémák megoldásának közös kidolgozásában, workshopokat és rendezvényeket szervezünk - online és személyesen is.",
+      "papers": "Ezek a munkaértekezletek képezik közös munkánk és a konkrét szakpolitikai kérdésekkel kapcsolatos álláspontunk alapját. Minden egyes műhelymunka végén vitaanyagokat készítünk, amelyeket az egyes szervezetekbe viszünk, és amelyek célja, hogy hozzájáruljanak az adott szervezetekben a politika kialakításához. Csak így tudjuk biztosítani, hogy az európai kérdések bekerüljenek a vitába, és valódi európai perspektívával vitassuk meg őket.",
+      "support": "Támogatjuk a helyi pártszervezeteket is, hogy összekapcsolódjanak egymással. Ön egy helyi bizottság tagja, és támogatásra van szüksége az európai hálózat kiépítéséhez? Akkor írjon nekünk!",
+      "workshops": "Műhelytalálkozóink konkrét kérdésekkel foglalkoznak, és lehetőséget nyújtanak az eszmecserére és a közös European problémák megoldására. Hogyan kezelhetjük humánusabban a migrációt és a menekülteket az Európai Unionban? Mit tehetünk azért, hogy a lakhatás megfizethető és fenntartható legyen? Hogyan nézne ki egy szocialista nemzetközi biztonságpolitika?"
     },
-    "admin": {
-      "dashboard": {
-        "title": "Dashboard",
-        "manageEvents": "Események kezelése",
-        "manageTranslations": "Fordítások kezelése"
-      }
+    "background": {
+      "title": "Background",
+      "activists": "Az egész Európából érkező aktivistákat meghívták, hogy beszéljenek olyan közös kérdésekről, mint a tagállamok közötti társadalmi egyenlőtlenségek, valamint az európai identitásunk. Együttműködéseket és inspirációkat kerestünk, hogy válaszokat találjunk az Europe-szerte felmerülő problémákra és kihívásokra. A konferencián mindannyian láttuk, hogy szükség van arra, hogy továbbra is együtt dolgozzunk ezeken és még sok más kérdésen - közvetlenül és közvetítők nélkül - európai alulról szerveződő mozgalomként. A nyitórendezvényünk végén elfogadtunk egy állásfoglalást, az \"Europe, beszélnünk kell\" című kiáltványt, amely a további együttműködés és a közös politikaalkotás alapjául szolgál.",
+      "countries": "Mi 14 különböző országból származó aktivisták csoportja vagyunk: Spain, France, Lithuania, Belgium, Netherlands, Germany, Portugal, Poland, Italy, Croatia, Ukraine, Austria, Latvia, valamint az Egyesült Királyság. De mindig keresünk új aktivistákat egész Európából és azon túlról. Érdekli az érdeklődés? Csak vedd fel velünk a kapcsolatot.",
+      "conference": "Az egész az \"Europe, beszélnünk kell!\" után kezdődött. - konferencia után, amelyet a németországi Jusos és az SPD Hessen-Süd szervezett 2018-ban. Ezt támogatta Udo Bullmann európai parlamenti képviselő és Michael Roth, a német külügyminisztérium Európáért felelős államtitkára.",
+      "perspective": "Pártjainkban általában nemzeti szempontból beszélünk Európáról. Mi európai perspektívát akarunk kialakítani. Minden helyi párt és politikai bizottság a szociáldemokrata és szocialista partnerszervezeteken keresztül teremtheti meg a cserét. Ezt helyi csereprojekteken, digitális hálózatépítésen és sok máson keresztül lehet elérni. Minden regionális csoportot hosszú távon és fenntartható módon kapcsolunk össze annak érdekében, hogy a mindennapi pártmunkában Europe álljon a középpontban."
     },
+    "leadership": {
+      "name": "Vivien Costanzo",
+      "role": {
+        "party": "Social Democratic Party of Germany",
+        "title": "Az Európai Parliament tagja"
+      },
+      "intro": "A EuropeTalks fő felelőse:",
+      "title": "Vezetés"
+    },
+    "getToKnowUs": {
+      "title": "Ismerjen meg minket"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Dashboard",
+      "manageEvents": "Események kezelése",
+      "manageTranslations": "Fordítások kezelése"
+    }
+  },
+  "other": {
+    "cities": {},
+    "months": {},
+    "countries": {}
+  },
+  "events": {
+    "events": {
+      "title": "Események",
+      "loading": "Események betöltése...",
+      "noEvents": "Nincs közelgő esemény, gyere vissza később!",
+      "viewPastEvents": "Korábbi események megtekintése"
+    },
+    "signUp": {
+      "email": {
+        "error": "Kérjük, adjon meg egy érvényes e-mail címet",
+        "label": "Email"
+      },
+      "error": "Hiba",
+      "phone": {
+        "label": "Telefonszám (nem kötelező)",
+        "placeholder": "Adja meg telefonszámát"
+      },
+      "title": "Regisztráljon a",
+      "submit": "Feliratkozás",
+      "success": "Success!",
+      "fullName": {
+        "error": "A teljes névnek legalább 3 karakterből kell állnia",
+        "label": "Teljes név"
+      },
+      "motivation": {
+        "error": "Kérjük, legalább 50 karakterben magyarázza meg motivációját.",
+        "label": "Miért szeretne részt venni ezen az eseményen?",
+        "placeholder": "Kérjük, mondja el, miért érdekli a részvétel..."
+      },
+      "submitting": "Feliratkozás...",
+      "errorMessage": "Nem sikerült regisztrálni. Kérjük, próbálja újra.",
+      "successMessage": "Ön sikeresen regisztrált az eseményre."
+    },
+    "eventCard": {
+      "date": "Dátum",
+      "time": "Time",
+      "hybrid": "Hibrid",
+      "online": "Online",
+      "signUp": "Feliratkozás",
+      "inPerson": "Személyesen",
+      "location": "Helyszín",
+      "readMore": "Olvass tovább",
+      "eventEnded": "Esemény Befejeződött",
+      "registrationClosed": "Regisztráció lezárva"
+    },
+    "pastEvents": {
+      "title": "Korábbi események",
+      "noEvents": "No past events found",
+      "viewUpcomingEvents": "Közelgő események megtekintése"
+    }
+  },
+  "header": {
     "other": {
-      "cities": {
-        "bern": "Bern",
-        "lyon": "Lyon",
-        "oslo": "Oslo",
-        "riga": "Riga",
-        "rome": "Rome",
-        "milan": "Milan",
-        "paris": "Paris",
-        "porec": "Porec",
-        "sofia": "Sofia",
-        "split": "Split",
-        "tartu": "Tartu",
-        "turin": "Turin",
-        "zadar": "Zadar",
-        "athens": "Athens",
-        "berlin": "Berlin",
-        "geneva": "Geneva",
-        "hessen": "Hessen",
-        "lisbon": "Lisbon",
-        "london": "London",
-        "madrid": "Madrid",
-        "munich": "Munich",
-        "prague": "Prague",
-        "rijeka": "Rijeka",
-        "skopje": "Szkopje",
-        "vienna": "Vienna",
-        "warsaw": "Warsaw",
-        "zagreb": "Zagreb",
-        "zurich": "Zurich",
-        "cologne": "Cologne",
-        "hamburg": "Hamburg",
-        "tallinn": "Tallinn",
-        "vilnius": "Vilnius",
-        "belgrade": "Belgrade",
-        "brussels": "Brussels",
-        "budapest": "Budapest",
-        "helsinki": "Helsinki",
-        "istanbul": "Istanbul",
-        "pristina": "Pristina",
-        "valencia": "Valencia",
-        "amsterdam": "Amsterdam",
-        "barcelona": "Barcelona",
-        "bucharest": "Bukarest",
-        "dubrovnik": "Dubrovnik",
-        "frankfurt": "Frankfurt",
-        "marseille": "Marseille",
-        "stockholm": "Stockholm",
-        "birmingham": "Birmingham",
-        "bratislava": "Bratislava",
-        "dusseldorf": "Dusseldorf",
-        "luxembourg": "Luxembourg",
-        "manchester": "Manchester",
-        "strasbourg": "Strasbourg"
-      },
-      "months": {
-        "may": "Május",
-        "july": "July",
-        "june": "June",
-        "april": "April",
-        "march": "March",
-        "august": "August",
-        "january": "January",
-        "october": "October",
-        "december": "December",
-        "february": "February",
-        "november": "November",
-        "september": "September"
-      },
-      "countries": {
-        "italy": "Italy",
-        "malta": "Malta",
-        "spain": "Spain",
-        "cyprus": "Cyprus",
-        "france": "France",
-        "greece": "Greece",
-        "kosovo": "Kosovo",
-        "latvia": "Latvia",
-        "monaco": "Monaco",
-        "norway": "Norway",
-        "poland": "Poland",
-        "russia": "Russia",
-        "serbia": "Serbia",
-        "sweden": "Sweden",
-        "turkey": "Turkey",
-        "albania": "Albania",
-        "andorra": "Andorra",
-        "austria": "Austria",
-        "belarus": "Belarus",
-        "belgium": "Belgium",
-        "croatia": "Croatia",
-        "denmark": "Denmark",
-        "estonia": "Estonia",
-        "finland": "Finland",
-        "germany": "Germany",
-        "hungary": "Hungary",
-        "iceland": "Iceland",
-        "ireland": "Ireland",
-        "moldova": "Moldova",
-        "romania": "Romania",
-        "ukraine": "Ukraine",
-        "bulgaria": "Bulgaria",
-        "portugal": "Portugal",
-        "slovakia": "Slovakia",
-        "slovenia": "Slovenia",
-        "lithuania": "Lithuania",
-        "luxembourg": "Luxembourg",
-        "montenegro": "Montenegro",
-        "san_marino": "San Marino",
-        "netherlands": "Netherlands",
-        "switzerland": "Switzerland",
-        "vatican_city": "Vatican City",
-        "liechtenstein": "Liechtenstein",
-        "czech_republic": "Czech Republic",
-        "united_kingdom": "United Kingdom",
-        "north_macedonia": "North Macedonia",
-        "bosnia_and_herzegovina": "Bosnia and Herzegovina"
-      }
+      "menu": "Menu",
+      "signIn": "Bejelentkezés",
+      "signOut": "Kijelentkezés"
+    },
+    "navigation": {
+      "home": "Home",
+      "about": "A  oldalról",
+      "admin": "Admin",
+      "cloud": "Cloud",
+      "events": "Események",
+      "contact": "Kapcsolat",
+      "gallery": "Gallery",
+      "translations": "Fordítások"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Név",
+      "email": "Email",
+      "submit": "Send Message",
+      "message": "Üzenet",
+      "subject": "Tárgy:"
+    },
+    "info": {
+      "email": "Írjon nekünk e-mailt a következő címre:",
+      "title": "Egyéb kapcsolódási lehetőségek",
+      "social": "Kövessen minket a közösségi médiában:"
+    },
+    "title": "Kapcsolatfelvétel",
+    "description": "Lépjen kapcsolatba velünk bármilyen kérdéssel vagy érdeklődéssel."
+  },
+  "gallery": {
+    "title": "Gallery"
+  },
+  "components": {
+    "theme": {
+      "toggleTheme": "Téma váltása"
     },
     "events": {
-      "events": {
-        "title": "Események",
-        "loading": "Események betöltése...",
-        "noEvents": "Nincs közelgő esemény, gyere vissza később!",
-        "viewPastEvents": "Korábbi események megtekintése"
-      },
-      "signUp": {
-        "email": {
-          "error": "Kérjük, adjon meg egy érvényes e-mail címet",
-          "label": "Email"
-        },
-        "error": "Hiba",
-        "phone": {
-          "label": "Telefonszám (nem kötelező)",
-          "placeholder": "Adja meg telefonszámát"
-        },
-        "title": "Regisztráljon a",
-        "submit": "Feliratkozás",
-        "success": "Success!",
-        "fullName": {
-          "error": "A teljes névnek legalább 3 karakterből kell állnia",
-          "label": "Teljes név"
-        },
-        "motivation": {
-          "error": "Kérjük, legalább 50 karakterben magyarázza meg motivációját.",
-          "label": "Miért szeretne részt venni ezen az eseményen?",
-          "placeholder": "Kérjük, mondja el, miért érdekli a részvétel..."
-        },
-        "submitting": "Feliratkozás...",
-        "errorMessage": "Nem sikerült regisztrálni. Kérjük, próbálja újra.",
-        "successMessage": "Ön sikeresen regisztrált az eseményre."
-      },
-      "eventCard": {
-        "date": "Dátum",
-        "time": "Time",
-        "hybrid": "Hibrid",
-        "online": "Online",
-        "signUp": "Feliratkozás",
-        "inPerson": "Személyesen",
-        "location": "Helyszín",
-        "readMore": "Olvass tovább",
-        "eventEnded": "Esemény Befejeződött",
-        "registrationClosed": "Regisztráció lezárva"
-      },
-      "pastEvents": {
-        "title": "Korábbi események",
-        "noEvents": "No past events found",
-        "viewUpcomingEvents": "Közelgő események megtekintése"
-      }
+      "signUp": "Feliratkozás",
+      "eventEnded": "Esemény Befejeződött"
     },
-    "header": {
-      "other": {
-        "menu": "Menu",
-        "signIn": "Bejelentkezés",
-        "signOut": "Kijelentkezés"
-      },
-      "navigation": {
-        "home": "Home",
-        "about": "A  oldalról",
-        "admin": "Admin",
-        "cloud": "Cloud",
-        "events": "Események",
-        "contact": "Kapcsolat",
-        "gallery": "Gallery",
-        "translations": "Fordítások"
-      }
+    "languageSelector": {
+      "label": "Nyelv kiválasztása"
     },
-    "contact": {
-      "form": {
-        "name": "Név",
-        "email": "Email",
-        "submit": "Send Message",
-        "message": "Üzenet",
-        "subject": "Tárgy:"
-      },
-      "info": {
-        "email": "Írjon nekünk e-mailt a következő címre:",
-        "title": "Egyéb kapcsolódási lehetőségek",
-        "social": "Kövessen minket a közösségi médiában:"
-      },
-      "title": "Kapcsolatfelvétel",
-      "description": "Lépjen kapcsolatba velünk bármilyen kérdéssel vagy érdeklődéssel."
-    },
-    "gallery": {
-      "title": "Gallery"
-    },
-    "components": {
-      "theme": {
-        "toggleTheme": "Téma váltása"
-      },
-      "events": {
-        "signUp": "Feliratkozás",
-        "eventEnded": "Esemény Befejeződött"
-      },
-      "languageSelector": {
-        "label": "Nyelv kiválasztása"
-      },
-      "languageDetection": {
-        "switchTo": "Váltson Nyelvre",
-        "available": "Ez a weboldal az Ön nyelvén is elérhető!"
-      }
+    "languageDetection": {
+      "switchTo": "Váltson {{Nyelv}}",
+      "available": "Ez a weboldal az Ön nyelvén is elérhető!"
     }
   }
+}
