@@ -135,7 +135,7 @@
       "pastEvents": {
         "title": "Past Events",
         "viewUpcomingEvents": "View Upcoming Events",
-        "noEvents": "No events found"
+        "noEvents": "No past events found"
       },
       "eventCard": {
         "signUp": "Sign Up",
