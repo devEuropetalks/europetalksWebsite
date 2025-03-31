@@ -92,92 +92,95 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
       return;
     }
 
-    // Skip API calls for English - use translations.json directly
-    if (language === "en") {
+    // Load the resources immediately from the initialTranslations
+    if (language in initialTranslations) {
+      console.log(`Loading ${language} translations from local JSON files`);
+      
       if (namespace) {
-        // Add single namespace for English
-        i18n.addResourceBundle(
-          "en",
-          namespace,
-          initialTranslations.en[namespace],
-          true,
-          true
-        );
-      } else {
-        // Add all namespaces for English
-        Object.entries(initialTranslations.en).forEach(([ns, translations]) => {
-          i18n.addResourceBundle("en", ns, translations, true, true);
-        });
-      }
-      return;
-    }
-
-    // Check cache first
-    if (translationsCache[language]) {
-      if (namespace) {
-        if (translationsCache[language][namespace]) {
+        // Add single namespace
+        if (initialTranslations[language][namespace]) {
           i18n.addResourceBundle(
             language,
             namespace,
-            translationsCache[language][namespace],
+            initialTranslations[language][namespace],
             true,
             true
           );
-          return;
         }
       } else {
-        Object.entries(translationsCache[language]).forEach(
-          ([ns, translations]) => {
-            i18n.addResourceBundle(language, ns, translations, true, true);
-          }
-        );
-        return;
+        // Add all namespaces
+        Object.entries(initialTranslations[language]).forEach(([ns, translations]) => {
+          i18n.addResourceBundle(language, ns, translations, true, true);
+        });
       }
     }
 
-    // If no specific namespace is provided, load all namespaces
-    const namespacesToLoad = namespace ? [namespace] : namespaces;
-
-    for (const ns of namespacesToLoad) {
-      const response = await fetch(
-        `/api/translations?language=${language}&namespace=${ns}`,
-        {
-          // Add cache headers for development
-          cache:
-            process.env.NODE_ENV === "development" ? "no-cache" : "force-cache",
+    // Also try to get translations from database
+    try {
+      // Check cache first
+      if (translationsCache[language]) {
+        if (namespace) {
+          if (translationsCache[language][namespace]) {
+            i18n.addResourceBundle(
+              language,
+              namespace,
+              translationsCache[language][namespace],
+              true,
+              true
+            );
+            return;
+          }
+        } else {
+          Object.entries(translationsCache[language]).forEach(
+            ([ns, translations]) => {
+              i18n.addResourceBundle(language, ns, translations, true, true);
+            }
+          );
+          return;
         }
-      );
+      }
 
-      if (!response.ok) {
-        console.warn(
-          `Warning: Failed to reload translations for ${language}/${ns}`
+      // If no specific namespace is provided, load all namespaces
+      const namespacesToLoad = namespace ? [namespace] : namespaces;
+
+      for (const ns of namespacesToLoad) {
+        const response = await fetch(
+          `/api/translations?language=${language}&namespace=${ns}`,
+          {
+            // Add cache headers for development
+            cache:
+              process.env.NODE_ENV === "development" ? "no-cache" : "force-cache",
+          }
         );
-        // Fallback to English if other language fails
-        const defaultTranslations = initialTranslations.en[ns];
-        i18n.addResourceBundle(language, ns, defaultTranslations, true, true);
-        continue;
-      }
 
-      const data = await response.json();
-      // The response is now the namespace content directly when requesting a specific namespace
-      const content = namespace ? data : data[ns];
-      if (content) {
-        // Update cache
-        if (!translationsCache[language]) {
-          translationsCache[language] = {};
+        if (!response.ok) {
+          console.warn(
+            `Warning: Failed to reload database translations for ${language}/${ns}`
+          );
+          continue; // Skip this namespace, but already loaded from JSON
         }
-        translationsCache[language][ns] = content;
 
-        // Add to i18next
-        i18n.addResourceBundle(language, ns, content, true, true);
+        const data = await response.json();
+        // The response is now the namespace content directly when requesting a specific namespace
+        const content = namespace ? data : data[ns];
+        if (content) {
+          // Update cache
+          if (!translationsCache[language]) {
+            translationsCache[language] = {};
+          }
+          translationsCache[language][ns] = content;
+
+          // Add to i18next (will override the JSON files if keys exist)
+          i18n.addResourceBundle(language, ns, content, true, true);
+        }
       }
+    } catch (dbError) {
+      console.warn("Warning: Error fetching translations from database:", dbError);
+      // No need to do anything here since we've already loaded from JSON files
     }
   } catch (error) {
     console.warn("Warning: Error reloading translations:", error);
-    // Fallback to English on error
-    Object.entries(initialTranslations.en).forEach(([ns, translations]) => {
-      i18n.addResourceBundle(language, ns, translations, true, true);
-    });
+    // We've already loaded translations from local JSON files above
   }
 };
 
@@ -193,9 +196,7 @@ i18n.changeLanguage = async (
 
 // Initialize i18next
 const config: InitOptions = {
-  resources: {
-    en: initialTranslations.en, // Load all English translations immediately
-  },
+  resources: initialTranslations, // Load all translations immediately
   lng: "en",
   fallbackLng: "en",
   defaultNS: "home",
@@ -285,13 +286,15 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
             <X className="h-4 w-4" />
           </button>
           <p className="mb-3">
-            {i18n.t("components:languageDetection.available")}
+            {popupTranslations[detectedLanguage as keyof typeof popupTranslations]?.available || 
+              popupTranslations.en.available}
           </p>
           <Button onClick={handleLanguageSwitch} className="w-full">
-            {i18n.t("components:languageDetection.switchTo", {
-              language:
-                languageNames[detectedLanguage as keyof typeof languageNames],
-            })}
+            {(popupTranslations[detectedLanguage as keyof typeof popupTranslations]?.switchTo || 
+              popupTranslations.en.switchTo)
+              .replace('{{language}}', 
+                languageNames[detectedLanguage as keyof typeof languageNames] || detectedLanguage)
+            }
           </Button>
         </div>
       )}

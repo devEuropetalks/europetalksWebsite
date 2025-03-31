@@ -1,0 +1,314 @@
+{
+    "auth": {
+      "signIn": {
+        "error": "Error al iniciar sesión",
+        "title": "Iniciar sesión",
+        "success": "Iniciar sesión con éxito",
+        "subtitle": "Bienvenido de nuevo"
+      },
+      "signUp": {
+        "error": "Failed to sign up",
+        "title": "Sign Up",
+        "success": "Successfully signed up",
+        "subtitle": "Welcome to EuropeTalks"
+      },
+      "signOut": {
+        "error": "No se ha podido cerrar la sesión",
+        "success": "Cerrar sesión con éxito"
+      }
+    },
+    "home": {
+      "cta": {
+        "title": "¿Te unes?",
+        "buttons": {
+          "contact": "Contacta con nosotros",
+          "explore": "Explorar eventos",
+          "learnMore": "Más información"
+        },
+        "description": "Hazte miembro y accede a eventos y funciones exclusivas."
+      },
+      "hero": {
+        "title": "¡Bienvenido a EuropeTalks!",
+        "subtitle": "Únete a nuestra comunidad de europeos que comparten ideas, cultura y crean conexiones más allá de las fronteras."
+      },
+      "features": {
+        "cultural": {
+          "title": "Intercambio cultural",
+          "description": "Experimenta las diversas culturas europeas a través de nuestros actos y talleres."
+        },
+        "community": {
+          "title": "Comunidad",
+          "description": "Conéctate con europeos afines y establezca relaciones duraderas."
+        },
+        "knowledge": {
+          "title": "Comparte conocimientos",
+          "description": "Comparte y amplía tus conocimientos a través de debates interactivos, talleres y aprenda de los demás."
+        }
+      },
+      "getToKnowUs": {
+        "title": "Conócenos"
+      }
+    },
+    "about": {
+      "title": "Acerca de EuropeTalks",
+      "whoWeAre": {
+        "intro": "Somos un grupo de activistas de toda Europa unidos por un objetivo: ¡impulsar la cooperación y la solidaridad europeas!",
+        "title": "Quiénes somos",
+        "mission": "Nuestro principal objetivo es proporcionar una plataforma para los demócratas europeos, poner en contacto a personas de ideas afines de toda Europa y de fuera de ella y trabajar juntos por una visión europea común, basada en valores socialdemócratas y socialistas. Queremos que la gente pueda compartir sus valores y visiones sobre cómo seguir desarrollando y dando forma a la Unión Europea"
+      },
+      "howWeWork": {
+        "intro": " Como socialistas y socialdemócratas, debemos encarnar la idea europea y crear redes europeas a todos los niveles. Sólo así podrán representarse y promoverse de forma creíble las políticas europeas.",
+        "title": "Cómo trabajamos",
+        "method": "Lo hacemos posible conectando a las personas de organizaciones locales. Para ayudar a las personas a entender diferentes puntos de vista, compartir experiencias políticas y colaborar en la búsqueda de soluciones a problemas comunes, organizamos talleres y actos, tanto en línea como presenciales.",
+        "papers": "Estos talleres constituyen la base de nuestro trabajo conjunto y de nuestro posicionamiento en cuanto a cuestiones políticas concretas. Al final de cada taller, elaboramos documentos de debate, que se llevan a las organizaciones individuales y que pretenden contribuir a la formación de la política en estas organizaciones. Sólo así podemos garantizar que las cuestiones europeas se incluyan en el debate y se discutan con una verdadera perspectiva europea.",
+        "support": "También apoyamos a las organizaciones locales de los partidos para que se conecten entre sí. ¿Formas parte de un comité local y necesitas apoyo para crear una red europea? Escríbenos.",
+        "workshops": "Nuestros talleres abordan cuestiones específicas y ofrecen la posibilidad de intercambiar ideas y encontrar soluciones a problemas europeos comunes. ¿Cómo podemos tratar mejor y de forma humana la migración y los refugiados en the European Union? ¿Qué podemos hacer para que la vivienda sea asequible y sostenible? ¿Cómo sería una política de seguridad internacional socialista?"
+      },
+      "background": {
+        "title": "Background",
+        "activists": "Se invitó a activistas de toda Europa a hablar de temas comunes como la desigualdad social entre los Estados miembros y nuestra identidad europea. Buscábamos colaboraciones e inspiración para encontrar respuestas a los problemas y retos a los que nos enfrentamos en toda Europa. En la conferencia, vimos la necesidad de seguir trabajando juntos en estas cuestiones y en muchas más -directamente y sin intermediarios- como movimiento de base europeo. Al final de nuestro acto inaugural, se adoptó una resolución en el manifiesto \"Europa, tenemos que hablar\", que sirve de base para seguir cooperando y elaborando políticas comunes.",
+        "countries": "Somos un grupo de activistas de 14 países diferentes: España, Francia, Lituania, Bélgica, Países Bajos, Alemania, Portugal, Polonia, Italia, Croacia, Ucrania, Austria, Letonia y Reino Unido. Pero siempre estamos buscando nuevos activistas de toda Europa y más allá. ¿Te interesa? Ponte en contacto con nosotros.",
+        "conference": "Todo empezó tras la conferencia \"Europa, ¡tenemos que hablar!\" - de 2018, organizada por Jusos y SPD Hessen-Süd en Germany. Contó con el apoyo del eurodiputado Udo Bullmann y del ministro alemán de Asuntos Exteriores, Michael Roth.",
+        "perspective": "En nuestros partidos solemos hablar de Europa desde una perspectiva nacional. Nosotros queremos establecer una perspectiva europea. Cada partido y comité político local puede crear un intercambio a través de las organizaciones socialdemócratas y socialistas asociadas. Esto puede lograrse a través de proyectos de intercambio locales, redes digitales y mucho más. Vinculamos a cada grupo regional a largo plazo y de forma sostenible para asegurarnos de que Europa está en el centro de nuestro trabajo diario en el partido."
+      },
+      "leadership": {
+        "name": "Vivien Costanzo",
+        "role": {
+          "party": "Partido Socialdemócrata de Alemania",
+          "title": "Eurodiputada"
+        },
+        "intro": "El principal responsable de EuropeTalks es:",
+        "title": "Liderazgo"
+      },
+      "getToKnowUs": {
+        "title": "Conócenos"
+      }
+    },
+    "admin": {
+      "dashboard": {
+        "title": "Dashboard",
+        "manageEvents": "Gestionar eventos",
+        "manageTranslations": "Gestionar traducciones"
+      }
+    },
+    "other": {
+      "cities": {
+        "bern": "Bern",
+        "lyon": "Lyon",
+        "oslo": "Oslo",
+        "riga": "Riga",
+        "rome": "Rome",
+        "milan": "Milan",
+        "paris": "Paris",
+        "porec": "Porec",
+        "sofia": "Sofía",
+        "split": "Split",
+        "tartu": "Tartu",
+        "turin": "Turin",
+        "zadar": "Zadar",
+        "athens": "Athens",
+        "berlin": "Berlin",
+        "geneva": "Geneva",
+        "hessen": "Hessen",
+        "lisbon": "Lisbon",
+        "london": "London",
+        "madrid": "Madrid",
+        "munich": "Munich",
+        "prague": "Prague",
+        "rijeka": "Rijeka",
+        "skopje": "Skopje",
+        "vienna": "Vienna",
+        "warsaw": "Warsaw",
+        "zagreb": "Zagreb",
+        "zurich": "Zurich",
+        "cologne": "Cologne",
+        "hamburg": "Hamburg",
+        "tallinn": "Tallinn",
+        "vilnius": "Vilnius",
+        "belgrade": "Belgrade",
+        "brussels": "Brussels",
+        "budapest": "Budapest",
+        "helsinki": "Helsinki",
+        "istanbul": "Istanbul",
+        "pristina": "Pristina",
+        "valencia": "Valencia",
+        "amsterdam": "Amsterdam",
+        "barcelona": "Barcelona",
+        "bucharest": "Bucarest",
+        "dubrovnik": "Dubrovnik",
+        "frankfurt": "Frankfurt",
+        "marseille": "Marseille",
+        "stockholm": "Stockholm",
+        "birmingham": "Birmingham",
+        "bratislava": "Bratislava",
+        "dusseldorf": "Dusseldorf",
+        "luxembourg": "Luxembourg",
+        "manchester": "Manchester",
+        "strasbourg": "Strasbourg"
+      },
+      "months": {
+        "may": "Mayo",
+        "july": "July",
+        "june": "June",
+        "april": "April",
+        "march": "March",
+        "august": "August",
+        "january": "January",
+        "october": "October",
+        "december": "December",
+        "february": "February",
+        "november": "November",
+        "september": "September"
+      },
+      "countries": {
+        "italy": "Italy",
+        "malta": "Malta",
+        "spain": "Spain",
+        "cyprus": "Cyprus",
+        "france": "France",
+        "greece": "Greece",
+        "kosovo": "Kosovo",
+        "latvia": "Latvia",
+        "monaco": "Monaco",
+        "norway": "Norway",
+        "poland": "Poland",
+        "russia": "Russia",
+        "serbia": "Serbia",
+        "sweden": "Sweden",
+        "turkey": "Turkey",
+        "albania": "Albania",
+        "andorra": "Andorra",
+        "austria": "Austria",
+        "belarus": "Belarus",
+        "belgium": "Belgium",
+        "croatia": "Croatia",
+        "denmark": "Denmark",
+        "estonia": "Estonia",
+        "finland": "Finland",
+        "germany": "Germany",
+        "hungary": "Hungary",
+        "iceland": "Iceland",
+        "ireland": "Ireland",
+        "moldova": "Moldova",
+        "romania": "Romania",
+        "ukraine": "Ukraine",
+        "bulgaria": "Bulgaria",
+        "portugal": "Portugal",
+        "slovakia": "Slovakia",
+        "slovenia": "Slovenia",
+        "lithuania": "Lithuania",
+        "luxembourg": "Luxembourg",
+        "montenegro": "Montenegro",
+        "san_marino": "San Marino",
+        "netherlands": "Netherlands",
+        "switzerland": "Switzerland",
+        "vatican_city": "Vatican City",
+        "liechtenstein": "Liechtenstein",
+        "czech_republic": "Czech Republic",
+        "united_kingdom": "United Kingdom",
+        "north_macedonia": "North Macedonia",
+        "bosnia_and_herzegovina": "Bosnia and Herzegovina"
+      }
+    },
+    "events": {
+      "events": {
+        "title": "Eventos",
+        "loading": "Cargando eventos...",
+        "viewPastEvents": "Ver eventos pasados"
+      },
+      "signUp": {
+        "email": {
+          "error": "Introduzca una dirección de correo electrónico válida",
+          "label": "Email"
+        },
+        "error": "Error",
+        "phone": {
+          "label": "Phone Number (Optional",
+          "placeholder": "Introduzca su número de teléfono"
+        },
+        "title": "Inscríbete",
+        "submit": "Inscribirse",
+        "success": "¡Success!",
+        "fullName": {
+          "error": "El nombre completo debe tener al menos 3 caracteres",
+          "label": "Nombre y apellidos"
+        },
+        "motivation": {
+          "error": "Proporcione al menos 50 caracteres explicando su motivación",
+          "label": "¿Por qué desea asistir a este acto?",
+          "placeholder": "Díganos por qué le interesa asistir..."
+        },
+        "submitting": "Inscribirse...",
+        "errorMessage": "No se ha podido registrar. Por favor, inténtelo de nuevo.",
+        "successMessage": "Se ha inscrito correctamente en el evento."
+      },
+      "eventCard": {
+        "date": "Fecha",
+        "time": "Time",
+        "hybrid": "Híbrido",
+        "online": "En línea",
+        "signUp": "Inscribirse",
+        "inPerson": "En persona",
+        "location": "Ubicación",
+        "readMore": "Seguir leyendo",
+        "eventEnded": "Evento Finalizado"
+      },
+      "pastEvents": {
+        "title": "Eventos pasados",
+        "noEvents": "No se han encontrado eventos",
+        "viewUpcomingEvents": "Ver los próximos eventos"
+      }
+    },
+    "header": {
+      "other": {
+        "menu": "Menu",
+        "signIn": "Iniciar sesión",
+        "signOut": "Cerrar sesión"
+      },
+      "navigation": {
+        "home": "Inicio",
+        "about": "Acerca de",
+        "admin": "Admin",
+        "cloud": "Cloud",
+        "events": "Eventos",
+        "contact": "Póngase en contacto con",
+        "gallery": "Gallery",
+        "translations": "Traducciones"
+      }
+    },
+    "contact": {
+      "form": {
+        "name": "Nombre",
+        "email": "Email",
+        "submit": "Send Message",
+        "message": "Mensaje",
+        "subject": "Asunto"
+      },
+      "info": {
+        "email": "Envíenos un correo electrónico a:",
+        "title": "Otras formas de conectarse",
+        "social": "Síganos en las redes sociales:"
+      },
+      "title": "Contacte con nosotros",
+      "description": "Póngase en contacto con nosotros para cualquier duda o consulta."
+    },
+    "gallery": {
+      "title": "Gallery"
+    },
+    "components": {
+      "theme": {
+        "toggleTheme": "Alternar tema"
+      },
+      "events": {
+        "signUp": "Inscribirse",
+        "eventEnded": "Evento Finalizado"
+      },
+      "languageSelector": {
+        "label": "Seleccionar idioma"
+      },
+      "languageDetection": {
+        "switchTo": "Cambiar a español",
+        "available": "Este sitio web está disponible en su idioma."
+      }
+    }
+  }

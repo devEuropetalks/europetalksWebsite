@@ -46,7 +46,7 @@
         }
       },
       "getToKnowUs": {
-        "title": "Lerne unskennen"
+        "title": "Lerne uns kennen"
       }
     },
     "about": {
@@ -308,7 +308,7 @@
         "label": "Sprache auswählen"
       },
       "languageDetection": {
-        "switchTo": "Wechseln zu {{Sprache}}",
+        "switchTo": "Wechseln zu Deutsch",
         "available": "Diese Website ist in Ihrer Sprache verfügbar!"
       }
     }

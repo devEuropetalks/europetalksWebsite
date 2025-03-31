@@ -44,8 +44,13 @@ export function LanguageSelector() {
       await reloadTranslations();
       console.log(`Translations reloaded for ${langCode}`);
       
-      // Force browser to update rendering
-      window.location.reload();
+      // Kein Browser-Reload erforderlich, i18n.changeLanguage aktualisiert die Anzeige automatisch
+      toast({
+        title: "Success",
+        description: `Language changed to ${
+          languages.find(lang => lang.code === langCode)?.name || langCode
+        }`,
+      });
     } catch (error) {
       console.error("Failed to change language:", error);
       toast({

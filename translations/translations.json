@@ -87,7 +87,7 @@
       },
       "languageDetection": {
         "available": "This website is available in your language!",
-        "switchTo": "Switch to {{language}}"
+        "switchTo": "Switch to English"
       }
     },
     "about": {
