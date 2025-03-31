@@ -1,0 +1,315 @@
+{
+    "auth": {
+      "signIn": {
+        "error": "Anmeldung fehlgeschlagen",
+        "title": "Eintragen",
+        "success": "Erfolgreich eingeloggt",
+        "subtitle": "Willkommen zurück"
+      },
+      "signUp": {
+        "error": "Failed to sign up",
+        "title": "Sign Up",
+        "success": "Successfully signed up",
+        "subtitle": "Welcome to EuropeTalks"
+      },
+      "signOut": {
+        "error": "Abmeldung fehlgeschlagen",
+        "success": "Erfolgreich abgemeldet"
+      }
+    },
+    "home": {
+      "cta": {
+        "title": "Bereit zum mitmachen?",
+        "buttons": {
+          "contact": "Kontakt",
+          "explore": "Entdecke Veranstaltungen",
+          "learnMore": "Mehr erfahren"
+        },
+        "description": "Werde Mitglied und erhalten Zugang zu exklusiven Veranstaltungen und Funktionen."
+      },
+      "hero": {
+        "title": "Willkommen bei EuropeTalks!",
+        "subtitle": "Werde Teil unserer Gemeinschaft von Europäern, die Ideen und Kultur austauschen und Verbindungen über Grenzen hinweg schaffen."
+      },
+      "features": {
+        "cultural": {
+          "title": "Kultureller Austausch",
+          "description": "Erlebe verschiedene europäische Kulturen durch unsere Veranstaltungen und Workshops."
+        },
+        "community": {
+          "title": "Gemeinschaft",
+          "description": "Vernetze dich mit gleichgesinnten Europäern und baue langfristige Beziehungen auf."
+        },
+        "knowledge": {
+          "title": "Wissensaustausch",
+          "description": "Tausche und erweitere dein Wissen in interaktiven Diskussionen und Workshops, und lerne von Anderen."
+        }
+      },
+      "getToKnowUs": {
+        "title": "Lerne unskennen"
+      }
+    },
+    "about": {
+      "title": "Über EuropeTalks",
+      "whoWeAre": {
+        "intro": "Wir sind eine Gruppe von Aktivisten aus ganz Europa, die ein gemeinsames Ziel verfolgen - die europäische Zusammenarbeit und Solidarität zu fördern!",
+        "title": "Wer wir sind",
+        "mission": "Unser Hauptziel ist es, eine Plattform für europäische Demokraten zu bieten, um Gleichgesinnte aus ganz Europa und darüber hinaus zu vernetzen und gemeinsam an einer europäischen Vision zu arbeiten, die auf sozialdemokratischen und sozialistischen Werten basiert. Wir wollen es den Menschen ermöglichen, ihre Werte und Visionen zur Weiterentwicklung und Gestaltung der EU zu teilen."
+      },
+      "howWeWork": {
+        "intro": "Wir als Sozialisten und Sozialdemokraten müssen die europäische Idee verkörpern und europäische Netzwerke auf allen Ebenen schaffen. Nur so kann europäische Politik glaubwürdig vertreten und gefördert werden.",
+        "title": "Wie wir arbeiten",
+        "method": "Wir machen dies möglich, indem wir Menschen in jeder lokalen Organisation zusammenbringen. Wir organisieren Workshops und Veranstaltungen - sowohl online als auch persönlich -, um Menschen dabei zu unterstützen, unterschiedliche Standpunkte zu verstehen, politische Erfahrungen auszutauschen und gemeinsam an Lösungen für gemeinsame Probleme zu arbeiten.",
+        "papers": "Diese Workshops bilden die Grundlage für unsere gemeinsame Arbeit und unsere Positionierung in Bezug auf bestimmte politische Fragen. Am Ende eines jeden Workshops erstellen wir Diskussionspapiere, die in die einzelnen Organisationen getragen werden und zur Politikgestaltung in diesen Organisationen beitragen sollen. Nur so können wir sicherstellen, dass europäische Themen in die Debatte einfließen und mit einer echten europäischen Perspektive diskutiert werden.",
+        "support": "Wir unterstützen auch lokale Parteiorganisationen dabei, sich untereinander zu vernetzen. Bist du Teil eines lokalen Gruppierung und brauchst Unterstützung beim Aufbau eines europäischen Netzwerks? Dann schreibe uns!",
+        "workshops": "Unsere Workshops befassen sich mit spezifischen Fragen und bieten die Möglichkeit, Ideen auszutauschen und Lösungen für gemeinsame europäische Probleme zu finden. Wie können wir in der Europäischen Union besser und humaner mit Migration und Flüchtlingen umgehen? Was können wir tun, um bezahlbaren und nachhaltigen Wohnraum zu schaffen? Wie würde eine sozialistische internationale Sicherheitspolitik aussehen?"
+      },
+      "background": {
+        "title": "Hintergrund",
+        "activists": "Aktivisten aus ganz Europa wurden eingeladen, um über gemeinsame Themen wie soziale Ungleichheit in den Mitgliedstaaten und unsere europäische Identität zu sprechen. Wir suchten nach Kooperationen und Inspirationen, um Antworten auf die Probleme und Herausforderungen zu finden, denen wir in ganz Europa gegenüberstehen. Auf der Konferenz wurde uns allen klar, dass wir als europäische Graswurzelbewegung weiterhin gemeinsam an diesen und vielen anderen Themen arbeiten müssen - direkt und ohne Vermittler. Am Ende unserer Auftaktveranstaltung wurde mit dem Manifest \"Europa, wir müssen reden\" eine Resolution verabschiedet, die als Grundlage für die weitere Zusammenarbeit und gemeinsame Politikgestaltung dient.",
+        "countries": "Wir sind eine Gruppe von Aktivisten aus 14 verschiedenen Ländern: Spanien, Frankreich, Litauen, Belgien, Niederlande, Deutschland, Portugal, Polen, Italien, Kroatien, der Ukraine, Lettland und dem Vereinigten Königreich. Aber wir sind immer auf der Suche nach neuen Aktivisten aus ganz Europa und darüber hinaus. Hast du Interesse? Nehme einfach Kontakt mit uns auf.",
+        "conference": "Alles begann nach der \"Europa, wir müssen reden!\" - Konferenz im Jahr 2018, die von den Jusos und der SPD Hessen-Süd in Deutschland organisiert wurde. Unterstützt wurde sie von Udo Bullmann, MEP, und Michael Roth, Staatsminister für Europa im Auswärtigen Amt.",
+        "perspective": "Normalerweise diskutieren wir in unseren Parteien über Europa aus einer nationalen Perspektive. Wir wollen eine europäische Perspektive schaffen. Jede lokale Partei und jedes politische Gremium kann einen Austausch über sozialdemokratische und sozialistische Partnerorganisationen schaffen. Dies kann durch lokale Austauschprojekte, digitale Vernetzung und vieles mehr geschehen. Wir vernetzen jede Regionalgruppe langfristig und nachhaltig, damit Europa in unserer täglichen Parteiarbeit im Mittelpunkt steht."
+      },
+      "leadership": {
+        "name": "Vivien Costanzo",
+        "role": {
+          "party": "Sozialdemokratische Partei Deutschlands (SPD)",
+          "title": "Mitglied des Europäischen Parlaments"
+        },
+        "intro": "Hauptverantwortlich für EuropeTalks ist:",
+        "title": "Leitung"
+      },
+      "getToKnowUs": {
+        "title": "Lerne uns kennen"
+      }
+    },
+    "admin": {
+      "dashboard": {
+        "title": "Dashboard",
+        "manageEvents": "Ereignisse verwalten",
+        "manageTranslations": "Verwalten von Übersetzungen"
+      }
+    },
+    "other": {
+      "cities": {
+        "bern": "Bern",
+        "lyon": "Lyon",
+        "oslo": "Oslo",
+        "riga": "Riga",
+        "rome": "Rom",
+        "milan": "Mailand",
+        "paris": "Paris",
+        "porec": "Porec",
+        "sofia": "Sofia",
+        "split": "Split",
+        "tartu": "Tartu",
+        "turin": "Turin",
+        "zadar": "Zadar",
+        "athens": "Athen",
+        "berlin": "Berlin",
+        "geneva": "Genf",
+        "hessen": "Hessen",
+        "lisbon": "Lissabon",
+        "london": "London",
+        "madrid": "Madrid",
+        "munich": "München",
+        "prague": "Prag",
+        "rijeka": "Rijeka",
+        "skopje": "Skopje",
+        "vienna": "Wien",
+        "warsaw": "Warschau",
+        "zagreb": "Zagreb",
+        "zurich": "Zürich",
+        "cologne": "Köln",
+        "hamburg": "Hamburg",
+        "tallinn": "Tallinn",
+        "vilnius": "Vilnius",
+        "belgrade": "Belgrad",
+        "brussels": "Brüssel",
+        "budapest": "Budapest",
+        "helsinki": "Helsinki",
+        "istanbul": "Istanbul",
+        "pristina": "Pristina",
+        "valencia": "Valencia",
+        "amsterdam": "Amsterdam",
+        "barcelona": "Barcelona",
+        "bucharest": "Bukarest",
+        "dubrovnik": "Dubrovnik",
+        "frankfurt": "Frankfurt",
+        "marseille": "Marseille",
+        "stockholm": "Stockholm",
+        "birmingham": "Birmingham",
+        "bratislava": "Bratislava",
+        "dusseldorf": "Düsseldorf",
+        "luxembourg": "Luxemburg",
+        "manchester": "Manchester",
+        "strasbourg": "Straßburg"
+      },
+      "months": {
+        "may": "Mai",
+        "july": "Juli",
+        "june": "Juni",
+        "april": "April",
+        "march": "März",
+        "august": "August",
+        "january": "Januar",
+        "october": "Oktober",
+        "december": "Dezember",
+        "february": "Februar",
+        "november": "November",
+        "september": "September"
+      },
+      "countries": {
+        "italy": "Italien",
+        "malta": "Malta",
+        "spain": "Spanien",
+        "cyprus": "Zypern",
+        "france": "Frankreich",
+        "greece": "Griechenland",
+        "kosovo": "Kosovo",
+        "latvia": "Lettland",
+        "monaco": "Monaco",
+        "norway": "Norwegen",
+        "poland": "Polen",
+        "russia": "Russland",
+        "serbia": "Serbien",
+        "sweden": "Schweden",
+        "turkey": "Türkei",
+        "albania": "Albanien",
+        "andorra": "Andorra",
+        "austria": "Österreich",
+        "belarus": "Weißrussland",
+        "belgium": "Belgien",
+        "croatia": "Kroatien",
+        "denmark": "Dänemark",
+        "estonia": "Estland",
+        "finland": "Finland",
+        "germany": "Deutschland",
+        "hungary": "Ungarn",
+        "iceland": "Island",
+        "ireland": "Irland",
+        "moldova": "Moldavien",
+        "romania": "Rumänien",
+        "ukraine": "Ukraine",
+        "bulgaria": "Bulgarien",
+        "portugal": "Portugal",
+        "slovakia": "Slovakei",
+        "slovenia": "Slovenien",
+        "lithuania": "Litauen",
+        "luxembourg": "Luxemburg",
+        "montenegro": "Montenegro",
+        "san_marino": "San Marino",
+        "netherlands": "Niederlande",
+        "switzerland": "Schweiz",
+        "vatican_city": "Vatikan",
+        "liechtenstein": "Liechtenstein",
+        "czech_republic": "Tschechische Republik",
+        "united_kingdom": "Vereinigtes Königreich",
+        "north_macedonia": "Nordmazedonien",
+        "bosnia_and_herzegovina": "Bosnien und Herzegovina"
+      }
+    },
+    "events": {
+      "events": {
+        "title": "Veranstaltungen",
+        "loading": "Ereignisse laden...",
+        "viewPastEvents": "Vergangene Veranstaltungen anzeigen",
+        "noEvents": "Keine Veranstaltungen gefunden"
+      },
+      "signUp": {
+        "email": {
+          "error": "Bitte gebe eine gültige E-Mail Adresse ein",
+          "label": "Email"
+        },
+        "error": "Fehler",
+        "phone": {
+          "label": "Telefonnummer (optional)",
+          "placeholder": "Geben deine Rufnummer ein"
+        },
+        "title": "Registriere dich für",
+        "submit": "Anmeldung",
+        "success": "Erfolgreich!",
+        "fullName": {
+          "error": "Der vollständige Name muss aus mindestens 3 Zeichen bestehen",
+          "label": "Vollständiger Name"
+        },
+        "motivation": {
+          "error": "Bitte erläutere in mindestens 50 Zeichen deine Motivation",
+          "label": "Warum möchtest du an dieser Veranstaltung teilnehmen?",
+          "placeholder": "Bitte sage uns, warum du an einer Teilnahme interessiert bist..."
+        },
+        "submitting": "Anmeldungen...",
+        "errorMessage": "Anmeldung fehlgeschlagen. Bitte versuche es erneut.",
+        "successMessage": "Du hast dich erfolgreich für die Veranstaltung angemeldet."
+      },
+      "eventCard": {
+        "date": "Datum",
+        "time": "Zeit",
+        "hybrid": "Hybrid",
+        "online": "Online",
+        "signUp": "Anmeldung",
+        "inPerson": "Persönlich",
+        "location": "Standort",
+        "readMore": "Mehr lesen",
+        "eventEnded": "Veranstaltung beendet"
+      },
+      "pastEvents": {
+        "title": "Vergangene Ereignisse",
+        "noEvents": "Keine Ereignisse gefunden",
+        "viewUpcomingEvents": "Kommende Veranstaltungen anzeigen"
+      }
+    },
+    "header": {
+      "other": {
+        "menu": "Menü",
+        "signIn": "Anmelden",
+        "signOut": "Abmelden"
+      },
+      "navigation": {
+        "home": "Start",
+        "about": "Über uns",
+        "admin": "Admin",
+        "cloud": "Cloud",
+        "events": "Events",
+        "contact": "Kontakt",
+        "gallery": "Galerie",
+        "translations": "Übersetzungen"
+      }
+    },
+    "contact": {
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "submit": "Nachricht senden",
+        "message": "Nachricht",
+        "subject": "Thema"
+      },
+      "info": {
+        "email": "Sende uns eine Email an:",
+        "title": "Andere Möglichkeiten der Verbindung",
+        "social": "Folge uns auf den sozialen Medien:"
+      },
+      "title": "Kontakt",
+      "description": "Nehme mit uns Kontakt auf, wenn du Fragen oder Anfragen hast."
+    },
+    "gallery": {
+      "title": "Galerie"
+    },
+    "components": {
+      "theme": {
+        "toggleTheme": "Thema umschalten"
+      },
+      "events": {
+        "signUp": "Anmeldung",
+        "eventEnded": "Veranstaltung beendet"
+      },
+      "languageSelector": {
+        "label": "Sprache auswählen"
+      },
+      "languageDetection": {
+        "switchTo": "Wechseln zu {{Sprache}}",
+        "available": "Diese Website ist in Ihrer Sprache verfügbar!"
+      }
+    }
+  }
