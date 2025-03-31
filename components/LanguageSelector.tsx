@@ -38,8 +38,14 @@ export function LanguageSelector() {
   const handleLanguageChange = async (langCode: string) => {
     try {
       setIsChanging(true);
+      console.log(`Changing language to ${langCode}...`);
       await i18n.changeLanguage(langCode);
+      console.log(`Language changed to ${langCode}, reloading translations...`);
       await reloadTranslations();
+      console.log(`Translations reloaded for ${langCode}`);
+      
+      // Force browser to update rendering
+      window.location.reload();
     } catch (error) {
       console.error("Failed to change language:", error);
       toast({

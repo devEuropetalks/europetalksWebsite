@@ -8,6 +8,7 @@ import { initialTranslations } from "@/translations/initial-translations";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
+import { useTranslations } from "@/hooks/use-translations";
 
 export const i18n = i18next;
 
@@ -58,7 +59,7 @@ const popupTranslations = {
     switchTo: "Átváltás {{language}} nyelvre",
   },
   el: {
-    available: "Αυτή η ιστοσελίδα είναι διαθέσιμη στην γλώσσα σας!",
+    available: "Αυτή η σελίδα είναι διαθέσιμη στην γλώσσα σας!",
     switchTo: "Αλλαγή στη {{language}}",
   },
 } as const;
@@ -160,22 +161,15 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
       const data = await response.json();
       // The response is now the namespace content directly when requesting a specific namespace
       const content = namespace ? data : data[ns];
-      
-      // Update cache and add to i18next
-      if (!translationsCache[language]) {
-        translationsCache[language] = {};
-      }
-      
-      if (content && Object.keys(content).length > 0) {
+      if (content) {
+        // Update cache
+        if (!translationsCache[language]) {
+          translationsCache[language] = {};
+        }
         translationsCache[language][ns] = content;
+
         // Add to i18next
         i18n.addResourceBundle(language, ns, content, true, true);
-      } else {
-        console.warn(`Empty or invalid translations for ${language}/${ns}, falling back to English`);
-        // Fallback to English when content is empty
-        const defaultTranslations = initialTranslations.en[ns];
-        translationsCache[language][ns] = defaultTranslations;
-        i18n.addResourceBundle(language, ns, defaultTranslations, true, true);
       }
     }
   } catch (error) {
@@ -223,6 +217,7 @@ i18next.use(initReactI18next).init(config);
 export function I18nextProvider({ children }: { children: React.ReactNode }) {
   const [showLanguageHint, setShowLanguageHint] = useState(false);
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null);
+  const { reload: reloadTranslations } = useTranslations();
 
   const languageNames = {
     en: "English",
@@ -271,6 +266,7 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
     if (detectedLanguage) {
       try {
         await i18n.changeLanguage(detectedLanguage);
+        await reloadTranslations();
         setShowLanguageHint(false);
       } catch (error) {
         console.error("Failed to switch language:", error);
@@ -289,13 +285,13 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
             <X className="h-4 w-4" />
           </button>
           <p className="mb-3">
-            {popupTranslations[detectedLanguage as keyof typeof popupTranslations]?.available}
+            {i18n.t("components:languageDetection.available")}
           </p>
           <Button onClick={handleLanguageSwitch} className="w-full">
-            {popupTranslations[detectedLanguage as keyof typeof popupTranslations]?.switchTo.replace(
-              "{{language}}",
-              languageNames[detectedLanguage as keyof typeof languageNames]
-            )}
+            {i18n.t("components:languageDetection.switchTo", {
+              language:
+                languageNames[detectedLanguage as keyof typeof languageNames],
+            })}
           </Button>
         </div>
       )}

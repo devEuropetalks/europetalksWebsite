@@ -84,10 +84,6 @@
       "events": {
         "eventEnded": "Event Ended",
         "signUp": "Sign Up"
-      },
-      "languageDetection": {
-        "available": "This website is available in your language!",
-        "switchTo": "Switch to {{language}}"
       }
     },
     "about": {
