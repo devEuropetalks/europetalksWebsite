@@ -129,7 +129,8 @@
       "events": {
         "title": "Events",
         "viewPastEvents": "View Past Events",
-        "loading": "Loading events..."
+        "loading": "Loading events...",
+        "noEvents": "No upcoming events found, come back later!"
       },
       "pastEvents": {
         "title": "Past Events",
