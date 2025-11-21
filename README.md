@@ -8,19 +8,19 @@ A modern, multilingual platform connecting Europeans across borders through cult
 
 ## 📋 Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Environment Variables](#environment-variables)
-- [Project Structure](#project-structure)
-- [Key Features](#key-features)
+- [Overview](#-overview)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Project Structure](#-project-structure)
+- [Key Features](#-key-features)
 - [Translation System](#translation-system)
-- [Admin Panel](#admin-panel)
-- [Database Schema](#database-schema)
-- [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
+- [Admin Panel](#-admin-panel)
+- [Database Schema](#-database-schema)
+- [Deployment](#-deployment)
+- [Contributing](#-contributing)
+- [License](#-license)
 
 ---
 
@@ -37,6 +37,7 @@ To create a space where Europeans can share ideas, celebrate cultural diversity,
 ## ✨ Features
 
 ### For Users
+
 - 🌐 **Multilingual Support** - 12 languages (EN, DE, ES, FR, IT, PT, NL, EL, HR, HU, LV, UK)
 - 📅 **Event Discovery** - Browse upcoming and past events with detailed information
 - ✍️ **Event Registration** - Dynamic form system with custom fields per event
@@ -46,6 +47,7 @@ To create a space where Europeans can share ideas, celebrate cultural diversity,
 - 📱 **Responsive Design** - Optimized for all devices
 
 ### For Admins
+
 - 👥 **User Management** - Clerk-based authentication with role-based access
 - 📝 **Event Management** - Create, edit, and delete events with custom signup forms
 - 📊 **Signup Management** - View and export event registrations
@@ -59,6 +61,7 @@ To create a space where Europeans can share ideas, celebrate cultural diversity,
 ## 🛠 Tech Stack
 
 ### Frontend
+
 - **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
 - **React**: 18.3 with Server Components
 - **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
@@ -68,6 +71,7 @@ To create a space where Europeans can share ideas, celebrate cultural diversity,
 - **i18n**: [i18next](https://www.i18next.com/) + [react-i18next](https://react.i18next.com/)
 
 ### Backend
+
 - **Database**: [PostgreSQL](https://www.postgresql.org/)
 - **ORM**: [Prisma](https://www.prisma.io/)
 - **Authentication**: [Clerk](https://clerk.com/)
@@ -75,6 +79,7 @@ To create a space where Europeans can share ideas, celebrate cultural diversity,
 - **Email**: [Nodemailer](https://nodemailer.com/)
 
 ### Developer Tools
+
 - **TypeScript**: Full type safety
 - **ESLint**: Code quality
 - **Prisma Studio**: Database management
@@ -96,26 +101,30 @@ To create a space where Europeans can share ideas, celebrate cultural diversity,
 ### Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/yourusername/europetalksWebsite.git
    cd europetalksWebsite
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set up environment variables**
-   
+
    Copy the example environment file and fill in your values:
+
    ```bash
    cp .env.example .env.local
    ```
-   
-   See [Environment Variables](#environment-variables) section for details.
+
+   See [Environment Variables](#-environment-variables) section for details.
 
 4. **Set up the database**
+
    ```bash
    # Generate Prisma client
    npx prisma generate
@@ -128,12 +137,13 @@ To create a space where Europeans can share ideas, celebrate cultural diversity,
    ```
 
 5. **Run the development server**
+
    ```bash
    npm run dev
    ```
 
 6. **Open your browser**
-   
+
    Navigate to [http://localhost:3000](http://localhost:3000)
 
 ---
@@ -143,11 +153,13 @@ To create a space where Europeans can share ideas, celebrate cultural diversity,
 Create a `.env.local` file in the root directory with the following variables:
 
 ### Database
+
 ```env
 DATABASE_URL="postgresql://user:password@localhost:5432/europetalks?schema=public"
 ```
 
 ### Clerk Authentication
+
 ```env
 NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
 CLERK_SECRET_KEY=your_clerk_secret_key
@@ -160,6 +172,7 @@ NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
 ```
 
 ### Email Configuration (Contact Form)
+
 ```env
 EMAIL_SERVER_HOST=smtp.example.com
 EMAIL_SERVER_PORT=587
@@ -170,6 +183,7 @@ SEND_TO_EMAIL=contact@europetalks.eu
 ```
 
 ### Email Configuration (Event Signups)
+
 ```env
 EVENT_SIGNUP_EMAIL_SERVER_USER=your_email@example.com
 EVENT_SIGNUP_EMAIL_SERVER_PASSWORD=your_password
@@ -177,17 +191,20 @@ EVENT_SIGNUP_EMAIL_FROM=events@europetalks.eu
 ```
 
 ### UploadThing (File Uploads)
+
 ```env
 UPLOADTHING_SECRET=your_uploadthing_secret
 UPLOADTHING_APP_ID=your_uploadthing_app_id
 ```
 
 ### Translation Export
+
 ```env
 TRANSLATIONS_EXPORT_API_KEY=your_random_secure_key
 ```
 
 ### Node Environment
+
 ```env
 NODE_ENV=development
 ```
@@ -198,7 +215,7 @@ See `.env.example` for a complete template.
 
 ## 📁 Project Structure
 
-```
+```text
 europetalksWebsite/
 ├── app/                      # Next.js App Router
 │   ├── about/               # About page
@@ -268,7 +285,7 @@ For detailed information, see [README-TRANSLATIONS.md](README-TRANSLATIONS.md).
 
 The gallery automatically organizes event photos using a folder-based structure:
 
-```
+```text
 public/images/Gallery/
 └── EventName_Location_Date/
     ├── photo1.jpg
@@ -319,7 +336,7 @@ See [prisma/schema.prisma](prisma/schema.prisma) for the complete schema.
 
 ## 📦 Deployment
 
-### Prerequisites
+### Deployment Prerequisites
 
 - PostgreSQL database (e.g., [Neon](https://neon.tech/), [Supabase](https://supabase.com/))
 - [Vercel](https://vercel.com/) account (recommended) or any Node.js hosting
@@ -330,6 +347,7 @@ See [prisma/schema.prisma](prisma/schema.prisma) for the complete schema.
 ### Steps
 
 1. **Set up your production database**
+
    ```bash
    npx prisma migrate deploy
    ```
@@ -337,6 +355,7 @@ See [prisma/schema.prisma](prisma/schema.prisma) for the complete schema.
 2. **Configure environment variables** in your hosting platform (e.g., Vercel)
 
 3. **Deploy**
+
    ```bash
    npm run build
    ```
@@ -404,4 +423,4 @@ This project is private and proprietary to EuropeTalks.
 
 ---
 
-**Built with ❤️ for a united Europe**
+## 💝 Built with ❤️ for a united Europe

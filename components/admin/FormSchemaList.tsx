@@ -76,9 +76,12 @@ export function FormSchemaList() {
     if (!selectedSchema) return;
 
     try {
-      const response = await fetch(`/api/admin/form-schemas/${selectedSchema.id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `/api/admin/form-schemas/${selectedSchema.id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       if (!response.ok) throw new Error("Failed to delete schema");
 
@@ -167,4 +170,4 @@ export function FormSchemaList() {
       />
     </div>
   );
-} 
+}

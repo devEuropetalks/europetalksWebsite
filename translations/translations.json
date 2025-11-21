@@ -76,7 +76,11 @@
     },
     "components": {
       "languageSelector": {
-        "label": "Select language"
+        "label": "Select language",
+        "success": "Success",
+        "languageChanged": "Language changed to {{language}}",
+        "error": "Error",
+        "errorMessage": "Failed to change language. Please try again."
       },
       "theme": {
         "toggleTheme": "Toggle theme"
@@ -88,6 +92,14 @@
       "languageDetection": {
         "available": "This website is available in your language!",
         "switchTo": "Switch to English"
+      },
+      "translationEditor": {
+        "selectLanguage": "Select language",
+        "selectNamespace": "Select namespace",
+        "success": "Success",
+        "translationsSaved": "Translations saved successfully",
+        "error": "Error",
+        "saveFailed": "Failed to save translations"
       }
     },
     "about": {
@@ -141,6 +153,13 @@
         "signUp": "Sign Up",
         "eventEnded": "Event Ended",
         "registrationClosed": "Registration Closed",
+        "registrationOpen": "Registration Open",
+        "registrationNotStarted": "Registration Not Started",
+        "registrationNotStartedMessage": "Registration has not started yet. Please check back later.",
+        "registrationEndedMessage": "Registration period has ended. No more signups are being accepted.",
+        "registrationPeriod": "Registration: {{start}} - {{end}}",
+        "registrationOpenUntil": "Registration open until event starts ({{date}})",
+        "registrationOpenUntilStart": "Registration open until event starts",
         "readMore": "Read More",
         "date": "Date",
         "time": "Time",
@@ -151,6 +170,8 @@
       },
       "signUp": {
         "title": "Sign Up for",
+        "description": "Complete this form to register for {{eventTitle}}. Please provide your personal information and any required event-specific details.",
+        "termsAndConditions": "Terms and Conditions",
         "fullName": {
           "label": "Full Name",
           "error": "Full name must be at least 3 characters"
@@ -174,7 +195,10 @@
         "successMessage": "You have successfully signed up for the event.",
         "error": "Error",
         "errorMessage": "Failed to sign up. Please try again."
-      }
+      },
+      "errorLoading": "An error occurred while loading events.",
+      "tryAgain": "Please try again later.",
+      "refresh": "Refresh"
     },
     "gallery": {
       "title": "Gallery"
@@ -187,13 +211,36 @@
         "email": "Email",
         "subject": "Subject",
         "message": "Message",
-        "submit": "Send Message"
+        "submit": "Send Message",
+        "errors": {
+          "nameRequired": "Name is required",
+          "emailInvalid": "Invalid email address",
+          "subjectRequired": "Subject is required",
+          "messageMinLength": "Message must be at least 10 characters"
+        }
       },
       "info": {
         "title": "Other Ways to Connect",
         "email": "Email us at:",
         "social": "Follow us on social media:"
-      }
+      },
+      "success": {
+        "title": "Success",
+        "messageSent": "Your message has been sent successfully."
+      },
+      "error": {
+        "title": "Error",
+        "messageFailed": "Failed to send message. Please try again."
+      },
+      "sending": "Sending..."
+    },
+    "footer": {
+      "legalNotice": "Legal Notice",
+      "privacyPolicy": "Privacy Policy",
+      "facebook": "Facebook",
+      "youtube": "YouTube",
+      "instagram": "Instagram",
+      "email": "Email"
     },
     "other": {
       "months": {},

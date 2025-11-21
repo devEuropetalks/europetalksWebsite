@@ -12,7 +12,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { initialTranslations } from "@/translations/initial-translations";
-import { TranslationObject } from "@/types/translations";
+import { TranslationObject, TranslationValue } from "@/types/translations";
 
 // Constants
 const TEXT_LENGTH_THRESHOLD = 50; // Use textarea for text longer than this
@@ -25,14 +25,14 @@ interface TranslationTreeProps {
 }
 
 // Component for rendering a single translation pair
-function TranslationPairItem({ 
-  keyName, 
-  value, 
-  translatedValue, 
-  path, 
-  disabled, 
-  onChange 
-}: { 
+function TranslationPairItem({
+  keyName,
+  value,
+  translatedValue,
+  path,
+  disabled,
+  onChange,
+}: {
   keyName: string;
   value: string | object | number | boolean;
   translatedValue: string;
@@ -41,43 +41,58 @@ function TranslationPairItem({
   onChange: (path: string[], value: string) => void;
 }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const pathString = path.join(' → ');
-  
+  const pathString = path.join(" → ");
+
   // Skip if it's not a primitive value we can display
-  if (typeof value !== 'string' && typeof value !== 'number' && typeof value !== 'boolean') return null;
-  
+  if (
+    typeof value !== "string" &&
+    typeof value !== "number" &&
+    typeof value !== "boolean"
+  )
+    return null;
+
   // Convert to string if it's a number or boolean
-  const stringValue = typeof value === 'string' ? value : String(value);
-  
-  const isLongText = stringValue.length > TEXT_LENGTH_THRESHOLD || translatedValue.length > TEXT_LENGTH_THRESHOLD;
+  const stringValue = typeof value === "string" ? value : String(value);
+
+  const isLongText =
+    stringValue.length > TEXT_LENGTH_THRESHOLD ||
+    translatedValue.length > TEXT_LENGTH_THRESHOLD;
   const isVeryLongText = stringValue.length > TEXT_LENGTH_THRESHOLD * 3;
-  
+
   // Format the display value for long text
   let displayValue = stringValue;
   if (isVeryLongText && !isExpanded) {
-    displayValue = stringValue.substring(0, TEXT_LENGTH_THRESHOLD) + '...';
+    displayValue = stringValue.substring(0, TEXT_LENGTH_THRESHOLD) + "...";
   }
 
   return (
-    <div className={`flex gap-4 ${isLongText ? 'flex-col' : 'items-center'} my-4 pb-4 ${isLongText ? 'border-b' : ''}`}>
-      <div className={`${isLongText ? 'w-full' : 'w-1/2'} flex gap-4`}>
+    <div
+      className={`flex gap-4 ${
+        isLongText ? "flex-col" : "items-center"
+      } my-4 pb-4 ${isLongText ? "border-b" : ""}`}
+    >
+      <div className={`${isLongText ? "w-full" : "w-1/2"} flex gap-4`}>
         <label className="w-48 text-sm font-medium">{keyName}:</label>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div className={`${isLongText ? 'w-full' : 'flex-1'} text-muted-foreground cursor-help`}>
+              <div
+                className={`${
+                  isLongText ? "w-full" : "flex-1"
+                } text-muted-foreground cursor-help`}
+              >
                 {isLongText ? (
                   <div className="whitespace-pre-wrap">
                     {displayValue}
                     {isVeryLongText && (
-                      <button 
+                      <button
                         className="ml-2 text-xs text-blue-500 hover:underline"
                         onClick={(e) => {
                           e.preventDefault();
                           setIsExpanded(!isExpanded);
                         }}
                       >
-                        {isExpanded ? 'Show less' : 'Show more'}
+                        {isExpanded ? "Show less" : "Show more"}
                       </button>
                     )}
                   </div>
@@ -92,7 +107,7 @@ function TranslationPairItem({
           </Tooltip>
         </TooltipProvider>
       </div>
-      <div className={isLongText ? 'w-full mt-2' : 'w-1/2'}>
+      <div className={isLongText ? "w-full mt-2" : "w-1/2"}>
         {isLongText ? (
           <Textarea
             value={translatedValue}
@@ -115,7 +130,12 @@ function TranslationPairItem({
   );
 }
 
-export function TranslationTree({ language, namespace, onSave, isSaving }: TranslationTreeProps) {
+export function TranslationTree({
+  language,
+  namespace,
+  onSave,
+  isSaving,
+}: TranslationTreeProps) {
   const [translations, setTranslations] = useState<TranslationObject>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -124,7 +144,7 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
 
   useEffect(() => {
     const loadTranslations = async () => {
-      if (language === 'en') {
+      if (language === "en") {
         setTranslations(englishTranslations);
         setLoading(false);
         return;
@@ -136,23 +156,29 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
         const response = await fetch(
           `/api/translations?language=${language}&namespace=${namespace}`
         );
-        
+
         if (!response.ok) {
-          const errorData = await response.json().catch(() => ({ error: "Failed to load translations" }));
+          const errorData = await response
+            .json()
+            .catch(() => ({ error: "Failed to load translations" }));
           throw new Error(errorData.error || "Failed to load translations");
         }
-        
+
         const data = await response.json();
-        
-        if (data && typeof data === 'object') {
+
+        if (data && typeof data === "object") {
           setTranslations(data);
         } else {
-          console.warn(`Invalid translation data received for ${language}/${namespace}`);
+          console.warn(
+            `Invalid translation data received for ${language}/${namespace}`
+          );
           setTranslations({});
         }
       } catch (error) {
         console.error("Error loading translations:", error);
-        setError(error instanceof Error ? error.message : "Failed to load translations");
+        setError(
+          error instanceof Error ? error.message : "Failed to load translations"
+        );
         setTranslations({});
       } finally {
         setLoading(false);
@@ -166,7 +192,7 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
     setTranslations((prev) => {
       const newTranslations = { ...prev };
       let current: TranslationObject = newTranslations;
-      
+
       for (let i = 0; i < path.length - 1; i++) {
         if (!current[path[i]]) {
           current[path[i]] = {};
@@ -174,7 +200,7 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
         current = current[path[i]] as TranslationObject;
       }
       current[path[path.length - 1]] = value;
-      
+
       return newTranslations;
     });
   };
@@ -183,13 +209,13 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
     obj: TranslationObject,
     translatedObj: TranslationObject,
     path: string[] = []
-  ): JSX.Element[] => {
-    return Object.entries(obj).map(([key, value]) => {
+  ): React.JSX.Element[] => {
+    return Object.entries(obj).map(([key, value]: [string, TranslationValue | TranslationObject]) => {
       const currentPath = [...path, key];
-      
+
       if (value && typeof value === "object") {
         return (
-          <div key={currentPath.join('.')} className="ml-4 w-full">
+          <div key={currentPath.join(".")} className="ml-4 w-full">
             <h3 className="font-semibold mt-4 mb-2">{key}</h3>
             <div className="space-y-2">
               {renderTranslationPair(
@@ -202,16 +228,16 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
         );
       }
 
-      const translatedValue = translatedObj?.[key] as string || '';
+      const translatedValue = (translatedObj?.[key] as string) || "";
 
       return (
         <TranslationPairItem
-          key={currentPath.join('.')}
+          key={currentPath.join(".")}
           keyName={key}
           value={value}
           translatedValue={translatedValue}
           path={currentPath}
-          disabled={language === 'en'}
+          disabled={language === "en"}
           onChange={handleInputChange}
         />
       );
@@ -219,7 +245,11 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center p-8">Loading translations...</div>;
+    return (
+      <div className="flex items-center justify-center p-8">
+        Loading translations...
+      </div>
+    );
   }
 
   if (error) {
@@ -236,17 +266,17 @@ export function TranslationTree({ language, namespace, onSave, isSaving }: Trans
         <div className="flex justify-between mb-4 border-b pb-2">
           <div className="w-1/2 font-semibold">English Text</div>
           <div className="w-1/2 font-semibold">
-            {language === 'en' ? 'English Text' : 'Translated Text'}
+            {language === "en" ? "English Text" : "Translated Text"}
           </div>
         </div>
         {renderTranslationPair(englishTranslations, translations)}
       </div>
-      <Button 
-        onClick={() => onSave(translations)} 
-        disabled={isSaving || language === 'en'}
+      <Button
+        onClick={() => onSave(translations)}
+        disabled={isSaving || language === "en"}
       >
         {isSaving ? "Saving..." : "Save Changes"}
       </Button>
     </div>
   );
-} 
+}

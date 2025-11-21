@@ -105,8 +105,8 @@ export default function EventSignupForm({
       }
 
       toast({
-        title: "Success!",
-        description: "You have successfully signed up for the event.",
+        title: t("signUp.success"),
+        description: t("signUp.successMessage"),
       });
 
       form.reset();
@@ -115,8 +115,8 @@ export default function EventSignupForm({
     } catch (error) {
       console.error("Error signing up:", error);
       toast({
-        title: "Error",
-        description: "Failed to sign up. Please try again.",
+        title: t("signUp.error"),
+        description: t("signUp.errorMessage"),
         variant: "destructive",
       });
     } finally {
@@ -282,9 +282,9 @@ export default function EventSignupForm({
             {t("signUp.title")} {eventTitle}
           </DialogTitle>
           <DialogDescription id="event-signup-description">
-            Complete this form to register for{" "}
-            {eventTitle.trim().replace(/[.?!]?\s*$/, ".")} Please provide your
-            personal information and any required event-specific details.
+            {t("signUp.description", {
+              eventTitle: eventTitle.trim().replace(/[.?!]?\s*$/, ".")
+            })}
           </DialogDescription>
         </DialogHeader>
 
@@ -324,7 +324,7 @@ export default function EventSignupForm({
             {formFields.map(renderFormField)}
 
             <div className="space-y-4 border-t pt-4 mt-4">
-              <h3 className="font-medium text-lg">Terms and Conditions</h3>
+              <h3 className="font-medium text-lg">{t("signUp.termsAndConditions")}</h3>
               <div className="space-y-4">
                 {terms.map((term) => (
                   <FormField

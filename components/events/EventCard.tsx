@@ -108,11 +108,13 @@ export function EventCard({ event }: EventCardProps) {
 
   const getRegistrationPeriodText = () => {
     if (!event.signup_period_json) {
-      return `Registration open until event starts (${format(new Date(event.startDate), "PPp")})`;
+      return t("eventCard.registrationOpenUntil", {
+        date: format(new Date(event.startDate), "PPp")
+      });
     }
 
     if (!event.signup_period_json.startDate && !event.signup_period_json.endDate) {
-      return "Registration open until event starts";
+      return t("eventCard.registrationOpenUntilStart");
     }
 
     const start = event.signup_period_json.startDate
@@ -122,7 +124,7 @@ export function EventCard({ event }: EventCardProps) {
       ? format(new Date(event.signup_period_json.endDate), "PPp")
       : format(new Date(event.startDate), "PPp");
 
-    return `Registration: ${start} - ${end}`;
+    return t("eventCard.registrationPeriod", { start, end });
   };
 
   return (
@@ -156,9 +158,9 @@ export function EventCard({ event }: EventCardProps) {
               registrationStatus === "open" ? "default" :
               registrationStatus === "not_started" ? "secondary" : "destructive"
             }>
-              {registrationStatus === "open" ? "Registration Open" :
-               registrationStatus === "not_started" ? "Registration Not Started" :
-               "Registration Closed"}
+              {registrationStatus === "open" ? t("eventCard.registrationOpen") :
+               registrationStatus === "not_started" ? t("eventCard.registrationNotStarted") :
+               t("eventCard.registrationClosed")}
             </Badge>
           </div>
           <div className="flex flex-col gap-1 text-sm text-muted-foreground">
@@ -184,8 +186,8 @@ export function EventCard({ event }: EventCardProps) {
             <Alert variant="destructive" className="mt-4">
               <AlertDescription>
                 {registrationStatus === "not_started"
-                  ? "Registration has not started yet. Please check back later."
-                  : "Registration period has ended. No more signups are being accepted."}
+                  ? t("eventCard.registrationNotStartedMessage")
+                  : t("eventCard.registrationEndedMessage")}
               </AlertDescription>
             </Alert>
           )}
@@ -204,8 +206,8 @@ export function EventCard({ event }: EventCardProps) {
               ? t("eventCard.eventEnded")
               : !isRegistrationOpen
               ? registrationStatus === "not_started"
-                ? "Registration Not Started"
-                : "Registration Closed"
+                ? t("eventCard.registrationNotStarted")
+                : t("eventCard.registrationClosed")
               : t("eventCard.signUp")}
           </Button>
         </CardFooter>

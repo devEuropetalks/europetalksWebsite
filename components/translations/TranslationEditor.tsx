@@ -12,9 +12,11 @@ import { useToast } from "@/hooks/use-toast";
 import { TranslationTree } from "@/components/translations/TranslationTree";
 import { i18n } from "@/components/i18n-provider";
 import { TranslationObject } from "@/types/translations";
+import { useTranslation } from "react-i18next";
 
 export function TranslationEditor() {
   const { toast } = useToast();
+  const { t } = useTranslation("components");
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const [selectedNamespace, setSelectedNamespace] = useState("home");
   const [isSaving, setIsSaving] = useState(false);
@@ -70,14 +72,14 @@ export function TranslationEditor() {
       await i18n.reloadResources(selectedLanguage, selectedNamespace);
 
       toast({
-        title: "Success",
-        description: "Translations saved successfully",
+        title: t("translationEditor.success"),
+        description: t("translationEditor.translationsSaved"),
       });
     } catch (error: unknown) {
       console.error("Translation save error:", error);
       toast({
-        title: "Error",
-        description: error instanceof Error ? error.message : "Failed to save translations",
+        title: t("translationEditor.error"),
+        description: error instanceof Error ? error.message : t("translationEditor.saveFailed"),
         variant: "destructive",
       });
     } finally {
@@ -94,7 +96,7 @@ export function TranslationEditor() {
             onValueChange={setSelectedLanguage}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select language" />
+              <SelectValue placeholder={t("translationEditor.selectLanguage")} />
             </SelectTrigger>
             <SelectContent>
               {languages.map((lang) => (
@@ -111,7 +113,7 @@ export function TranslationEditor() {
             onValueChange={setSelectedNamespace}
           >
             <SelectTrigger>
-              <SelectValue placeholder="Select namespace" />
+              <SelectValue placeholder={t("translationEditor.selectNamespace")} />
             </SelectTrigger>
             <SelectContent>
               {namespaces.map((ns) => (

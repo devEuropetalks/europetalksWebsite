@@ -10,14 +10,20 @@ interface SlideshowProps {
 }
 
 // Simple blur data URL for loading placeholder
-const blurDataURL = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjAyMDIwIi8+PC9zdmc+";
+const blurDataURL =
+  "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjMjAyMDIwIi8+PC9zdmc+";
 
 // Generate array of images from 26 to 1 (newest first)
 const images = Array.from({ length: 26 }, (_, i) => {
   const num = 26 - i; // Start from 26 and count down
-  const fileExtension = num === 1 ? '.jpeg' : num === 13 || num === 17 || num === 19 ? '.png' : '.jpg';
+  const fileExtension =
+    num === 1
+      ? ".jpeg"
+      : num === 13 || num === 17 || num === 19
+      ? ".png"
+      : ".jpg";
   const imagePath = `/images/slideshow/quotes${num}${fileExtension}`;
-  
+
   return {
     src: imagePath,
     alt: `Europe Talks Quote ${num}`,
@@ -34,7 +40,7 @@ export function Slideshow({ interval = 5000 }: SlideshowProps) {
     const preloadCount = 3; // Number of images to preload
     for (let i = 1; i <= preloadCount; i++) {
       const nextIndex = (currentIndex + i) % images.length;
-      const preloadImage = document.createElement('img');
+      const preloadImage = document.createElement("img");
       preloadImage.src = images[nextIndex].src;
     }
   }, [currentIndex]);
@@ -69,7 +75,7 @@ export function Slideshow({ interval = 5000 }: SlideshowProps) {
           alt={images[currentIndex].alt}
           fill
           className={`object-cover transition-opacity duration-300 ${
-            isLoading ? 'opacity-0' : 'opacity-100'
+            isLoading ? "opacity-0" : "opacity-100"
           }`}
           quality={90}
           priority={currentIndex === 0}
@@ -78,7 +84,7 @@ export function Slideshow({ interval = 5000 }: SlideshowProps) {
           blurDataURL={blurDataURL}
           onLoadingComplete={() => setIsLoading(false)}
         />
-        
+
         {/* Navigation Buttons */}
         <div className="absolute inset-0 flex items-center justify-between p-4 opacity-0 group-hover:opacity-100 transition-opacity">
           <Button
@@ -120,4 +126,4 @@ export function Slideshow({ interval = 5000 }: SlideshowProps) {
       </div>
     </div>
   );
-} 
+}

@@ -4,11 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "prisma generate && next build",
-    "start": "next start",
+    "dev": "bun --bun next dev --turbopack",
+    "build": "bunx prisma generate && bun --bun next build",
+    "start": "bun --bun next start",
     "lint": "next lint",
-    "download:translations": "tsx scripts/download-translations.ts"
+    "download:translations": "bun scripts/download-translations.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.35.4",

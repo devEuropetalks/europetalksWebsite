@@ -19,17 +19,17 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 
-const contactFormSchema = z.object({
-  name: z.string().min(1, "Name is required"),
-  email: z.string().email("Invalid email address"),
-  subject: z.string().min(1, "Subject is required"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
-
-type ContactFormData = z.infer<typeof contactFormSchema>;
-
 export default function ContactPage() {
   const { t } = useTranslation("contact");
+  
+  const contactFormSchema = z.object({
+    name: z.string().min(1, t("form.errors.nameRequired")),
+    email: z.string().email(t("form.errors.emailInvalid")),
+    subject: z.string().min(1, t("form.errors.subjectRequired")),
+    message: z.string().min(10, t("form.errors.messageMinLength")),
+  });
+
+  type ContactFormData = z.infer<typeof contactFormSchema>;
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -59,16 +59,16 @@ export default function ContactPage() {
       }
 
       toast({
-        title: "Success",
-        description: "Your message has been sent successfully.",
+        title: t("success.title"),
+        description: t("success.messageSent"),
       });
 
       form.reset();
     } catch (error) {
       console.error("Error sending message:", error);
       toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
+        title: t("error.title"),
+        description: t("error.messageFailed"),
         variant: "destructive",
       });
     } finally {
@@ -141,7 +141,7 @@ export default function ContactPage() {
             />
 
             <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Sending..." : t("form.submit")}
+              {isSubmitting ? t("sending") : t("form.submit")}
             </Button>
           </form>
         </Form>

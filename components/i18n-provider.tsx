@@ -95,7 +95,7 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
     // Load the resources immediately from the initialTranslations
     if (language in initialTranslations) {
       console.log(`Loading ${language} translations from local JSON files`);
-      
+
       if (namespace) {
         // Add single namespace
         if (initialTranslations[language][namespace]) {
@@ -109,9 +109,11 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
         }
       } else {
         // Add all namespaces
-        Object.entries(initialTranslations[language]).forEach(([ns, translations]) => {
-          i18n.addResourceBundle(language, ns, translations, true, true);
-        });
+        Object.entries(initialTranslations[language]).forEach(
+          ([ns, translations]) => {
+            i18n.addResourceBundle(language, ns, translations, true, true);
+          }
+        );
       }
     }
 
@@ -149,9 +151,19 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
           {
             // Add cache headers for development
             cache:
-              process.env.NODE_ENV === "development" ? "no-cache" : "force-cache",
+              process.env.NODE_ENV === "development"
+                ? "no-cache"
+                : "force-cache",
           }
         );
+
+        // Handle 404 gracefully - database might be empty, use JSON fallback
+        if (response.status === 404) {
+          console.log(
+            `No database translations for ${language}/${ns}, using JSON fallback`
+          );
+          continue; // Skip this namespace, JSON already loaded
+        }
 
         if (!response.ok) {
           console.warn(
@@ -163,7 +175,12 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
         const data = await response.json();
         // The response is now the namespace content directly when requesting a specific namespace
         const content = namespace ? data : data[ns];
-        if (content) {
+        // Only add if content exists and is not empty
+        if (
+          content &&
+          typeof content === "object" &&
+          Object.keys(content).length > 0
+        ) {
           // Update cache
           if (!translationsCache[language]) {
             translationsCache[language] = {};
@@ -172,10 +189,17 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
 
           // Add to i18next (will override the JSON files if keys exist)
           i18n.addResourceBundle(language, ns, content, true, true);
+        } else {
+          console.log(
+            `Empty database translations for ${language}/${ns}, using JSON fallback`
+          );
         }
       }
     } catch (dbError) {
-      console.warn("Warning: Error fetching translations from database:", dbError);
+      console.warn(
+        "Warning: Error fetching translations from database:",
+        dbError
+      );
       // No need to do anything here since we've already loaded from JSON files
     }
   } catch (error) {
@@ -286,15 +310,20 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
             <X className="h-4 w-4" />
           </button>
           <p className="mb-3">
-            {popupTranslations[detectedLanguage as keyof typeof popupTranslations]?.available || 
-              popupTranslations.en.available}
+            {popupTranslations[
+              detectedLanguage as keyof typeof popupTranslations
+            ]?.available || popupTranslations.en.available}
           </p>
           <Button onClick={handleLanguageSwitch} className="w-full">
-            {(popupTranslations[detectedLanguage as keyof typeof popupTranslations]?.switchTo || 
-              popupTranslations.en.switchTo)
-              .replace('{{language}}', 
-                languageNames[detectedLanguage as keyof typeof languageNames] || detectedLanguage)
-            }
+            {(
+              popupTranslations[
+                detectedLanguage as keyof typeof popupTranslations
+              ]?.switchTo || popupTranslations.en.switchTo
+            ).replace(
+              "{{language}}",
+              languageNames[detectedLanguage as keyof typeof languageNames] ||
+                detectedLanguage
+            )}
           </Button>
         </div>
       )}

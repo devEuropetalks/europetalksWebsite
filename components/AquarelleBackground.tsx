@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import Image from 'next/image';
+import { useEffect, useState } from "react";
+import Image from "next/image";
 
 type Color = "blau" | "rot" | "gelb" | "grün";
 
@@ -9,9 +9,13 @@ interface Props {
   children: React.ReactNode;
 }
 
-export function AquarelleBackground({ fixedColor, className = '', children }: Props) {
-  const [imagePath, setImagePath] = useState<string>('');
-  
+export function AquarelleBackground({
+  fixedColor,
+  className = "",
+  children,
+}: Props) {
+  const [imagePath, setImagePath] = useState<string>("");
+
   useEffect(() => {
     const randomNumber = Math.floor(Math.random() * 8) + 1;
     setImagePath(`/images/aquarelle/${fixedColor}/${randomNumber}.png`);
@@ -33,4 +37,4 @@ export function AquarelleBackground({ fixedColor, className = '', children }: Pr
       <div className="relative z-10">{children}</div>
     </div>
   );
-} 
+}

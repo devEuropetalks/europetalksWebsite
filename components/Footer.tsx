@@ -1,7 +1,11 @@
+"use client";
+
 import { Facebook, Instagram, Mail, Youtube } from "lucide-react";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 export default function Footer() {
+  const { t } = useTranslation("footer");
   return (
     <footer className="border-t w-full h-64 bg-gray-900 flex justify-center items-center">
       <div className="container py-6">
@@ -15,7 +19,7 @@ export default function Footer() {
               className="text-accent hover:text-accent/80 transition-colors"
             >
               <Facebook className="h-5 w-5" />
-              <span className="sr-only">Facebook</span>
+              <span className="sr-only">{t("facebook")}</span>
             </a>
             <a
               href="https://www.youtube.com/channel/UCoRo0glOhBGz4qyKxj73STw"
@@ -24,7 +28,7 @@ export default function Footer() {
               className="text-accent hover:text-accent/80 transition-colors"
             >
               <Youtube className="h-5 w-5" />
-              <span className="sr-only">YouTube</span>
+              <span className="sr-only">{t("youtube")}</span>
             </a>
             <a
               href="https://www.instagram.com/europetalksofficial/"
@@ -33,14 +37,14 @@ export default function Footer() {
               className="text-accent hover:text-accent/80 transition-colors"
             >
               <Instagram className="h-5 w-5" />
-              <span className="sr-only">Instagram</span>
+              <span className="sr-only">{t("instagram")}</span>
             </a>
             <a
               href="mailto:mail@europetalks.eu"
               className="text-accent hover:text-accent/80 transition-colors"
             >
               <Mail className="h-5 w-5" />
-              <span className="sr-only">Email</span>
+              <span className="sr-only">{t("email")}</span>
             </a>
           </div>
 
@@ -50,14 +54,14 @@ export default function Footer() {
               href="/legal-notice"
               className="hover:text-foreground transition-colors"
             >
-              Legal Notice
+              {t("legalNotice")}
             </Link>
             <span>•</span>
             <Link
               href="/privacy-policy"
               className="hover:text-foreground transition-colors"
             >
-              Privacy Policy
+              {t("privacyPolicy")}
             </Link>
           </div>
         </div>

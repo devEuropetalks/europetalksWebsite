@@ -18,6 +18,12 @@ const fetcher = async (url: string) => {
   const contentType = res.headers.get('content-type');
   console.log('Response content type:', contentType);
   
+  // Handle 404 gracefully - database might be empty, fall back to JSON files
+  if (res.status === 404) {
+    console.log('No translations in database, using JSON file fallbacks');
+    return {}; // Return empty object, JSON fallbacks are already loaded via initialTranslations
+  }
+  
   if (!res.ok) {
     let errorData;
     try {
@@ -26,6 +32,8 @@ const fetcher = async (url: string) => {
       errorData = await res.text();
     }
     console.error('Translation fetch error:', errorData);
+    // For other errors, still throw but log that JSON fallbacks will be used
+    console.warn('Translation API error, falling back to JSON files');
     throw new Error(typeof errorData === 'object' ? errorData.error : errorData);
   }
 

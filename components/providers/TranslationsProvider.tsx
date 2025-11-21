@@ -15,19 +15,24 @@ export function TranslationsProvider({ children }: TranslationsProviderProps) {
   const { i18n } = useTranslation();
 
   useEffect(() => {
-    if (!isLoading && translations) {
-      console.log('Adding translations to i18next:', Object.keys(translations));
-      // Add all resources to i18next
-      Object.entries(translations).forEach(([lang, resources]) => {
-        if (typeof resources === 'object' && resources !== null) {
-          Object.entries(resources).forEach(([namespace, content]) => {
-            if (content && typeof content === 'object') {
-              console.log(`Adding ${lang}/${namespace} translations:`, content);
-              i18n.addResourceBundle(lang, namespace, content as TranslationObject, true, true);
-            }
-          });
-        }
-      });
+    if (!isLoading) {
+      // Always try to add translations, even if empty (database might be empty)
+      if (translations && Object.keys(translations).length > 0) {
+        console.log('Adding database translations to i18next:', Object.keys(translations));
+        // Add all resources to i18next (these will override JSON fallbacks if they exist)
+        Object.entries(translations).forEach(([lang, resources]) => {
+          if (typeof resources === 'object' && resources !== null) {
+            Object.entries(resources).forEach(([namespace, content]) => {
+              if (content && typeof content === 'object' && Object.keys(content).length > 0) {
+                console.log(`Adding ${lang}/${namespace} translations from database:`, content);
+                i18n.addResourceBundle(lang, namespace, content as TranslationObject, true, true);
+              }
+            });
+          }
+        });
+      } else {
+        console.log('No database translations found, using JSON file fallbacks');
+      }
     }
   }, [translations, isLoading, i18n]);
 
@@ -41,11 +46,9 @@ export function TranslationsProvider({ children }: TranslationsProviderProps) {
 
   if (error) {
     console.error('Translation loading error:', error);
-    return (
-      <Alert variant="destructive" className="m-4">
-        <p>Failed to load translations. Using fallback language.</p>
-      </Alert>
-    );
+    // Don't show error to user - JSON fallbacks are already loaded via initialTranslations
+    // The app will continue to work with the JSON file translations
+    console.log('Using JSON file fallbacks from initialTranslations');
   }
 
   return <>{children}</>;

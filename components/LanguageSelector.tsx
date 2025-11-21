@@ -47,16 +47,16 @@ export function LanguageSelector() {
       
       // Kein Browser-Reload erforderlich, i18n.changeLanguage aktualisiert die Anzeige automatisch
       toast({
-        title: "Success",
-        description: `Language changed to ${
-          languages.find(lang => lang.code === langCode)?.name || langCode
-        }`,
+        title: t("languageSelector.success"),
+        description: t("languageSelector.languageChanged", {
+          language: languages.find(lang => lang.code === langCode)?.name || langCode
+        }),
       });
     } catch (error) {
       console.error("Failed to change language:", error);
       toast({
-        title: "Error",
-        description: "Failed to change language. Please try again.",
+        title: t("languageSelector.error"),
+        description: t("languageSelector.errorMessage"),
         variant: "destructive",
       });
     } finally {

@@ -28,7 +28,9 @@ export default function Header() {
   const { user } = useUser();
   const isAdmin = user?.publicMetadata?.role === "admin";
   const isMember = user?.publicMetadata?.role === "member";
-  const memberLanguages = user?.publicMetadata?.languages as string[] | undefined;
+  const memberLanguages = user?.publicMetadata?.languages as
+    | string[]
+    | undefined;
   const { t } = useTranslation("header");
 
   const navLinks = [
@@ -38,12 +40,14 @@ export default function Header() {
     { href: "/gallery", label: t("navigation.gallery") },
     { href: "/contact", label: t("navigation.contact") },
     ...(isAdmin ? [{ href: "/admin", label: t("navigation.admin") }] : []),
-    ...(isMember && memberLanguages?.length ? [
-      {
-        href: "/member/translations",
-        label: t("navigation.translations"),
-      },
-    ] : []),
+    ...(isMember && memberLanguages?.length
+      ? [
+          {
+            href: "/member/translations",
+            label: t("navigation.translations"),
+          },
+        ]
+      : []),
     ...(isMember || isAdmin
       ? [{ href: "https://cloud.europetalks.eu", label: t("navigation.cloud") }]
       : []),
@@ -66,7 +70,7 @@ export default function Header() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">
-          {navLinks.map(({ href, label }) => (
+          {navLinks.map(({ href, label }) =>
             href.startsWith("http") ? (
               <a
                 key={href}
@@ -88,7 +92,7 @@ export default function Header() {
                 {label}
               </PrefetchLink>
             )
-          ))}
+          )}
         </nav>
 
         <div className="flex items-center space-x-4">
@@ -100,7 +104,7 @@ export default function Header() {
               appearance={{
                 elements: {
                   avatarBox: "h-8 w-8",
-                }
+                },
               }}
             />
           </SignedIn>
@@ -125,7 +129,7 @@ export default function Header() {
                 <SheetTitle>{t("other.menu")}</SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col space-y-4 mt-6">
-                {navLinks.map(({ href, label }) => (
+                {navLinks.map(({ href, label }) =>
                   href.startsWith("http") ? (
                     <a
                       key={href}
@@ -147,7 +151,7 @@ export default function Header() {
                       {label}
                     </PrefetchLink>
                   )
-                ))}
+                )}
               </nav>
             </SheetContent>
           </Sheet>

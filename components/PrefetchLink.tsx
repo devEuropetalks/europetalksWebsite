@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef } from "react";
-import { cn } from '@/lib/utils';
-import { preload } from 'swr';
-import { fetcher } from '@/lib/api-client';
+import { cn } from "@/lib/utils";
+import { preload } from "swr";
+import { fetcher } from "@/lib/api-client";
 
-interface PrefetchLinkProps extends React.ComponentPropsWithoutRef<typeof Link> {
+interface PrefetchLinkProps
+  extends React.ComponentPropsWithoutRef<typeof Link> {
   children: React.ReactNode;
   className?: string;
   prefetch?: boolean;
@@ -22,20 +23,20 @@ export function PrefetchLink({
   ...props
 }: PrefetchLinkProps) {
   const router = useRouter();
-  const timeoutRef = useRef<NodeJS.Timeout>();
+  const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   const prefetchResources = useCallback(() => {
     // Prefetch the page
     if (prefetch && props.href) {
       router.prefetch(props.href.toString());
     }
-    
+
     // Prefetch API data if specified
     if (prefetchData) {
       preload(prefetchData, fetcher);
     } else if (props.href === "/events") {
       // Default prefetch for events page
-      preload('/api/events', fetcher);
+      preload("/api/events", fetcher);
     }
   }, [prefetch, prefetchData, props.href, router]);
 
@@ -76,4 +77,4 @@ export function PrefetchLink({
       {children}
     </Link>
   );
-} 
+}

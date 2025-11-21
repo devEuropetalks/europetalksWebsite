@@ -97,7 +97,9 @@ export function FormFieldsEditor({ value, onChange }: FormFieldsEditorProps) {
                     <FormLabel>Type</FormLabel>
                     <Select
                       value={field.type}
-                      onValueChange={(value) => updateField(index, { type: value })}
+                      onValueChange={(value) =>
+                        updateField(index, { type: value })
+                      }
                     >
                       <FormControl>
                         <SelectTrigger>
@@ -118,7 +120,9 @@ export function FormFieldsEditor({ value, onChange }: FormFieldsEditorProps) {
                     <FormLabel>Label</FormLabel>
                     <Input
                       value={field.label}
-                      onChange={(e) => updateField(index, { label: e.target.value })}
+                      onChange={(e) =>
+                        updateField(index, { label: e.target.value })
+                      }
                       placeholder="Field label"
                     />
                   </div>
@@ -129,7 +133,9 @@ export function FormFieldsEditor({ value, onChange }: FormFieldsEditorProps) {
                     <FormLabel>Name</FormLabel>
                     <Input
                       value={field.name}
-                      onChange={(e) => updateField(index, { name: e.target.value })}
+                      onChange={(e) =>
+                        updateField(index, { name: e.target.value })
+                      }
                       placeholder="Field name"
                     />
                   </div>
@@ -180,7 +186,9 @@ export function FormFieldsEditor({ value, onChange }: FormFieldsEditorProps) {
                               newOptions[optionIndex] = {
                                 ...newOptions[optionIndex],
                                 label: e.target.value,
-                                value: e.target.value.toLowerCase().replace(/\s+/g, "-"),
+                                value: e.target.value
+                                  .toLowerCase()
+                                  .replace(/\s+/g, "-"),
                               };
                               updateField(index, { options: newOptions });
                             }}
@@ -235,4 +243,4 @@ export function FormFieldsEditor({ value, onChange }: FormFieldsEditorProps) {
       </div>
     </div>
   );
-} 
+}

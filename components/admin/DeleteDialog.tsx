@@ -43,4 +43,4 @@ export function DeleteDialog({
       </DialogContent>
     </Dialog>
   );
-} 
+}

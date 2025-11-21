@@ -5,26 +5,26 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ContentWrapper from "@/components/ContentWrapper";
 import { useTranslation } from "react-i18next";
-import useSWR from 'swr';
+import useSWR from "swr";
 
 // Create a reusable fetcher function
 const fetcher = async (url: string) => {
   const res = await fetch(url);
-  
+
   if (!res.ok) {
-    const error = new Error('An error occurred while fetching the data.');
+    const error = new Error("An error occurred while fetching the data.");
     error.message = await res.text();
     throw error;
   }
-  
+
   return res.json();
 };
 
 export default function EventsPage() {
   const { t } = useTranslation("events");
-  
+
   // Use SWR for data fetching with automatic caching and revalidation
-  const { data, error, isLoading } = useSWR('/api/events', fetcher, {
+  const { data, error, isLoading } = useSWR("/api/events", fetcher, {
     revalidateOnFocus: false, // Don't revalidate when window gets focus
     revalidateOnReconnect: true, // Revalidate when browser regains connection
     refreshInterval: 300000, // Refresh every 5 minutes
@@ -35,10 +35,12 @@ export default function EventsPage() {
       <ContentWrapper>
         <div className="container py-8">
           <div className="text-center">
-            <h2 className="text-xl font-semibold text-red-600">{t("events.errorLoading")}</h2>
-            <p className="mt-2">{t("events.tryAgain")}</p>
+            <h2 className="text-xl font-semibold text-red-600">
+              {t("errorLoading")}
+            </h2>
+            <p className="mt-2">{t("tryAgain")}</p>
             <Button onClick={() => window.location.reload()} className="mt-4">
-              {t("common.refresh")}
+              {t("refresh")}
             </Button>
           </div>
         </div>
@@ -69,7 +71,7 @@ export default function EventsPage() {
             <Link href="/past-events">{t("events.viewPastEvents")}</Link>
           </Button>
         </div>
-        
+
         {events.length === 0 ? (
           <div className="text-center py-12">
             <p className="text-lg text-gray-600">{t("events.noEvents")}</p>

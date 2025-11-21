@@ -229,8 +229,12 @@ export function EventForm({
                                 }
                               }
                             }}
-                            disabled={isEditMode ? undefined : (date) =>
-                              date < new Date(new Date().setHours(0, 0, 0, 0))
+                            disabled={
+                              isEditMode
+                                ? undefined
+                                : (date) =>
+                                    date <
+                                    new Date(new Date().setHours(0, 0, 0, 0))
                             }
                             initialFocus
                           />
@@ -322,7 +326,9 @@ export function EventForm({
                               }}
                               disabled={(date) => {
                                 const startDate = form.getValues("startDate");
-                                return startDate ? date < new Date(startDate) : false;
+                                return startDate
+                                  ? date < new Date(startDate)
+                                  : false;
                               }}
                               initialFocus
                             />
@@ -372,18 +378,29 @@ export function EventForm({
                           <div>
                             <Calendar
                               mode="single"
-                              selected={field.value ? new Date(field.value) : undefined}
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
                               onSelect={(date) => {
                                 if (date) {
                                   const now = new Date();
-                                  date.setHours(now.getHours(), now.getMinutes(), 0, 0);
+                                  date.setHours(
+                                    now.getHours(),
+                                    now.getMinutes(),
+                                    0,
+                                    0
+                                  );
                                   field.onChange(date.toISOString());
                                 } else {
                                   field.onChange(null);
                                 }
                               }}
-                              disabled={isEditMode ? undefined : (date) => 
-                                date < new Date(new Date().setHours(0, 0, 0, 0))
+                              disabled={
+                                isEditMode
+                                  ? undefined
+                                  : (date) =>
+                                      date <
+                                      new Date(new Date().setHours(0, 0, 0, 0))
                               }
                               initialFocus
                             />
@@ -396,8 +413,14 @@ export function EventForm({
                                   const date = field.value
                                     ? new Date(field.value)
                                     : new Date();
-                                  const [hours, minutes] = e.target.value.split(":");
-                                  date.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                                  const [hours, minutes] =
+                                    e.target.value.split(":");
+                                  date.setHours(
+                                    parseInt(hours),
+                                    parseInt(minutes),
+                                    0,
+                                    0
+                                  );
                                   field.onChange(date.toISOString());
                                 }}
                                 value={
@@ -411,7 +434,8 @@ export function EventForm({
                         </PopoverContent>
                       </Popover>
                       <FormDescription>
-                        When should registration open? Leave empty for immediate registration.
+                        When should registration open? Leave empty for immediate
+                        registration.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>
@@ -448,22 +472,34 @@ export function EventForm({
                           <div>
                             <Calendar
                               mode="single"
-                              selected={field.value ? new Date(field.value) : undefined}
+                              selected={
+                                field.value ? new Date(field.value) : undefined
+                              }
                               onSelect={(date) => {
                                 if (date) {
                                   const now = new Date();
-                                  date.setHours(now.getHours(), now.getMinutes(), 0, 0);
+                                  date.setHours(
+                                    now.getHours(),
+                                    now.getMinutes(),
+                                    0,
+                                    0
+                                  );
                                   field.onChange(date.toISOString());
                                 } else {
                                   field.onChange(null);
                                 }
                               }}
                               disabled={(date) => {
-                                const startDate = form.getValues("signupPeriodJson.startDate");
+                                const startDate = form.getValues(
+                                  "signupPeriodJson.startDate"
+                                );
                                 if (startDate) {
                                   return date < new Date(startDate);
                                 }
-                                return isEditMode ? false : date < new Date(new Date().setHours(0, 0, 0, 0));
+                                return isEditMode
+                                  ? false
+                                  : date <
+                                      new Date(new Date().setHours(0, 0, 0, 0));
                               }}
                               initialFocus
                             />
@@ -476,8 +512,14 @@ export function EventForm({
                                   const date = field.value
                                     ? new Date(field.value)
                                     : new Date();
-                                  const [hours, minutes] = e.target.value.split(":");
-                                  date.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                                  const [hours, minutes] =
+                                    e.target.value.split(":");
+                                  date.setHours(
+                                    parseInt(hours),
+                                    parseInt(minutes),
+                                    0,
+                                    0
+                                  );
                                   field.onChange(date.toISOString());
                                 }}
                                 value={
@@ -491,7 +533,8 @@ export function EventForm({
                         </PopoverContent>
                       </Popover>
                       <FormDescription>
-                        When should registration close? Leave empty to keep registration open until the event starts.
+                        When should registration close? Leave empty to keep
+                        registration open until the event starts.
                       </FormDescription>
                       <FormMessage />
                     </FormItem>

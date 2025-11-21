@@ -51,12 +51,18 @@ export async function GET(request: Request) {
       where: language ? { language } : undefined,
     });
 
-    // If no translations found, return 404
+    // If no translations found in database, return empty object
+    // The app will fall back to JSON files from initialTranslations
     if (translations.length === 0) {
-      return NextResponse.json(
-        { error: "No translations found" },
-        { status: 404 }
-      );
+      // If requesting a specific language/namespace, return empty structure
+      if (language && namespace) {
+        return NextResponse.json({});
+      }
+      if (language) {
+        return NextResponse.json({});
+      }
+      // If requesting all languages, return empty object
+      return NextResponse.json({});
     }
 
     // Transform the data into the correct format
@@ -84,11 +90,20 @@ export async function GET(request: Request) {
     }
 
     // If we're requesting a specific language and namespace, return just that content
-    const responseData = language
-      ? namespace
-        ? (formattedTranslations[language][namespace] as TranslationNamespace)
-        : formattedTranslations[language]
-      : formattedTranslations;
+    let responseData;
+    if (language && namespace) {
+      // Check if the language and namespace exist
+      if (formattedTranslations[language] && formattedTranslations[language][namespace]) {
+        responseData = formattedTranslations[language][namespace] as TranslationNamespace;
+      } else {
+        // Return empty object if not found (will use JSON fallback)
+        responseData = {};
+      }
+    } else if (language) {
+      responseData = formattedTranslations[language] || {};
+    } else {
+      responseData = formattedTranslations;
+    }
 
     // Set cache-control header to prevent caching
     const headers = {

@@ -51,7 +51,10 @@ type EventResponse = {
   };
 };
 
-type Event = Omit<EventResponse, "startDate" | "endDate" | "signup_period_json"> & {
+type Event = Omit<
+  EventResponse,
+  "startDate" | "endDate" | "signup_period_json"
+> & {
   startDate: Date;
   endDate?: Date;
   signupPeriodJson?: {
@@ -80,7 +83,10 @@ export function EventList() {
           ...event,
           startDate: new Date(event.startDate),
           endDate: event.endDate ? new Date(event.endDate) : undefined,
-          signupPeriodJson: event.signup_period_json || { startDate: null, endDate: null }
+          signupPeriodJson: event.signup_period_json || {
+            startDate: null,
+            endDate: null,
+          },
         }))
       );
     } catch (error) {
@@ -175,8 +181,8 @@ export function EventList() {
                   selectedEvent.startDate.toISOString(),
                 signupPeriodJson: selectedEvent.signupPeriodJson || {
                   startDate: null,
-                  endDate: null
-                }
+                  endDate: null,
+                },
               }
             : undefined
         }
