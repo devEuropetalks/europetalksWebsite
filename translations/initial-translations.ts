@@ -13,6 +13,7 @@ import nlTranslations from '@/translations/nl.json';
 import ptTranslations from '@/translations/pt.json';
 import ukTranslations from '@/translations/uk.json';
 import lvTranslations from '@/translations/lv.json';
+import ltTranslations from '@/translations/lt.json';
 import hrTranslations from '@/translations/hr.json';
 
 // Create a combined translations object with all available language files
@@ -33,6 +34,7 @@ allTranslations.nl = nlTranslations;
 allTranslations.pt = ptTranslations;
 allTranslations.uk = ukTranslations;
 allTranslations.lv = lvTranslations;
+allTranslations.lt = ltTranslations;
 allTranslations.hr = hrTranslations;
 
 // Validate and type the translations

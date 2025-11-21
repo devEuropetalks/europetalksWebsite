@@ -22,31 +22,31 @@
       "title": "Készen állsz a csatlakozásra?",
       "buttons": {
         "contact": "Kapcsolatfelvétel",
-        "explore": "Fedezze fel az eseményeket",
-        "learnMore": "Tudjon meg többet"
+        "explore": "Fedezd fel az eseményeinket",
+        "learnMore": "Tudj meg többet"
       },
-      "description": "Legyen tag, és férjen hozzá exkluzív eseményekhez és funkciókhoz."
+      "description": "Légy tag, és férj hozzá exkluzív eseményekhez és lehetőségekhez!"
     },
     "hero": {
-      "title": "Üdvözöljük az EuropeTalks-on!",
-      "subtitle": "Csatlakozzon európaiak közösségéhez, akik megosztják egymással ötleteiket, kultúrájukat és határokon átnyúló kapcsolatokat teremtenek."
+      "title": "Üdv a EuropeTalks weboldalán!",
+      "subtitle": "Csatlakoz egy európai közösséghez, melynek tagjai megosztják egymással ötleteiket, kultúrájukat és határokon átnyúló kapcsolatokat teremtenek."
     },
     "features": {
       "cultural": {
-        "title": "Cultural csere",
-        "description": "Tapasztalja meg a különböző európai kultúrákat rendezvényeinken és műhelymunkáinkon keresztül."
+        "title": "Kulturális csere",
+        "description": "Tapasztald meg a különböző európai kultúrákat rendezvényeinken és workshopjainkon keresztül!"
       },
       "community": {
         "title": "Közösség",
-        "description": "Kapcsolódjon össze hasonlóan gondolkodó európaiakkal, és építsen tartós kapcsolatokat."
+        "description": "Kapcsolódj hasonlóan gondolkodó európaiakkal, és építs tartós, értékes kapcsolatokat!"
       },
       "knowledge": {
         "title": "Tudásmegosztás",
-        "description": "Ossza meg és bővítse ismereteit interaktív beszélgetéseken, workshopokon keresztül, és tanuljon másoktól."
+        "description": "Osszd meg és bővítsd ismereteid interaktív beszélgetéseken, workshopokon keresztül, és tanulj másoktól."
       }
     },
     "getToKnowUs": {
-      "title": "Ismerjen meg minket"
+      "title": "Ismerj meg minket"
     }
   },
   "about": {

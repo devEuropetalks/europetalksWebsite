@@ -26,9 +26,6 @@ import os
 from dotenv import load_dotenv
 import uuid
 from collections import OrderedDict
-import spacy
-from deep_translator import GoogleTranslator
-from deep_translator.deepl import DeeplTranslator
 from difflib import SequenceMatcher
 
 #python version 3.12.8
@@ -46,6 +43,7 @@ LANGUAGES = {
     "pt": {"name": "Português", "model": "Helsinki-NLP/opus-mt-en-ROMANCE"},
     "uk": {"name": "Українська", "model": "Helsinki-NLP/opus-mt-en-uk"},
     "lv": {"name": "Latviešu", "model": "Helsinki-NLP/opus-mt-en-sla"},
+    "lt": {"name": "Lietuvių", "model": "Helsinki-NLP/opus-mt-en-sla"},
     "hr": {"name": "Hrvatski", "model": "Helsinki-NLP/opus-mt-en-sla"},
     "hu": {"name": "Magyar", "model": "Helsinki-NLP/opus-mt-en-sla"},
     "el": {"name": "Greek", "model": "Helsinki-NLP/opus-mt-en-sla"},

@@ -193,7 +193,7 @@
       "label": "Selecionar a língua"
     },
     "languageDetection": {
-      "switchTo": "Mudar para português",
+      "switchTo": "Mudar para {{language}}",
       "available": "Este sítio Web está disponível na sua língua!"
     }
   }

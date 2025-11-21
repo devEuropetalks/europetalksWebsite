@@ -1,20 +1,20 @@
 {
   "auth": {
     "signIn": {
-      "error": "Nisam uspio da se prijavim.",
-      "title": "Upišite se.",
-      "success": "Uspješno ste prijavljeni",
-      "subtitle": "Dobrodošli назад."
+      "error": "Prijava nije uspjela",
+      "title": "Upišite se",
+      "success": "Uspješno ste se prijavili",
+      "subtitle": "Dobrodošli natrag!"
     },
     "signUp": {
-      "error": "Failed to sign up",
-      "title": "Sign Up",
-      "success": "Successfully signed up",
-      "subtitle": "Welcome to EuropeTalks"
+      "error": "Registracija nije uspjela",
+      "title": "Registracija",
+      "success": "Uspješno ste se registrirali",
+      "subtitle": "Dobrodošli u EuropeTalks!"
     },
     "signOut": {
-      "error": "Nisam uspio da se odjavim.",
-      "success": "Uspješno odjavljeno."
+      "error": "Odjava nije uspjela",
+      "success": "Uspješno ste se odjavili"
     }
   },
   "home": {
@@ -25,7 +25,7 @@
         "explore": "Istražite događaje",
         "learnMore": "Saznajte više"
       },
-      "description": "Postanite član i dobiti pristup ekskluzivnim događajima i funkcijama."
+      "description": "Postanite član i ostvarite pristup ekskluzivnim događajima i značajkama."
     },
     "hero": {
       "title": "Dobrodošli u EuropeTalks!",
@@ -33,16 +33,16 @@
     },
     "features": {
       "cultural": {
-        "title": "Kulturna Exchange",
+        "title": "Kulturalna razmjena",
         "description": "Doživite različite europske kulture kroz naše događaje i radionice."
       },
       "community": {
         "title": "Zajednica",
-        "description": "Povežite se s Europeansma istomišljenika i izgradite trajne odnose."
+        "description": "Povežite se s istomišljenicima u Europi i izgradite trajne odnose."
       },
       "knowledge": {
-        "title": "Podijeli znanje sa znanjem",
-        "description": "Podelite i proširite svoje znanje putem interaktivnih дискуsij, radionica i učite se od drugih."
+        "title": " Dijelite znanje",
+        "description": "Dijelite i proširujte svoje znanje kroz interaktivne rasprave, radionice i učite od drugih."
       }
     },
     "getToKnowUs": {
@@ -54,22 +54,22 @@
     "whoWeAre": {
       "intro": "Mi smo skupina aktivista iz cijele Europe koji su ujedinjeni u jednom cilju – potaknuti europsku suradnju i solidarnost!",
       "title": "Tko smo mi",
-      "mission": "Naš glavni cilj je pružiti platformu za europske demokrate, povezati istomišljenike iz cijele Europe i šire te raditi zajedno za zajedničku europsku viziju, utemeljenu na socijaldemokratskim i socijalističkim vrijednostima. Želimo omogućiti ljudima da podijele svoje vrijednosti i vizije o tome kako dalje razvijati i oblikovati Europsku uniju."
+      "mission": "Naš glavni cilj je pružiti platformu za europske socijaldemokrate, povezati istomišljenike iz cijele Europe i šire te raditi zajedno za zajedničku europsku viziju, utemeljenu na socijaldemokratskim i socijalističkim vrijednostima. Želimo omogućiti ljudima da podijele svoje vrijednosti i vizije o tome kako dalje razvijati i oblikovati Europsku uniju."
     },
     "howWeWork": {
-      "intro": "Mi, kao Socijalisti i Socijalдемоkrati, moramo učvrstiti evropsku ideju i stvoriti evropske mreže na svakom nivou.",
+      "intro": "Mi, kao Socijalisti i Socijaldemokrati, moramo učvrstiti europsku ideju i stvoriti europske mreže na svakoj razini.",
       "title": "Kako radimo",
-      "method": "Da bismo podprli posameznika, da razumiju različitу точку гледиšta, da podijele političke iskustva, i da radimo zajedno nad решенияma общих вопросов, organizujemo radionice i мероприятия – kako online, так i osobno.",
-      "papers": "Ove radionice čine osnovu za naš zajednički rad i naše pozicioniranje u pogledu konkretnih političkih pitanja. Na kraju svake radionice izrađujemo dokumente za raspravu koji se prenose u pojedine organizacije i koji imaju za cilj doprinijeti oblikovanju politike u tim organizacijama. To je jedini način na koji možemo osigurati da europska pitanja budu uključena u raspravu i da se o njima raspravlja sa stvarnom europskom perspektivom.",
-      "support": "Podupiremo i lokalne partijske organizacije da se povežu. Jeste li vi dio lokalneg odbora i trebate podršku u izgradnji evropske mreže?",
-      "workshops": "Naše radionice obrađuju specifična pitanja i nude mogućnost razmjene ideja i pronalaženja rješenja za zajedničke europske probleme. Kako se možemo bolje nositi s migracijama i izbjeglicama u Europskoj uniji na human način? Što možemo učiniti da stanovanje bude pristupačno i održivo? Kako bi izgledala socijalistička međunarodna sigurnosna politika?"
+      "method": "Da bismo podržali pojedince da razumiju različite točke gledišta, da podijele politička iskustva i da radimo zajedno na rješenjima zajedničkih pitanja, organiziramo radionice i događanja – kako online, tako i osobno.",
+      "papers": "Ove radionice čine temelj našeg zajedničkog rada i našeg pozicioniranja u pogledu konkretnih političkih pitanja. Na kraju svake radionice izrađujemo dokumente za raspravu koji se šalju u pojedine organizacije i koji imaju za cilj doprinijeti oblikovanju politike unutar tih organizacija. To je jedini način na koji možemo osigurati da europska pitanja budu uključena u raspravu i da se o njima raspravlja s pravom europskom perspektivom.",
+      "support": "Podupiremo i lokalne stranačke organizacije u njihovom povezivanju. Jeste li dio lokalnog odbora i trebate podršku u izgradnji europske mreže?",
+      "workshops": "Naše radionice obrađuju specifična pitanja i nude mogućnost razmjene ideja te pronalaženja rješenja za zajedničke europske probleme. Kako se možemo bolje nositi s migracijama i izbjeglicama u Europskoj uniji na human način? Što možemo učiniti da stanovanje bude pristupačno i održivo? Kako bi izgledala socijalistička međunarodna sigurnosna politika?"
     },
     "background": {
       "title": "Background",
-      "activists": "Na konferenciji smo svi videli potrebu da nastavimo da radimo zajedno na tim pitanjima, a još mnogo - izravno i bez posrednika - kao evropsko pokretanje. Po završetku našeg hit-off događaja, rezolucija je bila sprejeta u manifestu \"Europe, moramo razgovarati\", koji služi kao osnova za daljnju saradnju i oblikovanje zajedničke politike.",
-      "countries": "Mi smo grupa aktivista iz 14 različitih zemalja: Španjolske, Francuske, Litve, Belgije, Nizozemske, Njemačke, Portugala, Poljske, Italije, Hrvatske, Ukrajine, Austrije, Latvije kao i Ujedinjenog Kraljevstva. Ali uvijek smo u potrazi za novim aktivistima iz cijele Europe i šire. Jeste li zainteresirani? Samo nas kontaktirajte.",
-      "conference": "Sve je počelo nakon \"Europo, moramo razgovarati!\" – konferencija 2018. koju su organizirali Jusos i SPD Hessen-Süd u Njemačkoj. To su podržali Udo Bullmann, zastupnik u Europskom parlamentu i Michael Roth, njemački državni ministar za Europu u Ministerstvu vanjskih poslova.",
-      "perspective": "Mi želimo uspostaviti evropsku perspektivu. Svaka lokalna partija i politički komitet mogu kreirati razмену preko socijaldemokratичниh i socijalističnih partnerskih organizacij. To se može ostvariti putem lokalnih projektів, digitalnih mreža i mnogo više. Povezujemo svaku regionalnu grupу na dugoročnoj i устойчивoj основi, da bismo se uverili, da je Evropa u središtu naše svakodnevne partijske работы."
+      "activists": "Na konferenciji smo svi uočili potrebu da nastavimo zajednički rad na tim pitanjima, i to još intenzivnije – izravno i bez posrednika – kao europska inicijativa. Po završetku našeg početnog događaja, donesena je rezolucija koja je uvrštena u manifest \"Europo, moramo razgovarati\", a koji služi kao temelj za daljnju suradnju i oblikovanje zajedničke politike.",
+      "countries": "Mi smo grupa aktivista iz 14 različitih zemalja: Španjolske, Francuske, Litve, Belgije, Nizozemske, Njemačke, Portugala, Poljske, Italije, Hrvatske, Ukrajine, Austrije, Latvije i Ujedinjenog Kraljevstva. No, uvijek smo u potrazi za novim aktivistima iz cijele Europe i šire. Jeste li zainteresirani? Slobodno nas kontaktirajte!",
+      "conference": "Sve je počelo nakon konferencije \"Europo, moramo razgovarati!\" iz 2018., koju su organizirali Jusos i SPD Hessen-Süd u Njemačkoj. Podržali su je Udo Bullmann, zastupnik u Europskom parlamentu, i Michael Roth, njemački državni ministar za Europu pri Ministarstvu vanjskih poslova.",
+      "perspective": "Želimo uspostaviti europsku perspektivu. Svaka lokalna stranka i politički odbor mogu omogućiti razmjenu putem socijaldemokratskih i socijalističkih partnerskih organizacija. To se može ostvariti kroz lokalne projekte, digitalne mreže i mnogo više. Povezujemo svaku regionalnu grupu na dugoročnoj i održivoj osnovi kako bismo osigurali da je Europa u središtu našeg svakodnevnog stranačkog rada."
     },
     "leadership": {
       "name": "Vivien Costanzo",
@@ -78,10 +78,10 @@
         "title": "Zastupnik u Europskom parlamentu"
       },
       "intro": "Glavni odgovorni za EuropeTalks su:",
-      "title": "Vodenje."
+      "title": "Vodstvo"
     },
     "getToKnowUs": {
-      "title": "Upoznaj nas."
+      "title": "Upoznaj nas"
     }
   },
   "admin": {
@@ -99,61 +99,63 @@
   "events": {
     "events": {
       "title": "Eventi",
-      "loading": "Загружаm događaje...",
-      "viewPastEvents": "Bâ aye so asi giriri"
+      "loading": "Učitavanje događaja...",
+      "noEvents": "Nema nadolazećih događaja, vratite se kasnije!",
+      "viewPastEvents": "Pogledajte prošle događaje"
     },
     "signUp": {
       "email": {
-        "error": "Увядзіце правую adresu e- mail. @ info: whatsthis",
-        "label": "Email"
+        "error": "Molimo unesite važeću adresu e-pošte",
+        "label": "E-pošta"
       },
       "error": "Greška",
       "phone": {
-        "label": "Telefon (opcionalni)",
-        "placeholder": "Unesite svoj telefonski broj"
+        "label": "Broj telefona (opcionalno)",
+        "placeholder": "Unesite svoj tbroj telefona"
       },
       "title": "Prijavite se za",
-      "submit": "Prijavite se.",
-      "success": "Success!",
+      "submit": "Prijavite se",
+      "success": "Uspješno!",
       "fullName": {
         "error": "Puno ime mora sadržavati najmanje 3 znaka",
         "label": "Puno ime"
       },
       "motivation": {
-        "error": "Molimo, dajte najmanj 50 znakov, objašnjavajući vašu motivaciju.",
+        "error": "Molimo navedite barem 50 znakova koji objašnjavaju vašu motivaciju.",
         "label": "Zašto želite prisustvovati ovom događaju?",
         "placeholder": "Recite nam zašto ste zainteresirani za sudjelovanje..."
       },
       "submitting": "Prijava...",
-      "errorMessage": "Nisam uspio da se prijavim. Molim pokušajte ponovo.",
+      "errorMessage": "Registracija nije uspjela. Molimo pokušajte ponovno.",
       "successMessage": "Uspješno ste se prijavili za događaj."
     },
     "eventCard": {
       "date": "Datum",
-      "time": "Time",
+      "time": "Vrijeme",
       "hybrid": "Hibrid",
-      "online": "In linea",
-      "signUp": "Prijavite se.",
-      "inPerson": "U osobi",
-      "location": "Месцазнаходжанне",
-      "readMore": "Read more",
-      "eventEnded": "Događaj je završio"
+      "online": "Online",
+      "signUp": "Prijavite se!",
+      "inPerson": "Osobno",
+      "location": "Lokacija",
+      "readMore": "Pročitaj više",
+      "eventEnded": "Događaj je završio",
+      "registrationClosed": "Registracija zatvorena"
     },
     "pastEvents": {
       "title": "Prethodni događaji",
-      "noEvents": "No events found",
-      "viewUpcomingEvents": "Bâ aye so ayeke si kekereke"
+      "noEvents": "Nema prošlih događaja",
+      "viewUpcomingEvents": "Pogledajte nadolazeće događaje"
     }
   },
   "header": {
     "other": {
-      "menu": "Menu",
-      "signIn": "Upišite se",
-      "signOut": "Odjavi se"
+      "menu": "Izbornik",
+      "signIn": "Prijava",
+      "signOut": "Odjava"
     },
     "navigation": {
       "home": "Početna",
-      "about": "Naša priča",
+      "about": "O nama",
       "admin": "Admin",
       "cloud": "Cloud",
       "events": "Eventi",
@@ -164,11 +166,11 @@
   },
   "contact": {
     "form": {
-      "name": "Isem",
+      "name": "Ime",
       "email": "Email",
-      "submit": "Send Message",
-      "message": "_Пiši mi to.",
-      "subject": "Subito"
+      "submit": "Pošalji Poruku",
+      "message": "Poruka",
+      "subject": "Predmet"
     },
     "info": {
       "email": "Pošaljite nam e-poštu na:",
@@ -176,21 +178,21 @@
       "social": "Pratite nas na društvenim mrežama:"
     },
     "title": "Kontaktirajte nas",
-    "description": "Kontaktirajte nas za pitanja ili pitanja."
+    "description": "Kontaktirajte nas za sva pitanja:"
   },
   "gallery": {
-    "title": "Gallery"
+    "title": "Galerija"
   },
   "components": {
     "theme": {
-      "toggleTheme": "# Tema prekidača #"
+      "toggleTheme": "# Prebaci temu #"
     },
     "events": {
-      "signUp": "Prijavite se.",
+      "signUp": "Prijavite se",
       "eventEnded": "Događaj je završio"
     },
     "languageSelector": {
-      "label": "Izbor jezika"
+      "label": "Odaberite jezik"
     },
     "languageDetection": {
       "switchTo": "Prebaci na {{jezik}}",

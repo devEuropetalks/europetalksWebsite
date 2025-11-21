@@ -35,6 +35,7 @@ export function MemberTranslationEditor({
     pt: "Português",
     uk: "Українська",
     lv: "Latviešu",
+    lt: "Lietuvių",
     hr: "Hrvatski",
     hu: "Magyar",
     el: "Greek",

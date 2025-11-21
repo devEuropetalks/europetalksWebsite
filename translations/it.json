@@ -25,7 +25,7 @@
         "explore": "Esplora gli eventi",
         "learnMore": "Per saperne di più"
       },
-      "description": "Diventate membri e avrete accesso a eventi e funzionalità esclusive."
+      "description": "Diventa membro e avrai accesso ad eventi e funzionalità esclusive."
     },
     "hero": {
       "title": "Benvenuti in EuropeTalks!",
@@ -61,27 +61,27 @@
       "title": "Come lavoriamo",
       "method": "Lo facciamo collegando le persone in ogni organizzazione locale. Per aiutare gli individui a comprendere i diversi punti di vista, a condividere le esperienze politiche e a lavorare insieme per trovare soluzioni a problemi comuni, organizziamo workshop ed eventi, sia online che di persona.",
       "papers": "Questi workshop costituiscono la base del nostro lavoro comune e del nostro posizionamento in termini di questioni politiche specifiche. Al termine di ogni workshop, redigiamo dei documenti di discussione che vengono portati nelle singole organizzazioni e che hanno lo scopo di contribuire alla formazione delle politiche in queste organizzazioni. Solo in questo modo possiamo garantire che le questioni europee siano incluse nel dibattito e discusse con una reale prospettiva europea.",
-      "support": "Sosteniamo anche le organizzazioni di partito locali a collegarsi tra loro. Fate parte di un comitato locale e avete bisogno di sostegno per costruire una rete europea? Allora scriveteci!",
+      "support": "Sosteniamo anche le organizzazioni di partito locali a collegarsi tra loro. Fai parte di un comitato locale e hai bisogno di sostegno per costruire una rete europea? Allora scrivici!",
       "workshops": "I nostri workshop affrontano temi specifici e offrono la possibilità di scambiare idee e trovare soluzioni a problemi europei comuni. Come possiamo gestire meglio e in modo umano la migrazione e i rifugiati nelthe European Union? Cosa possiamo fare per rendere gli alloggi accessibili e sostenibili? Come sarebbe una politica di sicurezza internazionale socialista?"
     },
     "background": {
       "title": "Background",
-      "activists": "Attivisti di tutta Europa sono stati invitati a parlare di questioni comuni come la disuguaglianza sociale tra gli Stati membri e la nostra identità europea. Abbiamo cercato collaborazioni e ispirazioni per trovare risposte ai problemi e alle sfide che dobbiamo affrontare in tutta Europa. Alla conferenza abbiamo tutti constatato la necessità di continuare a lavorare insieme su questi temi e su molti altri - direttamente e senza intermediari - come movimento di base europeo. Alla fine del nostro evento di avvio, è stata adottata una risoluzione nel manifesto \"Europa, dobbiamo parlare\", che serve come base per un'ulteriore cooperazione e per l'elaborazione di politiche comuni.",
+      "activists": "Attivisti di tutta Europa sono stati invitati a parlare di questioni comuni come la disuguaglianza sociale tra gli Stati membri e la nostra identità europea. Abbiamo cercato collaborazioni e ispirazioni per trovare risposte ai problemi e alle sfide che dobbiamo affrontare in tutta Europa. Alla conferenza abbiamo tutti constatato la necessità di continuare a lavorare insieme su questi temi e su molti altri - direttamente e senza intermediari - come movimento di base europeo. Alla fine del nostro evento di avvio, è stata adottata una risoluzione nel manifesto \"Europe, we need to talk!\", che serve come base per un'ulteriore cooperazione e per l'elaborazione di politiche comuni.",
       "countries": "Siamo un gruppo di attivisti provenienti da 14 Paesi diversi: Spain, France, Lithuania, Belgium, the Netherlands, Germany, Portugal, Poland, Italy, Croatia, Ukraine, Austria, Latvia e Regno Unito. Ma siamo sempre alla ricerca di nuovi attivisti da tutta Europe e non solo. Siete interessati? Mettiti in contatto con noi.",
-      "conference": "Tutto è iniziato dopo la conferenza \"Europe, dobbiamo parlare!\" - nel 2018, organizzata da Jusos e SPD Hessen-Süd in Germany. L'iniziativa è stata sostenuta da Udo Bullmann, eurodeputato, e da Michael Roth, ministro tedesco per l'Europe presso il ministero degli Esteri.",
+      "conference": "Tutto è iniziato dopo la conferenza \"Europe, we need to talk!\" - nel 2018, organizzata da Jusos e SPD Hessen-Süd in Germany. L'iniziativa è stata sostenuta da Udo Bullmann, eurodeputato, e da Michael Roth, ministro tedesco per l'Europa presso il ministero degli Esteri.",
       "perspective": "Di solito nei nostri partiti discutiamo dell'Europa da una prospettiva nazionale. Noi vogliamo stabilire una prospettiva europea. Ogni partito e comitato politico locale può creare uno scambio attraverso organizzazioni partner socialdemocratiche e socialiste. Ciò può avvenire attraverso progetti di scambio locali, reti digitali e molto altro. Colleghiamo ogni gruppo regionale su una base sostenibile e a lungo termine, per far sì che l'Europa sia al centro del lavoro quotidiano dei partiti."
     },
     "leadership": {
       "name": "Vivien Costanzo",
       "role": {
         "party": "Social Democratic Party of Germany",
-        "title": "Member del Parliament European"
+        "title": "Eurodeputata"
       },
-      "intro": "Il principale responsabile di EuropeTalks è:",
+      "intro": "La principale responsabile di EuropeTalks è:",
       "title": "Leadership"
     },
     "getToKnowUs": {
-      "title": "Conoscerci"
+      "title": "Conoscici"
     }
   },
   "admin": {

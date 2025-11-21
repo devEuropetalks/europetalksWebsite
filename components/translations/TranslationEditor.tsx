@@ -29,6 +29,7 @@ export function TranslationEditor() {
     { code: "pt", name: "Português" },
     { code: "uk", name: "Українська" },
     { code: "lv", name: "Latviešu" },
+    { code: "lt", name: "Lietuvių"},
     { code: "hr", name: "Hrvatski" },
     { code: "hu", name: "Magyar" },
     { code: "el", name: "Greek" },

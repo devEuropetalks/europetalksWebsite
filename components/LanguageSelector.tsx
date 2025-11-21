@@ -30,6 +30,7 @@ export function LanguageSelector() {
     { code: "pt", name: "Português", flag: "/images/languageFlags/pt.png" },
     { code: "uk", name: "Українська", flag: "/images/languageFlags/uk.png" },
     { code: "lv", name: "Latviešu", flag: "/images/languageFlags/lv.png" },
+    { code: "lt", name: "Lietuvių", flag: "/images/languageFlags/lt.png" },
     { code: "hr", name: "Hrvatski", flag: "/images/languageFlags/hr.png" },
     { code: "hu", name: "Magyar", flag: "/images/languageFlags/hu.png" },
     { code: "el", name: "Greek", flag: "/images/languageFlags/el.png" },

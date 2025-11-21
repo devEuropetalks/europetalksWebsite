@@ -1,0 +1,200 @@
+{
+  "auth": {
+    "signIn": {
+      "error": "Nepavyko prisijungti",
+      "title": "Prisijungti",
+      "success": "Sėkmingai prisijungta",
+      "subtitle": "Sveiki sugrįžę"
+    },
+    "signUp": {
+      "error": "Nepavyko užsiregistruoti",
+      "title": "Užsiregistruoti",
+      "success": "Sėkmingai užsiregistruota",
+      "subtitle": "Sveiki atvykę į EuropeTalks"
+    },
+    "signOut": {
+      "error": "Nepavyko atsijungti",
+      "success": "Sėkmingai atsijungta"
+    }
+  },
+  "home": {
+    "cta": {
+      "title": "Ar esate pasiruošę prisijungti?",
+      "buttons": {
+        "contact": "Susisiekite su mumis",
+        "explore": "Naršyti renginius",
+        "learnMore": "Sužinoti daugiau"
+      },
+      "description": "Tapkite nariu ir gaukite prieigą prie ekskluzyvių renginių ir funkcijų."
+    },
+    "hero": {
+      "title": "Sveiki atvykę į EuropeTalks!",
+      "subtitle": "Prisijunkite prie mūsų europiečių bendruomenės, dalijantis idėjomis, kultūra ir kuriant ryšius per sienas."
+    },
+    "features": {
+      "cultural": {
+        "title": "Kultūrų mainai",
+        "description": "Patirkite įvairias Europos kultūras per mūsų renginius ir dirbtuves."
+      },
+      "community": {
+        "title": "Bendruomenė",
+        "description": "Susisiekite su panašiai mąstančiais europiečiais ir kurkite ilgalaikius ryšius."
+      },
+      "knowledge": {
+        "title": "Dalintis žiniomis",
+        "description": "Dalinkitės ir plėskite savo žinias per interaktyvias diskusijas, dirbtuves ir mokykitės iš kitų."
+      }
+    },
+    "getToKnowUs": {
+      "title": "Susipažinkite su mumis"
+    }
+  },
+  "about": {
+    "title": "Apie EuropeTalks",
+    "whoWeAre": {
+      "intro": "Mes esame aktyvistų grupė iš visos Europos, suvienyti vienu tikslu – skatinti Europos bendradarbiavimą ir solidarumą!",
+      "title": "Kas mes esame",
+      "mission": "Mūsų pagrindinis tikslas yra suteikti platformą Europos demokratams, sujungti panašiai mąstančius žmones iš visos Europos ir už jos ribų bei kartu dirbti dėl bendro Europos vizijos, pagrįstos socialdemokratinėmis ir socialistinėmis vertybėmis. Norime suteikti žmonėms galimybę dalytis savo vertybėmis ir vizijomis apie tai, kaip toliau vystyti ir formuoti Europos Sąjungą."
+    },
+    "howWeWork": {
+      "intro": "Kaip socialistai ir socialdemokratai, turime įgyvendinti Europos idėją ir kurti Europos tinklus visais lygiais. Tik tada galėsime patikimai atstovauti ir skatinti Europos politiką.",
+      "title": "Kaip mes dirbame",
+      "method": "Mes tai darome sujungdami žmones kiekvienoje vietinėje organizacijoje. Siekdami padėti žmonėms suprasti skirtingus požiūrius, dalytis politine patirtimi ir kartu dirbti sprendžiant bendrus klausimus, organizuojame dirbtuves ir renginius – tiek internetu, tiek asmeniškai.",
+      "papers": "Šios dirbtuvės sudaro pagrindą mūsų bendram darbui ir mūsų pozicijoms konkrečių politikos klausimų atžvilgiu. Kiekvienos dirbtuvių pabaigoje rengiame diskusijų dokumentus, kurie perduodami į atskiras organizacijas ir kurie skirti prisidėti prie politikos formavimo šiose organizacijose. Tai vienintelis būdas užtikrinti, kad Europos klausimai būtų įtraukti į diskusijas ir aptariami tikra Europos perspektyva.",
+      "support": "Taip pat remiame vietines partijų organizacijas susisiekti viena su kita. Ar esate vietinio komiteto narys ir reikia paramos kuriant Europos tinklą? Tada parašykite mums!",
+      "workshops": "Mūsų dirbtuvėse sprendžiame konkrečius klausimus ir siūlome galimybę keistis idėjomis ir rasti sprendimus bendriems Europos problemoms. Kaip galime geriau ir humaniškiau spręsti migracijos ir pabėgėlių problemas Europos Sąjungoje? Ką galime padaryti, kad būstas būtų prieinamas ir tvarus? Kaip atrodytų socialistinė tarptautinė saugumo politika?"
+    },
+    "background": {
+      "title": "Istorija",
+      "activists": "Aktyvistai iš visos Europos buvo pakviesti kalbėti apie bendrus klausimus, tokius kaip socialinė nelygybė tarp valstybių narių, taip pat apie mūsų Europos tapatybę. Ieškojome bendradarbiavimo ir įkvėpimo, kad rastume atsakymus į problemas ir iššūkius, su kuriais susiduriame visoje Europoje. Konferencijoje visi matėme, kad reikia toliau kartu dirbti su šiais ir daugeliu kitų klausimų – tiesiogiai ir be tarpininkų – kaip Europos žemės lygio judėjimas. Mūsų pradinio renginio pabaigoje buvo priimta rezoliucija manifeste „Europa, mums reikia kalbėti“, kuri tarnauja kaip pagrindas tolesniam bendradarbiavimui ir bendrai politikos formavimui.",
+      "countries": "Mes esame aktyvistų grupė iš 14 skirtingų šalių: Ispanija, Prancūzija, Lietuva, Belgija, Nyderlandai, Vokietija, Portugalija, Lenkija, Italija, Kroatija, Ukraina, Austrija, Latvija, taip pat Jungtinė Karalystė. Tačiau visada ieškome naujų aktyvistų iš visos Europos ir už jos ribų. Ar jus domina? Tiesiog susisiekite su mumis.",
+      "conference": "Viskas prasidėjo po „Europa, mums reikia kalbėti!“ – konferencijos 2018 metais, kurią organizavo Jusos ir SPD Hessen-Süd Vokietijoje. Tai palaikė Udo Bullmann, Europos Parlamento narys, ir Michael Roth, Vokietijos užsienio reikalų ministerijos valstybės ministras Europos reikalams.",
+      "perspective": "Apie Europą savo partijose paprastai diskutuojame iš nacionalinės perspektyvos. Norime sukurti Europos perspektyvą. Kiekviena vietinė partija ir politinis komitetas gali kurti mainus per socialdemokratines ir socialistines partnerių organizacijas. Tai galima pasiekti per vietinius mainų projektus, skaitmeninį tinklą ir daug daugiau. Mes ilgalaikiu ir tvariais pagrindais jungiame kiekvieną regioninę grupę, kad užtikrintume, jog Europa būtų mūsų kasdieninio partijos darbo centre."
+    },
+    "leadership": {
+      "name": "Vivien Costanzo",
+      "role": {
+        "party": "Vokietijos socialdemokratų partija",
+        "title": "Europos Parlamento narė"
+      },
+      "intro": "Pagrindinė atsakinga už EuropeTalks yra:",
+      "title": "Vadovybė"
+    },
+    "getToKnowUs": {
+      "title": "Susipažinkite su mumis"
+    }
+  },
+  "admin": {
+    "dashboard": {
+      "title": "Valdymo skydelis",
+      "manageEvents": "Valdyti renginius",
+      "manageTranslations": "Valdyti vertimus"
+    }
+  },
+  "other": {
+    "cities": {},
+    "months": {},
+    "countries": {}
+  },
+  "events": {
+    "events": {
+      "title": "Renginiai",
+      "loading": "Kraunami renginiai...",
+      "viewPastEvents": "Peržiūrėti ankstesnius renginius"
+    },
+    "signUp": {
+      "email": {
+        "error": "Prašome įvesti galiojantį el. pašto adresą",
+        "label": "El. paštas"
+      },
+      "error": "Klaida",
+      "phone": {
+        "label": "Telefono numeris (neprivalomas)",
+        "placeholder": "Įveskite savo telefono numerį"
+      },
+      "title": "Užsiregistruoti",
+      "submit": "Užsiregistruoti",
+      "success": "Pavyko!",
+      "fullName": {
+        "error": "Pilnas vardas turi būti bent 3 simbolių",
+        "label": "Pilnas vardas"
+      },
+      "motivation": {
+        "error": "Prašome pateikti bent 50 simbolių, paaiškinančių jūsų motyvaciją.",
+        "label": "Kodėl norite dalyvauti šiame renginyje?",
+        "placeholder": "Prašome pasakyti mums, kodėl jus domina dalyvavimas..."
+      },
+      "submitting": "Registruojama...",
+      "errorMessage": "Nepavyko užsiregistruoti. Prašome bandyti dar kartą.",
+      "successMessage": "Jūs sėkmingai užsiregistravote į renginį."
+    },
+    "eventCard": {
+      "date": "Data",
+      "time": "Laikas",
+      "hybrid": "Hibridinis",
+      "online": "Internetu",
+      "signUp": "Užsiregistruoti",
+      "inPerson": "Asmeniškai",
+      "location": "Vieta",
+      "readMore": "Skaityti daugiau",
+      "eventEnded": "Renginys baigėsi"
+    },
+    "pastEvents": {
+      "title": "Ankstesni renginiai",
+      "noEvents": "Renginių nerasta",
+      "viewUpcomingEvents": "Peržiūrėti būsimus renginius"
+    }
+  },
+  "header": {
+    "other": {
+      "menu": "Meniu",
+      "signIn": "Prisijungti",
+      "signOut": "Atsijungti"
+    },
+    "navigation": {
+      "home": "Pradžia",
+      "about": "Apie",
+      "admin": "Administravimas",
+      "cloud": "Debesis",
+      "events": "Renginiai",
+      "contact": "Kontaktai",
+      "gallery": "Galerija",
+      "translations": "Vertimai"
+    }
+  },
+  "contact": {
+    "form": {
+      "name": "Vardas",
+      "email": "El. paštas",
+      "submit": "Siųsti žinutę",
+      "message": "Žinutė",
+      "subject": "Tema"
+    },
+    "info": {
+      "email": "Rašykite mums el. laišką:",
+      "title": "Kiti būdai susisiekti",
+      "social": "Sekite mus socialiniuose tinkluose:"
+    },
+    "title": "Susisiekite su mumis",
+    "description": "Susisiekite su mumis dėl bet kokių klausimų ar užklausų."
+  },
+  "gallery": {
+    "title": "Galerija"
+  },
+  "components": {
+    "theme": {
+      "toggleTheme": "Perjungti temą"
+    },
+    "events": {
+      "signUp": "Užsiregistruoti",
+      "eventEnded": "Renginys baigėsi"
+    },
+    "languageSelector": {
+      "label": "Pasirinkite kalbą"
+    },
+    "languageDetection": {
+      "switchTo": "Perjungti į lietuvių",
+      "available": "Ši svetainė prieinama jūsų kalba!"
+    }
+  }
+}

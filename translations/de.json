@@ -193,6 +193,10 @@
     },
     "languageSelector": {
       "label": "Sprache auswählen"
+    },
+    "languageDetection": {
+      "switchTo": "Wechseln zu {{Sprache}}",
+      "available": "Diese Website ist in Ihrer Sprache verfügbar!"
     }
   }
 }

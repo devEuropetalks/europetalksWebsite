@@ -17,17 +17,19 @@ export interface ApiError extends Error {
  */
 export const fetcher = async <T = unknown>(url: string): Promise<T> => {
   const res = await fetch(url);
-  
+
   // If the status code is not in the range 200-299,
   // we still try to parse and throw it.
   if (!res.ok) {
-    const error = new Error('An error occurred while fetching the data.') as ApiError;
+    const error = new Error(
+      "An error occurred while fetching the data."
+    ) as ApiError;
     // Attach extra info to the error object.
     error.info = await res.json();
     error.status = res.status;
     throw error;
   }
-  
+
   return res.json();
 };
 
@@ -39,20 +41,22 @@ export const fetcher = async <T = unknown>(url: string): Promise<T> => {
  */
 export const postData = async <T>(url: string, data: unknown): Promise<T> => {
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   });
-  
+
   if (!res.ok) {
-    const error = new Error('An error occurred while posting the data.') as ApiError;
+    const error = new Error(
+      "An error occurred while posting the data."
+    ) as ApiError;
     error.info = await res.json();
     error.status = res.status;
     throw error;
   }
-  
+
   return res.json();
 };
 
@@ -64,20 +68,22 @@ export const postData = async <T>(url: string, data: unknown): Promise<T> => {
  */
 export const putData = async <T>(url: string, data: unknown): Promise<T> => {
   const res = await fetch(url, {
-    method: 'PUT',
+    method: "PUT",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(data),
   });
-  
+
   if (!res.ok) {
-    const error = new Error('An error occurred while updating the data.') as ApiError;
+    const error = new Error(
+      "An error occurred while updating the data."
+    ) as ApiError;
     error.info = await res.json();
     error.status = res.status;
     throw error;
   }
-  
+
   return res.json();
 };
 
@@ -88,15 +94,17 @@ export const putData = async <T>(url: string, data: unknown): Promise<T> => {
  */
 export const deleteData = async <T>(url: string): Promise<T> => {
   const res = await fetch(url, {
-    method: 'DELETE',
+    method: "DELETE",
   });
-  
+
   if (!res.ok) {
-    const error = new Error('An error occurred while deleting the data.') as ApiError;
+    const error = new Error(
+      "An error occurred while deleting the data."
+    ) as ApiError;
     error.info = await res.json();
     error.status = res.status;
     throw error;
   }
-  
+
   return res.json();
-}; 
+};
