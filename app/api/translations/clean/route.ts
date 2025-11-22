@@ -113,7 +113,7 @@ export async function POST(request: Request) {
     // 2. Bereinige die JSON-Dateien
     const translationsDir = path.join(process.cwd(), "translations");
     const jsonFiles = [
-      "translations.json",
+      "en.json",
       "de.json",
       "fr.json",
       "es.json",
@@ -124,7 +124,8 @@ export async function POST(request: Request) {
       "lv.json",
       "hr.json",
       "hu.json",
-      "el.json"
+      "el.json",
+      "lt.json"
     ];
     
     let jsonCleanCount = 0;
@@ -139,22 +140,11 @@ export async function POST(request: Request) {
         for (const key of unusedKeys) {
           const keyParts = key.split('.');
           
-          // Bei translations.json müssen wir erst den Sprachcode berücksichtigen
-          if (fileName === "translations.json") {
-            if (jsonData.en) {
-              const changed = removeNestedKey(jsonData.en, [...keyParts]);
-              if (changed) {
-                fileChanged = true;
-                jsonCleanCount++;
-              }
-            }
-          } else {
-            // Bei Sprachdateien ist der Inhalt direkt das Übersetzungsobjekt
-            const changed = removeNestedKey(jsonData, [...keyParts]);
-            if (changed) {
-              fileChanged = true;
-              jsonCleanCount++;
-            }
+          // Bei allen Sprachdateien ist der Inhalt direkt das Übersetzungsobjekt
+          const changed = removeNestedKey(jsonData, [...keyParts]);
+          if (changed) {
+            fileChanged = true;
+            jsonCleanCount++;
           }
         }
         

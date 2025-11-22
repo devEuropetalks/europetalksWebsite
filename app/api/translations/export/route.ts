@@ -34,8 +34,7 @@ export async function POST(request: Request) {
     let exportedFiles = 0;
     for (const { language, content } of translations) {
       try {
-        // Überspringe Englisch, da es bereits in translations.json definiert ist
-        if (language === "en") continue;
+        // Export all languages including English
 
         // Parse den Inhalt, wenn es ein String ist
         const contentObj = typeof content === "string" ? JSON.parse(content) : content;

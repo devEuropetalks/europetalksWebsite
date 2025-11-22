@@ -1,11 +1,11 @@
 import json
 import asyncio
-import asyncpg
+import asyncpg  # type: ignore[reportMissingImports]
 import sys
 
 # Check for PyTorch installation
 try:
-    import torch
+    import torch  # type: ignore[reportMissingImports]
     if not torch.cuda.is_available():
         print("PyTorch is installed but CUDA is not available. Using CPU for translations (slower).")
 except ImportError:
@@ -15,7 +15,7 @@ except ImportError:
     print("\nAfter installing PyTorch, run this script again.")
     sys.exit(1)
 
-from transformers import (
+from transformers import (  # type: ignore[reportMissingImports]
     MarianMTModel,
     MarianTokenizer,
     AutoModelForSeq2SeqLM,
@@ -27,6 +27,8 @@ from dotenv import load_dotenv
 import uuid
 from collections import OrderedDict
 from difflib import SequenceMatcher
+from deep_translator import GoogleTranslator, DeeplTranslator  # type: ignore[reportMissingImports]
+import spacy  # type: ignore[reportMissingImports]
 
 #python version 3.12.8
 
@@ -306,13 +308,11 @@ async def translate_and_seed():
     """Main function to translate and seed the database"""
     try:
         # Load source English translations
-        with open("translations/translations.json", "r", encoding="utf-8") as f:
-            translations = json.load(f, object_pairs_hook=OrderedDict)
+        with open("translations/en.json", "r", encoding="utf-8") as f:
+            en_content = json.load(f, object_pairs_hook=OrderedDict)
 
-        # Get English content as source
-        en_content = translations.get("en", {})
         if not en_content:
-            raise ValueError("English translations not found in translations.json")
+            raise ValueError("English translations not found in en.json")
 
         # Connect to database
         conn = await asyncpg.connect(os.getenv("DATABASE_URL"))

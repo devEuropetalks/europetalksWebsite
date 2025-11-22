@@ -1,8 +1,6 @@
 // Import all your existing JSON files to create initial translations
 import { Translations } from "@/types/translations";
-import translations from '@/translations/translations.json';
-
-// Import language-specific JSON files
+import enTranslations from '@/translations/en.json';
 import deTranslations from '@/translations/de.json';
 import frTranslations from '@/translations/fr.json';
 import elTranslations from '@/translations/el.json';
@@ -19,11 +17,10 @@ import hrTranslations from '@/translations/hr.json';
 // Create a combined translations object with all available language files
 // We use any type here because the JSON structure doesn't match the exact TypeScript types
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const allTranslations: any = {
-  ...translations
-};
+const allTranslations: any = {};
 
 // Add all language translations
+allTranslations.en = enTranslations;
 allTranslations.de = deTranslations;
 allTranslations.fr = frTranslations;
 allTranslations.el = elTranslations;
