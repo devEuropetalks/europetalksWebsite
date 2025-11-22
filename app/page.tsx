@@ -32,7 +32,7 @@ export default function HomePage() {
               alt={isDarkMode ? "Europe by night from space" : "European Union"}
               fill
               className={`object-cover brightness-[0.4] ${
-                !isDarkMode ? "object-[center_30%]" : ""
+                !isDarkMode ? "object-[center_10%]" : ""
               }`}
               priority
               quality={100}
