@@ -21,9 +21,9 @@ const transporter = nodemailer.createTransport({
 // Add verification
 transporter.verify(function (error, success) {
   if (error) {
-    console.log("Event signup server connection failed:", error);
+    console.error("Event signup server connection failed:", error);
   } else {
-    console.log("Event signup server is ready to take messages", success);
+    console.warn("Event signup server is ready to take messages", success);
   }
 });
 

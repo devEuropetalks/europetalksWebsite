@@ -58,7 +58,8 @@ export interface EventFormConfig {
   terms: EventTerms[];
 }
 
-export type EventTermsInput = Required<Pick<EventTerms, 'id'>> & Partial<Omit<EventTerms, 'id'>>;
+export type EventTermsInput = Required<Pick<EventTerms, "id">> &
+  Partial<Omit<EventTerms, "id">>;
 
 export interface PartialFormField {
   id: string;
@@ -98,19 +99,19 @@ export function createDynamicSchema(
       .string()
       .min(3, "Full name is required and must be at least 3 characters"),
     email: z.string().email("Please enter a valid email address"),
-    termsAgreement: terms.length > 0 
-      ? z.array(z.string()).refine(
-          (value) => value.length === terms.length,
-          "You must agree to all terms and conditions"
-        )
-      : z.array(z.string()).optional(),
+    termsAgreement:
+      terms.length > 0
+        ? z
+            .array(z.string())
+            .refine(
+              (value) => value.length === terms.length,
+              "You must agree to all terms and conditions"
+            )
+        : z.array(z.string()).optional(),
   };
 
   formFields.forEach((field) => {
-    let fieldSchema:
-      | z.ZodString
-      | z.ZodArray<z.ZodString>
-      | z.ZodEffects<z.ZodString>;
+    let fieldSchema: z.ZodString | z.ZodArray<z.ZodString> | z.ZodType<string>;
 
     switch (field.type) {
       case "email":
@@ -121,24 +122,18 @@ export function createDynamicSchema(
           );
         break;
       case "tel":
-        fieldSchema = z
-          .string()
-          .refine(
-            (value) => {
-              if (!value) return true; // Allow empty for optional fields
-              // Use the isValidPhoneNumber function from react-phone-number-input
-              try {
-                // Remove all spaces and special characters for basic format check
-                const cleaned = value.replace(/[\s\-\(\)\.]/g, '');
-                // Must start with + and have at least 7 digits
-                return /^\+[0-9]{7,}$/.test(cleaned);
-              } catch {
-                return false;
-              }
-            },
-            field.validation?.customMessage ||
-              "Please enter a valid phone number and select the country code form the list on the left."
-          );
+        fieldSchema = z.string().refine((value) => {
+          if (!value) return true; // Allow empty for optional fields
+          // Use the isValidPhoneNumber function from react-phone-number-input
+          try {
+            // Remove all spaces and special characters for basic format check
+            const cleaned = value.replace(/[\s\-().]/g, "");
+            // Must start with + and have at least 7 digits
+            return /^\+[0-9]{7,}$/.test(cleaned);
+          } catch {
+            return false;
+          }
+        }, field.validation?.customMessage || "Please enter a valid phone number and select the country code form the list on the left.");
         break;
       case "date":
         fieldSchema = z.string().refine((value) => {
@@ -148,16 +143,18 @@ export function createDynamicSchema(
         break;
       case "textarea":
       case "text":
-      case "radio":
-        fieldSchema = z.string();
+      case "radio": {
+        let textSchema = z.string();
         if (field.validation?.min) {
-          fieldSchema = fieldSchema.min(
+          textSchema = textSchema.min(
             field.validation.min,
             field.validation?.customMessage ||
               `Minimum ${field.validation.min} characters required`
           );
         }
+        fieldSchema = textSchema;
         break;
+      }
       case "checkbox":
         fieldSchema = z
           .array(z.string())

@@ -110,7 +110,7 @@ export async function PATCH(
   } catch (error) {
     console.error("[EVENT_PATCH]", error);
     if (error instanceof z.ZodError) {
-      return NextResponse.json({ errors: error.errors }, { status: 400 });
+      return NextResponse.json({ errors: error.issues }, { status: 400 });
     }
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }

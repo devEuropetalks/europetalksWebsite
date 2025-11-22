@@ -4,6 +4,13 @@ const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
+// Use a dummy DATABASE_URL during build if not available
+// This allows Prisma to initialize during build without errors
+if (!process.env.DATABASE_URL) {
+  process.env.DATABASE_URL =
+    "postgresql://user:password@localhost:5432/db?schema=public";
+}
+
 export const db =
   globalForPrisma.prisma ??
   new PrismaClient({
@@ -11,11 +18,8 @@ export const db =
       process.env.NODE_ENV === "development"
         ? ["query", "error", "warn"]
         : ["error"],
-    datasources: {
-      db: {
-        url: process.env.DATABASE_URL + "?connection_limit=5&pool_timeout=5",
-      },
-    },
   });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = db;
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = db;
+}

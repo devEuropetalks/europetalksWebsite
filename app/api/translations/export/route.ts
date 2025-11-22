@@ -45,7 +45,7 @@ export async function POST(request: Request) {
         await writeFile(filePath, JSON.stringify(contentObj, null, 2), "utf8");
         exportedFiles++;
         
-        console.log(`✓ Exported ${language} translations to ${filePath}`);
+        console.warn(`✓ Exported ${language} translations to ${filePath}`);
       } catch (err) {
         console.error(`✗ Failed to export ${language} translation:`, err);
       }

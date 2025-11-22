@@ -300,7 +300,7 @@ export default function EventSignupForm({
                 <FormItem>
                   <FormLabel>{t("signUp.fullName.label")}</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} value={field.value as string} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -314,7 +314,7 @@ export default function EventSignupForm({
                 <FormItem>
                   <FormLabel>{t("signUp.email.label")}</FormLabel>
                   <FormControl>
-                    <Input type="email" {...field} />
+                    <Input type="email" {...field} value={field.value as string} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -335,9 +335,9 @@ export default function EventSignupForm({
                       <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                         <FormControl>
                           <Checkbox
-                            checked={field.value?.includes(term.id)}
+                            checked={(field.value as string[])?.includes(term.id) || false}
                             onCheckedChange={(checked) => {
-                              const value = field.value || [];
+                              const value = (field.value as string[]) || [];
                               const newValue = checked
                                 ? [...value, term.id]
                                 : value.filter((id) => id !== term.id);

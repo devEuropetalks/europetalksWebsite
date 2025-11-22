@@ -11,7 +11,7 @@ const prisma = new PrismaClient();
 
 async function downloadTranslations() {
   try {
-    console.log("📥 Downloading translations from database...\n");
+    console.warn("📥 Downloading translations from database...\n");
 
     // Fetch all translations from the database
     const translations = await prisma.translation.findMany({
@@ -21,7 +21,7 @@ async function downloadTranslations() {
     });
 
     if (translations.length === 0) {
-      console.log("⚠️  No translations found in database");
+      console.warn("⚠️  No translations found in database");
       return;
     }
 
@@ -39,22 +39,20 @@ async function downloadTranslations() {
 
         // Write to JSON file
         const filePath = path.join(translationsDir, `${language}.json`);
-        await writeFile(
-          filePath,
-          JSON.stringify(contentObj, null, 2),
-          "utf8"
-        );
+        await writeFile(filePath, JSON.stringify(contentObj, null, 2), "utf8");
 
         exportedFiles++;
-        console.log(`✓ Exported ${language} translations to ${filePath}`);
+        console.warn(`✓ Exported ${language} translations to ${filePath}`);
       } catch (err) {
         console.error(`✗ Failed to export ${language} translation:`, err);
       }
     }
 
-    console.log("\n" + "=".repeat(50));
-    console.log(`✅ Successfully exported ${exportedFiles} translation file(s)`);
-    console.log("=".repeat(50));
+    console.warn("\n" + "=".repeat(50));
+    console.warn(
+      `✅ Successfully exported ${exportedFiles} translation file(s)`
+    );
+    console.warn("=".repeat(50));
   } catch (error) {
     console.error("❌ Error downloading translations:", error);
     process.exit(1);
@@ -65,4 +63,3 @@ async function downloadTranslations() {
 
 // Run the script
 downloadTranslations();
-

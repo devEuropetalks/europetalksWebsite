@@ -13,14 +13,12 @@ const useTranslationsStore = create<TranslationsStore>((set) => ({
 }));
 
 const fetcher = async (url: string) => {
-  console.log('Fetching translations...');
+  // Fetching translations
   const res = await fetch(url);
-  const contentType = res.headers.get('content-type');
-  console.log('Response content type:', contentType);
   
   // Handle 404 gracefully - database might be empty, fall back to JSON files
   if (res.status === 404) {
-    console.log('No translations in database, using JSON file fallbacks');
+    // No translations in database, using JSON file fallbacks
     return {}; // Return empty object, JSON fallbacks are already loaded via initialTranslations
   }
   
@@ -40,7 +38,7 @@ const fetcher = async (url: string) => {
   let data;
   try {
     data = await res.json();
-    console.log('Raw translation data:', data);
+    // Raw translation data received
   } catch (e) {
     console.error('Failed to parse response as JSON:', e);
     throw new Error('Invalid JSON response');
@@ -59,11 +57,7 @@ const fetcher = async (url: string) => {
       throw new Error(`Invalid content structure for language ${lang}`);
     }
 
-    console.log(`Language ${lang} content structure:`, {
-      type: typeof content,
-      keys: Object.keys(content),
-      sample: JSON.stringify(content).slice(0, 100) + '...'
-    });
+    // Language content structure validated
 
     // Validate each namespace's content
     Object.entries(content as Record<string, unknown>).forEach(([namespace, translations]) => {
@@ -84,7 +78,7 @@ export function useTranslations() {
     revalidateOnReconnect: false,
     dedupingInterval: 3600000, // 1 hour
     onSuccess: (data) => {
-      console.log('Successfully loaded translations:', Object.keys(data));
+      // Successfully loaded translations
       setTranslations(data);
     },
     onError: (err) => {

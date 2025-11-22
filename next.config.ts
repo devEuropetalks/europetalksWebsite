@@ -5,16 +5,6 @@ const nextConfig: NextConfig = {
     serverActions: {
       bodySizeLimit: "10mb",
     },
-    // Turbopack configuration
-    turbo: {
-      rules: {
-        // Ignore markdown files to prevent module errors
-        "**/*.md": {
-          loaders: [],
-          as: "*.txt",
-        },
-      },
-    },
   },
   images: {
     remotePatterns: [
@@ -25,16 +15,31 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Webpack config for production builds (fallback when not using Turbopack)
+  turbopack: {
+    resolveAlias: {
+      // Map .d.cts files to .d.ts to avoid module format issues
+      ".d.cts": ".d.ts",
+    },
+    resolveExtensions: [".tsx", ".ts", ".jsx", ".js", ".json"],
+  },
+  // Temporary workaround: Use webpack for builds until Turbopack fully supports UploadThing
+  // Remove this once UploadThing packages are fully compatible with Turbopack
+  onDemandEntries: {
+    maxInactiveAge: 25 * 1000,
+    pagesBufferLength: 2,
+  },
   webpack: (config) => {
-    // Ignore README.md and other markdown files from node_modules
     config.module = config.module || {};
     config.module.rules = config.module.rules || [];
-    // Treat .md files as asset/source to prevent import errors
     config.module.rules.push({
-      test: /\.md$/,
+      test: /\.(md|LICENSE)$/,
       type: "asset/source",
     });
+    config.resolve = config.resolve || {};
+    config.resolve.extensionAlias = {
+      ...config.resolve.extensionAlias,
+      ".d.cts": [".d.ts"],
+    };
     return config;
   },
 };

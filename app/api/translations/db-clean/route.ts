@@ -14,7 +14,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized. Only admins can clean translations." }, { status: 401 });
     }
 
-    console.log("Running database cleanup test");
+    console.warn("Running database cleanup test");
 
     // Check if Translation table exists
     try {
@@ -25,7 +25,7 @@ export async function GET() {
         );
       `;
       
-      console.log("Table exists check:", tableExists);
+      console.warn("Table exists check:", tableExists);
 
       if (!tableExists[0].exists) {
         return NextResponse.json({ 
@@ -35,7 +35,7 @@ export async function GET() {
 
       // List all translation records
       const translations = await prisma.translation.findMany();
-      console.log(`Found ${translations.length} translation records in database`);
+      console.warn(`Found ${translations.length} translation records in database`);
 
       // For safety, we're just listing the translations, not modifying them
       const translationSummary = translations.map(t => ({

@@ -39,11 +39,11 @@ export function LanguageSelector() {
   const handleLanguageChange = async (langCode: string) => {
     try {
       setIsChanging(true);
-      console.log(`Changing language to ${langCode}...`);
+      // Changing language
       await i18n.changeLanguage(langCode);
-      console.log(`Language changed to ${langCode}, reloading translations...`);
+      // Language changed, reloading translations
       await reloadTranslations();
-      console.log(`Translations reloaded for ${langCode}`);
+      // Translations reloaded
       
       // Kein Browser-Reload erforderlich, i18n.changeLanguage aktualisiert die Anzeige automatisch
       toast({

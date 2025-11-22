@@ -113,7 +113,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("[FORM_SCHEMAS_POST]", error);
     if (error instanceof z.ZodError) {
-      return new NextResponse(JSON.stringify(error.errors), { status: 400 });
+      return new NextResponse(JSON.stringify(error.issues), { status: 400 });
     }
     return new NextResponse("Internal error", { status: 500 });
   }

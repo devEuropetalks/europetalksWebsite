@@ -55,7 +55,7 @@ async function findUsedTranslations(translations) {
     ]
   });
 
-  console.log(`Analyzing ${sourceFiles.length} files...`);
+  console.warn(`Analyzing ${sourceFiles.length} files...`);
 
   sourceFiles.forEach(file => {
     const content = fs.readFileSync(file, 'utf-8');
@@ -97,20 +97,20 @@ async function findUsedTranslations(translations) {
 async function main() {
   try {
     // Load translations
-    console.log('Loading translations from', translationsFile);
+    console.warn('Loading translations from', translationsFile);
     const translations = JSON.parse(fs.readFileSync(translationsFile, 'utf-8'));
 
     // Get all available translation keys
     const allKeys = getAllTranslationKeys(translations.en);
-    console.log(`Found: ${allKeys.length} translation keys in total`);
+    console.warn(`Found: ${allKeys.length} translation keys in total`);
 
     // Search for used translations in code
     const usedKeys = await findUsedTranslations(translations);
-    console.log(`Found: ${usedKeys.length} used translation keys`);
+    console.warn(`Found: ${usedKeys.length} used translation keys`);
 
     // Identify unused keys
     const unusedKeys = allKeys.filter(key => !usedKeys.includes(key));
-    console.log(`Found: ${unusedKeys.length} unused translation keys`);
+    console.warn(`Found: ${unusedKeys.length} unused translation keys`);
 
     // Organize unused keys by namespace
     const unusedByNamespace = {};
@@ -124,15 +124,15 @@ async function main() {
 
     // Save results
     fs.writeFileSync(outputFile, JSON.stringify(unusedByNamespace, null, 2));
-    console.log(`Results saved to ${outputFile}`);
+    console.warn(`Results saved to ${outputFile}`);
 
     // Give a summary in the console
-    console.log('\nSummary of unused translations by namespace:');
+    console.warn('\nSummary of unused translations by namespace:');
     Object.entries(unusedByNamespace).forEach(([namespace, keys]) => {
-      console.log(`${namespace}: ${keys.length} unused keys`);
+      console.warn(`${namespace}: ${keys.length} unused keys`);
     });
 
-    console.log('\nYou can now go to /admin/translations/clean to clean up these keys.');
+    console.warn('\nYou can now go to /admin/translations/clean to clean up these keys.');
   } catch (error) {
     console.error('Error during translation analysis:', error);
     
@@ -164,12 +164,12 @@ async function main() {
     
     // Write sample data to output file
     fs.writeFileSync(outputFile, JSON.stringify(mockUnusedTranslations, null, 2));
-    console.log(`✅ Created ${outputFile} with example unused translation keys`);
-    console.log('');
-    console.log('NOTE: This is a fallback implementation due to an error in the analysis.');
-    console.log('The actual analysis could not be completed. Check the error message above.');
-    console.log('');
-    console.log('You can still go to /admin/translations/clean to test the UI.');
+    console.warn(`✅ Created ${outputFile} with example unused translation keys`);
+    console.warn('');
+    console.warn('NOTE: This is a fallback implementation due to an error in the analysis.');
+    console.warn('The actual analysis could not be completed. Check the error message above.');
+    console.warn('');
+    console.warn('You can still go to /admin/translations/clean to test the UI.');
   }
 }
 

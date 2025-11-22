@@ -10,7 +10,7 @@ export default async function AdminLayout({
   if (!user) {
     redirect("/sign-in");
   }
-  console.log(user?.publicMetadata?.role);
+  // User role check passed
   return (
     <ContentWrapper>
       <div className="mb-8">

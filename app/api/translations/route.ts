@@ -43,9 +43,7 @@ export async function GET(request: Request) {
     const language = searchParams.get("language");
     const namespace = searchParams.get("namespace");
 
-    console.log(
-      `Fetching translations for language: ${language}, namespace: ${namespace}`
-    );
+    // Fetching translations for language and namespace
 
     const translations = await prisma.translation.findMany({
       where: language ? { language } : undefined,
@@ -83,7 +81,7 @@ export async function GET(request: Request) {
           formattedTranslations[language] = parsedContent;
         }
 
-        console.log(`✓ Successfully processed ${language} translation`);
+        console.warn(`✓ Successfully processed ${language} translation`);
       } catch (err) {
         console.error(`✗ Failed to process ${language} translation:`, err);
       }

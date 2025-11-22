@@ -94,7 +94,7 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
 
     // Load the resources immediately from the initialTranslations
     if (language in initialTranslations) {
-      console.log(`Loading ${language} translations from local JSON files`);
+      // Loading translations from local JSON files
 
       if (namespace) {
         // Add single namespace
@@ -159,9 +159,7 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
 
         // Handle 404 gracefully - database might be empty, use JSON fallback
         if (response.status === 404) {
-          console.log(
-            `No database translations for ${language}/${ns}, using JSON fallback`
-          );
+          // No database translations, using JSON fallback
           continue; // Skip this namespace, JSON already loaded
         }
 
@@ -190,9 +188,7 @@ i18n.reloadResources = async (language: string, namespace?: string) => {
           // Add to i18next (will override the JSON files if keys exist)
           i18n.addResourceBundle(language, ns, content, true, true);
         } else {
-          console.log(
-            `Empty database translations for ${language}/${ns}, using JSON fallback`
-          );
+          // Empty database translations, using JSON fallback
         }
       }
     } catch (dbError) {

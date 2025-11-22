@@ -2,11 +2,7 @@ import { mkdir, writeFile } from "fs/promises";
 import { NextResponse } from "next/server";
 import { join } from "path";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
+export const runtime = "nodejs";
 
 export async function POST(request: Request) {
   try {

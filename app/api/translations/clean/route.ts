@@ -16,7 +16,7 @@ function removeNestedKey(obj: any, keyPath: string[]): boolean {
   }
   
   const key = keyPath.shift();
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+   
   if (key && obj[key] && typeof obj[key] === 'object') {
     return removeNestedKey(obj[key], keyPath);
   }
@@ -44,7 +44,7 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log(`Bereinige ${unusedKeys.length} unbenutzte Übersetzungsschlüssel`);
+    console.warn(`Bereinige ${unusedKeys.length} unbenutzte Übersetzungsschlüssel`);
 
     // 1. Bereinige die Datenbank-Übersetzungen
     let dbCleanCount = 0;
@@ -59,10 +59,10 @@ export async function POST(request: Request) {
       `;
       
       if (!tableExists[0].exists) {
-        console.log("Translation table does not exist in the database, skipping database cleanup");
+        console.warn("Translation table does not exist in the database, skipping database cleanup");
       } else {
         const translations = await prisma.translation.findMany();
-        console.log(`Found ${translations.length} translation records in database`);
+        console.warn(`Found ${translations.length} translation records in database`);
         
         for (const translation of translations) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -96,12 +96,12 @@ export async function POST(request: Request) {
                 where: { id: translation.id },
                 data: { content }
               });
-              console.log(`✓ Cleaned ${languageCleanCount} keys from database for language: ${translation.language}`);
+              console.warn(`✓ Cleaned ${languageCleanCount} keys from database for language: ${translation.language}`);
             } catch (error) {
               console.error(`Failed to update database for language ${translation.language}:`, error);
             }
           } else {
-            console.log(`No changes needed for language: ${translation.language} in database`);
+            console.warn(`No changes needed for language: ${translation.language} in database`);
           }
         }
       }
@@ -161,7 +161,7 @@ export async function POST(request: Request) {
         // Speichere die Datei nur, wenn Änderungen vorgenommen wurden
         if (fileChanged) {
           await writeFile(filePath, JSON.stringify(jsonData, null, 2), 'utf8');
-          console.log(`✓ Bereinigte ${fileName}`);
+          console.warn(`✓ Bereinigte ${fileName}`);
         }
       } catch (err) {
         console.error(`Fehler beim Bereinigen von ${fileName}:`, err);
