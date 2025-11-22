@@ -1,0 +1,17 @@
+[phases.setup]
+nixPkgs = ["nodejs_20", "bun"]
+
+[phases.install]
+cmds = [
+  "bun install"
+]
+
+[phases.build]
+cmds = [
+  "bunx prisma generate",
+  "bunx next build --webpack"
+]
+
+[start]
+cmd = "bunx next start"
+
