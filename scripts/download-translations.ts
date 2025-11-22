@@ -4,10 +4,18 @@
  */
 
 import { PrismaClient } from "@prisma/client";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { writeFile } from "fs/promises";
 import path from "path";
 
-const prisma = new PrismaClient();
+const databaseUrl =
+  process.env.DATABASE_URL ||
+  "postgresql://user:password@localhost:5432/db?schema=public";
+
+const pool = new Pool({ connectionString: databaseUrl });
+const adapter = new PrismaPg(pool);
+const prisma = new PrismaClient({ adapter });
 
 async function downloadTranslations() {
   try {

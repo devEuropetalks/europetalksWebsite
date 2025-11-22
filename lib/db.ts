@@ -1,25 +1,39 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
 
-// Use a dummy DATABASE_URL during build if not available
-// This allows Prisma to initialize during build without errors
-if (!process.env.DATABASE_URL) {
-  process.env.DATABASE_URL =
-    "postgresql://user:password@localhost:5432/db?schema=public";
-}
+// Ensure DATABASE_URL is set during build
+const databaseUrl =
+  process.env.DATABASE_URL ||
+  "postgresql://user:password@localhost:5432/db?schema=public";
 
-export const db =
-  globalForPrisma.prisma ??
-  new PrismaClient({
+function getPrismaClient(): PrismaClient {
+  if (globalForPrisma.prisma) {
+    return globalForPrisma.prisma;
+  }
+
+  // Create PostgreSQL connection pool
+  const pool = new Pool({ connectionString: databaseUrl });
+  const adapter = new PrismaPg(pool);
+
+  // Type assertion: Prisma 7 supports adapter but generated types may be strict
+  const client = new PrismaClient({
+    adapter,
     log:
       process.env.NODE_ENV === "development"
         ? ["query", "error", "warn"]
         : ["error"],
-  });
+  } as Prisma.PrismaClientOptions);
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = db;
+  if (process.env.NODE_ENV !== "production") {
+    globalForPrisma.prisma = client;
+  }
+
+  return client;
 }
+
+export const db = getPrismaClient();
