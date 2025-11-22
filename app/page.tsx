@@ -31,9 +31,11 @@ export default function HomePage() {
               src={heroImage}
               alt={isDarkMode ? "Europe by night from space" : "European Union"}
               fill
-              className={`object-cover brightness-[0.4] ${
-                !isDarkMode ? "object-[center_10%]" : ""
-              }`}
+              className={
+                isDarkMode
+                  ? "object-cover brightness-[0.4] object-center"
+                  : "object-cover brightness-[0.4] object-[center_10%]"
+              }
               priority
               quality={100}
             />
