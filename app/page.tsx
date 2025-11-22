@@ -14,11 +14,11 @@ export default function HomePage() {
   const { theme, resolvedTheme } = useTheme();
 
   const heroTitle = t("hero.title");
-  
+
   // Determine if we're in dark mode (accounting for system theme)
   const isDarkMode = resolvedTheme === "dark" || theme === "dark";
-  const heroImage = isDarkMode 
-    ? "/images/europeByNight.webp" 
+  const heroImage = isDarkMode
+    ? "/images/europeByNight.webp"
     : "/images/europeanunion.webp";
 
   return (
@@ -31,7 +31,9 @@ export default function HomePage() {
               src={heroImage}
               alt={isDarkMode ? "Europe by night from space" : "European Union"}
               fill
-              className="object-cover brightness-[0.4]"
+              className={`object-cover brightness-[0.4] ${
+                !isDarkMode ? "object-[center_30%]" : ""
+              }`}
               priority
               quality={100}
             />
@@ -144,11 +146,13 @@ export default function HomePage() {
           </div>
         </section>
         <section className="mb-12">
-          <h2 className="text-3xl font-bold mb-4 text-center">{t("getToKnowUs.title")}</h2>
+          <h2 className="text-3xl font-bold mb-4 text-center">
+            {t("getToKnowUs.title")}
+          </h2>
           <Slideshow interval={5000} />
         </section>
       </ContentWrapper>
-      
+
       {/* CTA Section - Full Width */}
       <ContentWrapper fullBleed>
         <section className="py-16 text-center bg-muted">
