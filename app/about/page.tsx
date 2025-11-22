@@ -14,7 +14,7 @@ export default function AboutPage() {
       <h1 className="text-4xl font-bold mb-8">{t("title")}</h1>
 
       <div className="prose prose-lg dark:prose-invert max-w-none space-y-12">
-        <AquarelleBackground className="rounded-lg p-8" fixedColor="gelb">
+        <AquarelleBackground className="rounded-lg p-8" fixedColor="gelb" priority>
           <section>
             <h2 className="text-3xl font-semibold mb-4">
               {t("whoWeAre.title")}
@@ -27,6 +27,7 @@ export default function AboutPage() {
         <AquarelleBackground
           className="rounded-lg p-8 text-center"
           fixedColor="rot"
+          priority
         >
           <section>
             <h2 className="text-3xl font-semibold mb-4">
@@ -57,7 +58,7 @@ export default function AboutPage() {
           </section>
         </AquarelleBackground>
 
-        <AquarelleBackground className="rounded-lg p-8" fixedColor="blau">
+        <AquarelleBackground className="rounded-lg p-8" fixedColor="blau" priority>
           <section>
             <h2 className="text-3xl font-semibold mb-4">
               {t("background.title")}

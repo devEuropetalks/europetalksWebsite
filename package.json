@@ -8,7 +8,8 @@
     "build": "bunx prisma generate && bunx next build --webpack",
     "start": "bun --bun next start",
     "lint": "bunx eslint .",
-    "download:translations": "bun scripts/download-translations.ts"
+    "download:translations": "bun scripts/download-translations.ts",
+    "convert:aquarelle": "bun scripts/convert-aquarelle-to-webp.js"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.35.4",
@@ -78,6 +79,7 @@
     "globals": "^16.5.0",
     "postcss": "^8.5.6",
     "prisma": "^7.0.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4.1.17",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
