@@ -5,13 +5,21 @@ import Link from "next/link";
 import Image from "next/image";
 import ContentWrapper from "@/components/ContentWrapper";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "next-themes";
 import Typewriter from "typewriter-effect";
 import { Slideshow } from "@/components/Slideshow";
 
 export default function HomePage() {
   const { t } = useTranslation("home");
+  const { theme, resolvedTheme } = useTheme();
 
   const heroTitle = t("hero.title");
+  
+  // Determine if we're in dark mode (accounting for system theme)
+  const isDarkMode = resolvedTheme === "dark" || theme === "dark";
+  const heroImage = isDarkMode 
+    ? "/images/europeByNight.webp" 
+    : "/images/europeanunion.webp";
 
   return (
     <div>
@@ -20,8 +28,8 @@ export default function HomePage() {
         <section className="relative w-full min-h-[60vh] -mt-14 pt-14">
           <div className="absolute inset-0">
             <Image
-              src="/images/europeByNight.jpg"
-              alt="Europe by night from space"
+              src={heroImage}
+              alt={isDarkMode ? "Europe by night from space" : "European Union"}
               fill
               className="object-cover brightness-[0.4]"
               priority
