@@ -27,15 +27,25 @@ export default function HomePage() {
         {/* Hero Section */}
         <section className="relative w-full min-h-[60vh] -mt-14 pt-14">
           <div className="absolute inset-0">
+            {/* Dark mode image - preloaded but hidden in light mode */}
             <Image
-              src={heroImage}
-              alt={isDarkMode ? "Europe by night from space" : "European Union"}
+              src="/images/europeByNight.webp"
+              alt="Europe by night from space"
               fill
-              className={
-                isDarkMode
-                  ? "object-cover brightness-[0.4] object-center"
-                  : "object-cover brightness-[0.4] object-[center_10%]"
-              }
+              className={`object-cover brightness-[0.4] object-center transition-opacity duration-300 ${
+                isDarkMode ? "opacity-100" : "opacity-0"
+              }`}
+              priority
+              quality={100}
+            />
+            {/* Light mode image - preloaded but hidden in dark mode */}
+            <Image
+              src="/images/europeanunion.webp"
+              alt="European Union"
+              fill
+              className={`object-cover brightness-[0.4] object-[center_10%] transition-opacity duration-300 ${
+                isDarkMode ? "opacity-0" : "opacity-100"
+              }`}
               priority
               quality={100}
             />

@@ -13,4 +13,4 @@ export type TranslationNamespace = Record<string, TranslationObject>;
 export type LanguageTranslations = Record<string, TranslationNamespace>;
 
 // Type for all translations (keyed by language code)
-export type Translations = Record<string, LanguageTranslations>; 
+export type Translations = Record<string, LanguageTranslations>;
