@@ -10,14 +10,13 @@ import {
 import { Globe, Loader2 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Image from "next/image";
-import { useState } from "react";
-import { useTranslations } from "@/hooks/use-translations";
+import { useState, useCallback } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { prefetchLanguage } from "@/components/i18n-provider";
 
 export function LanguageSelector() {
   const { t, i18n } = useTranslation("components");
   const [isChanging, setIsChanging] = useState(false);
-  const { reload: reloadTranslations } = useTranslations();
   const { toast } = useToast();
 
   const languages = [
@@ -39,13 +38,8 @@ export function LanguageSelector() {
   const handleLanguageChange = async (langCode: string) => {
     try {
       setIsChanging(true);
-      // Changing language
       await i18n.changeLanguage(langCode);
-      // Language changed, reloading translations
-      await reloadTranslations();
-      // Translations reloaded
       
-      // Kein Browser-Reload erforderlich, i18n.changeLanguage aktualisiert die Anzeige automatisch
       toast({
         title: t("languageSelector.success"),
         description: t("languageSelector.languageChanged", {
@@ -63,6 +57,13 @@ export function LanguageSelector() {
       setIsChanging(false);
     }
   };
+
+  // Prefetch translations on hover for instant language switching
+  const handleHover = useCallback((langCode: string) => {
+    if (langCode !== i18n.language) {
+      prefetchLanguage(langCode);
+    }
+  }, [i18n.language]);
 
   return (
     <DropdownMenu>
@@ -86,6 +87,8 @@ export function LanguageSelector() {
           <DropdownMenuItem
             key={lang.code}
             onClick={() => handleLanguageChange(lang.code)}
+            onMouseEnter={() => handleHover(lang.code)}
+            onFocus={() => handleHover(lang.code)}
             className="flex items-center gap-2"
             disabled={isChanging || i18n.language === lang.code}
           >

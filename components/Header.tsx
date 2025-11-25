@@ -85,6 +85,7 @@ export default function Header() {
               <PrefetchLink
                 key={href}
                 href={href}
+                prefetchOnViewport
                 className={`text-white hover:text-accent transition-colors ${
                   pathname === href ? "text-accent" : ""
                 }`}

@@ -17,9 +17,6 @@ export default function HomePage() {
 
   // Determine if we're in dark mode (accounting for system theme)
   const isDarkMode = resolvedTheme === "dark" || theme === "dark";
-  const heroImage = isDarkMode
-    ? "/images/europeByNight.webp"
-    : "/images/europeanunion.webp";
 
   return (
     <div>
@@ -96,12 +93,11 @@ export default function HomePage() {
           <div className="text-center p-6 relative overflow-hidden rounded-lg">
             <div className="absolute inset-0 -z-10">
               <Image
-                src="/images/flags.jpg"
+                src="/images/flags.webp"
                 alt="European flags"
                 fill
                 className="object-cover brightness-[0.4]"
-                quality={100}
-                priority
+                quality={75}
                 sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
@@ -118,11 +114,11 @@ export default function HomePage() {
           <div className="text-center p-6 relative overflow-hidden rounded-lg">
             <div className="absolute inset-0 -z-10">
               <Image
-                src="/images/community.jpg"
+                src="/images/community.webp"
                 alt="European community"
                 fill
                 className="object-cover brightness-[0.4]"
-                quality={100}
+                quality={75}
                 sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>
@@ -139,11 +135,11 @@ export default function HomePage() {
           <div className="text-center p-6 relative overflow-hidden rounded-lg">
             <div className="absolute inset-0 -z-10">
               <Image
-                src="/images/learning.jpg"
+                src="/images/learning.webp"
                 alt="Learning together"
                 fill
                 className="object-cover brightness-[0.4]"
-                quality={100}
+                quality={75}
                 sizes="(max-width: 768px) 100vw, 33vw"
               />
             </div>

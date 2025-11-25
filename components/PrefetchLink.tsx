@@ -13,6 +13,7 @@ interface PrefetchLinkProps
   className?: string;
   prefetch?: boolean;
   prefetchData?: string; // API endpoint to prefetch
+  prefetchOnViewport?: boolean; // Prefetch when link enters viewport
 }
 
 export function PrefetchLink({
@@ -20,12 +21,18 @@ export function PrefetchLink({
   className,
   prefetch = true,
   prefetchData,
+  prefetchOnViewport = false,
   ...props
 }: PrefetchLinkProps) {
   const router = useRouter();
   const timeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const hasPrefetched = useRef(false);
 
   const prefetchResources = useCallback(() => {
+    if (hasPrefetched.current) return;
+    hasPrefetched.current = true;
+
     // Prefetch the page
     if (prefetch && props.href) {
       router.prefetch(props.href.toString());
@@ -40,6 +47,29 @@ export function PrefetchLink({
     }
   }, [prefetch, prefetchData, props.href, router]);
 
+  // Viewport-based prefetching using Intersection Observer
+  useEffect(() => {
+    if (!prefetchOnViewport || typeof window === "undefined") return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            prefetchResources();
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: "100px" } // Start prefetching 100px before visible
+    );
+
+    if (linkRef.current) {
+      observer.observe(linkRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [prefetchOnViewport, prefetchResources]);
+
   const handleMouseEnter = () => {
     // Clear any existing timeout
     if (timeoutRef.current) {
@@ -47,7 +77,7 @@ export function PrefetchLink({
     }
 
     // Set a new timeout to prefetch after a short delay
-    timeoutRef.current = setTimeout(prefetchResources, 100);
+    timeoutRef.current = setTimeout(prefetchResources, 50); // Reduced from 100ms
   };
 
   const handleMouseLeave = () => {
@@ -55,6 +85,11 @@ export function PrefetchLink({
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current);
     }
+  };
+
+  // Touch device support - prefetch on touch start
+  const handleTouchStart = () => {
+    prefetchResources();
   };
 
   // Cleanup on unmount
@@ -68,11 +103,13 @@ export function PrefetchLink({
 
   return (
     <Link
+      ref={linkRef}
       className={cn(className)}
       prefetch={prefetch}
       {...props}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
     >
       {children}
     </Link>

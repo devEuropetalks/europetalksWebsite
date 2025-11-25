@@ -6,7 +6,6 @@ import { I18nextProvider } from "@/components/i18n-provider";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { TranslationsProvider } from "@/components/providers/TranslationsProvider";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as SonnerToaster } from "sonner";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
@@ -46,6 +45,22 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Preconnect to critical third-party origins */}
+        <link rel="preconnect" href="https://clerk.com" />
+        <link rel="preconnect" href="https://api.clerk.com" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://img.clerk.com" />
+        <link rel="dns-prefetch" href="https://clerk.com" />
+        <link rel="dns-prefetch" href="https://api.clerk.com" />
+        
+        {/* Preconnect to UploadThing */}
+        <link rel="preconnect" href="https://uploadthing.com" />
+        <link rel="dns-prefetch" href="https://uploadthing.com" />
+        
+        {/* Preconnect to fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+      </head>
       <body className={`${inter.className}`}>
         <NextSSRPlugin
           routerConfig={extractRouterConfig(ourFileRouter)}
@@ -53,13 +68,11 @@ export default function RootLayout({
         <ThemeProvider>
           <ClerkThemeProvider>
             <I18nextProvider>
-              <TranslationsProvider>
-                <Header />
-                <main className="min-h-screen">{children}</main>
-                <Footer />
-                <Toaster />
-                <SonnerToaster />
-              </TranslationsProvider>
+              <Header />
+              <main className="min-h-screen">{children}</main>
+              <Footer />
+              <Toaster />
+              <SonnerToaster />
             </I18nextProvider>
           </ClerkThemeProvider>
         </ThemeProvider>

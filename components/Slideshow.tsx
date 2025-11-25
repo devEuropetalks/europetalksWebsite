@@ -16,16 +16,8 @@ const blurDataURL =
 // Generate array of images from 26 to 1 (newest first)
 const images = Array.from({ length: 26 }, (_, i) => {
   const num = 26 - i; // Start from 26 and count down
-  const fileExtension =
-    num === 1
-      ? ".jpeg"
-      : num === 13 || num === 17 || num === 19
-      ? ".png"
-      : ".jpg";
-  const imagePath = `/images/slideshow/quotes${num}${fileExtension}`;
-
   return {
-    src: imagePath,
+    src: `/images/slideshow/quotes${num}.webp`,
     alt: `Europe Talks Quote ${num}`,
   };
 });

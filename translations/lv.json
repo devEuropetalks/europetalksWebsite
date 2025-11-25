@@ -2,15 +2,15 @@
   "auth": {
     "signIn": {
       "error": "Neizdevās pierakstīties",
-      "title": "Pierakstīties",
-      "success": "Veiksmīgi pierakstījies",
+      "title": "Reģistrēties",
+      "success": "Veiksmīgi pieteicies",
       "subtitle": "Laipni lūdzam atpakaļ"
     },
     "signUp": {
-      "error": "Failed to sign up",
-      "title": "Sign Up",
-      "success": "Successfully signed up",
-      "subtitle": "Welcome to EuropeTalks"
+      "error": "Neizdevās reģistrēties",
+      "title": "Reģistrēties",
+      "success": "Veiksmīgi reģistrējies",
+      "subtitle": "Laipni lūdzam EuropeTalks"
     },
     "signOut": {
       "error": "Neizdevās izrakstīties",
@@ -21,67 +21,67 @@
     "cta": {
       "title": "Vai esat gatavs pievienoties?",
       "buttons": {
-        "contact": "Sazinieties ar mums",
+        "contact": "Sazinies ar mums",
         "explore": "Izpētīt notikumus",
         "learnMore": "Uzzināt vairāk"
       },
-      "description": "Kļūstiet par biedru un iegūstiet piekļuvi ekskluzīviem pasākumiem un funkcijām."
+      "description": "Kļūsti par biedru un iegūsti piekļuvi ekskluzīviem pasākumiem un iespējām."
     },
     "hero": {
       "title": "Laipni lūgti EuropeTalks!",
-      "subtitle": "Pievienojieties mūsu eiropiešu kopienai, kas dalās ar idejām, kultūru un veido saiknes pāri robežām."
+      "subtitle": "Pievienojies mūsu eiropiešu kopienai, kas dalās ar idejām, kultūru un veido saiknes pāri robežām."
     },
     "features": {
       "cultural": {
-        "title": "Cultural apmaiņa",
-        "description": "Iepazīstiet dažādas Eiropas kultūras mūsu pasākumos un darbnīcās."
+        "title": "Kultūras apmaiņa",
+        "description": "Iegūsti dažādu Eiropas kultūru pieredzi, piedaloties mūsu pasākumos un darbnīcās."
       },
       "community": {
         "title": "Kopiena",
-        "description": "Sazinieties ar līdzīgi domājošiem Europeansem un veidojiet ilgstošas attiecības."
+        "description": "Satiecies ar līdzīgi domājošiem eiropiešiem un veido ilgstošas attiecības."
       },
       "knowledge": {
-        "title": "Dalīties ar zināšanām",
-        "description": "Dalieties un papildiniet savas zināšanas interaktīvās diskusijās, semināros un mācieties no citiem."
+        "title": "Dalies ar zināšanām",
+        "description": "Dalies un paplašini savas zināšanas, piedaloties interaktīvās diskusijās, darbnīcās un mācoties no citiem."
       }
     },
     "getToKnowUs": {
-      "title": "Iepazīstieties ar mums"
+      "title": "Iepazīsti mūs"
     }
   },
   "about": {
     "title": "Par EuropeTalks",
     "whoWeAre": {
-      "intro": "Mēs esam aktīvistu grupa no visas Eiropas, kurus vieno viens mērķis - veicināt Eiropas sadarbību un solidaritāti!",
+      "intro": "Mēs esam aktīvistu grupa no visas Eiropas, kurus vieno viens mērķis – veicināt Eiropas sadarbību un solidaritāti!",
       "title": "Kas mēs esam",
-      "mission": "Mūsu galvenais mērķis ir nodrošināt platformu European demokrātiem, lai apvienotu domubiedrus no visas European un ārpus tās un kopīgi strādātu pie kopīga European redzējuma, kura pamatā ir sociāldemokrātiskas un sociālistiskas vērtības. Mēs vēlamies dot iespēju cilvēkiem dalīties savās vērtībās un redzējumos par to, kā turpmāk attīstīt un veidot European Savienību."
+      "mission": "Mūsu galvenais mērķis ir nodrošināt platformu Eiropas demokrātiem, lai savienotu līdzīgi domājošus cilvēkus no visas Eiropas un ārpus tās, un kopīgi strādātu pie kopīgas Eiropas vīzijas, kas balstīta uz sociāldemokrātiskām un sociālistiskām vērtībām. Mēs vēlamies dot cilvēkiem iespēju dalīties savās vērtībās un redzējumā par to, kā tālāk attīstīt un veidot Eiropas Savienību."
     },
     "howWeWork": {
-      "intro": "Mums kā sociālistiem un sociāldemokrātiem ir jāīsteno Eiropas ideja un jāveido Eiropas tīkli visos līmeņos. Tikai tad varēs ticami pārstāvēt un veicināt Eiropas politiku.",
+      "intro": "Mēs, sociālisti un sociāldemokrāti, mums jāiemieso Eiropas ideja un jāveido Eiropas tīklojums visos līmeņos. Tikai tā Eiropas politiku varēs ticami pārstāvēt un veicināt.",
       "title": "Kā mēs strādājam",
-      "method": "Mēs to īstenojam, savienojot cilvēkus katrā vietējā organizācijā. Lai atbalstītu cilvēkus izprast dažādus viedokļus, dalīties politiskajā pieredzē un kopīgi strādāt pie kopīgu jautājumu risināšanas, mēs organizējam seminārus un pasākumus - gan tiešsaistē, gan klātienē.",
-      "papers": "Šie semināri veido pamatu mūsu kopīgajam darbam un mūsu nostādnēm attiecībā uz konkrētiem politikas jautājumiem. Katra semināra beigās mēs izstrādājam diskusiju dokumentus, kas tiek pārnesti uz atsevišķām organizācijām un kuru mērķis ir veicināt politikas veidošanu šajās organizācijās. Tas ir vienīgais veids, kā mēs varam nodrošināt, ka Eiropas jautājumi tiek iekļauti debatēs un apspriesti ar reālu Eiropas perspektīvu.",
-      "support": "Mēs atbalstām arī vietējās partiju organizācijas, lai tās varētu savstarpēji sazināties. Vai esat vietējās komitejas biedrs un jums ir nepieciešams atbalsts Eiropas tīkla veidošanā? Tad rakstiet mums!",
-      "workshops": "Mūsu semināros tiek risināti konkrēti jautājumi un tiek piedāvāta iespēja apmainīties ar idejām un rast risinājumus kopīgām European problēmām. Kā mēs varam labāk un humānāk risināt migrācijas un bēgļu problēmas European Savienībā? Ko mēs varam darīt, lai mājokļi būtu pieejami un ilgtspējīgi? Kā izskatītos sociālistiska starptautiskās drošības politika?"
+      "method": "Mēs to īstenojam, savienojot cilvēkus katrā vietējā organizācijā. Lai palīdzētu cilvēkiem izprast dažādus viedokļus, dalītos politiskajā pieredzē un kopīgi strādātu pie risinājumiem kopīgām problēmām, mēs rīkojam darbnīcas un pasākumus – gan tiešsaistē, gan klātienē.",
+      "papers": "Šīs darbnīcas veido pamatu mūsu kopīgajam darbam un mūsu nostājai attiecībā uz konkrētiem politikas jautājumiem. Katras darbnīcas noslēgumā mēs izstrādājam diskusiju dokumentus, kas tiek nodoti atsevišķām organizācijām un kuru mērķis ir veicināt politikas veidošanu šajās organizācijās. Tikai šādā veidā mēs varam nodrošināt, ka Eiropas jautājumi tiek iekļauti debatēs un apspriesti ar patiesi Eiropas skatījumu.",
+      "support": "Mēs arī atbalstām vietējās partiju organizācijas savstarpējā saiknes veidošanā. Vai tu esi vietējās komitejas dalībnieks un tev nepieciešams atbalsts Eiropas tīkla izveidē? Tad raksti mums!",
+      "workshops": "Mūsu darbnīcas risina konkrētus jautājumus un piedāvā iespēju apmainīties ar idejām, kā arī atrast risinājumus kopīgām Eiropas problēmām. Kā mēs varam humāni un labāk risināt migrācijas un bēgļu jautājumus Eiropas Savienībā? Ko mēs varam darīt, lai mājokļi būtu pieejami un ilgtspējīgi? Kā varētu izskatīties sociālistiska starptautiskās drošības politika?"
     },
     "background": {
-      "title": "Background",
-      "activists": "Aktīvisti no visas Eiropas tika aicināti runāt par kopīgiem jautājumiem, piemēram, sociālo nevienlīdzību dalībvalstīs, kā arī par mūsu Eiropas identitāti. Mēs meklējām sadarbību un iedvesmu, lai rastu atbildes uz problēmām un izaicinājumiem, ar kuriem saskaramies visā Europe. Konferencē mēs visi pārliecinājāmies, ka ir jāturpina kopīgi risināt šos un daudzus citus jautājumus - tieši un bez starpniekiem - kā Eiropas iedzīvotāju kustībai. Mūsu atklāšanas pasākuma noslēgumā tika pieņemta rezolūcija manifestā \"Eiropa, mums jārunā\", kas kalpo par pamatu turpmākai sadarbībai un kopīgas politikas veidošanai.",
-      "countries": "Mēs esam aktīvistu grupa no 14 dažādām valstīm: Spains, Frances, Lithuanias, Belgiums, Netherlandss, Germanys, Portugals, Polands, Italys, Croatias, Ukraines, Ukraines, Austrias, Austrias, Latvias, kā arī Apvienotās Karalistes. Taču mēs vienmēr meklējam jaunus aktīvistus no visas Eiropas un ārpus tās. Vai jūs interesē? Vienkārši sazinieties ar mums.",
-      "conference": "Viss sākās pēc \"Eiropa, mums ir jārunā!\" - 2018. gadā, ko organizēja Jusos un SPD Hessens-Süd Vācijā. To atbalstīja Eiropas Parlamenta deputāts Udo Bullmans un Germanys The Foreign Ministrys Eiropas lietu State Minister Mihaels Rots.",
-      "perspective": "Par Eiropu mūsu partijās mēs parasti diskutējam no nacionālās perspektīvas. Mēs vēlamies izveidot Eiropas perspektīvu. Katra vietējā partija un politiskā komiteja var veidot apmaiņu ar sociāldemokrātu un sociālistu partnerorganizāciju starpniecību. To var panākt ar vietējiem apmaiņas projektiem, digitālo tīklu veidošanu un daudz ko citu. Mēs ilgtermiņā un ilgtspējīgi saistām katru reģionālo grupu, lai nodrošinātu, ka Eiropa ir mūsu partiju ikdienas darba centrā."
+      "title": "Vēsture",
+      "activists": "Aktīvisti no visas Eiropas tika aicināti pārrunāt kopīgas problēmas, piemēram, sociālo nevienlīdzību dalībvalstīs, kā arī mūsu Eiropas identitāti. Mēs meklējām sadarbības iespējas un iedvesmu, lai atrastu atbildes uz problēmām un izaicinājumiem, ar kuriem saskaramies visā Eiropā. Konferences laikā mēs visi sapratām, ka ir nepieciešams turpināt kopīgi strādāt pie šiem un daudziem citiem jautājumiem — tieši un bez starpniekiem — kā Eiropas pilsoniskai kustībai no apakšas. Pasākuma noslēgumā tika pieņemta rezolūcija manifestā “Europe, we need to talk”, kas kalpo kā pamats turpmākai sadarbībai un kopīgai politikas veidošanai.",
+      "countries": "Mēs esam aktīvistu grupa no 14 dažādām valstīm: Spānijas, Francijas, Lietuvas, Beļģijas, Nīderlandes, Vācijas, Portugāles, Polijas, Itālijas, Horvātijas, Ukrainas, Austrijas, Latvijas un Apvienotās Karalistes.\nTaču mēs vienmēr meklējam jaunus aktīvistus no visas Eiropas un ārpus tās. Vai tevi tas interesē? Vienkārši sazinies ar mums!",
+      "conference": "Tas viss sākās pēc konferences “Europe, we need to talk!” 2018. gadā, kuru Vācijā organizēja Jusos un SPD Hessen-Süd. Pasākumu atbalstīja Udo Bullmann, Eiropas Parlamenta deputāts, un Michael Roth, Vācijas ārlietu ministrijas Eiropas lietu valsts ministrs.",
+      "perspective": "Parasti mēs apspriežam Eiropas jautājumus savās partijās no nacionālās perspektīvas. Mēs vēlamies izveidot Eiropas skatījumu. Katra vietējā partija un politiskā komiteja var veidot apmaiņu, sadarbojoties ar sociāldemokrātiskajām un sociālistiskajām partnerorganizācijām. To var panākt, īstenojot vietējos apmaiņas projektus, digitālo sadarbību un daudz ko citu. Mēs ilgtermiņā un ilgtspējīgi savienojam katru reģionālo grupu, lai nodrošinātu, ka Eiropa ir mūsu ikdienas partijas darba centrā."
     },
     "leadership": {
       "name": "Vivien Costanzo",
       "role": {
-        "party": "Social Democratic Party of Germany",
-        "title": "European Parliamenta deputāts"
+        "party": "Vācijas Sociāldemokrātiskā partija",
+        "title": "Eiropas Parlamenta deputāte"
       },
-      "intro": "Par EuropeTalks ir atbildīgs galvenokārt:",
+      "intro": "Par EuropeTalks ir atbildīga galvenokārt:",
       "title": "Vadība"
     },
     "getToKnowUs": {
-      "title": "Iepazīstieties ar mums"
+      "title": "Iepazīsti mūs"
     }
   },
   "admin": {
@@ -99,8 +99,9 @@
   "events": {
     "events": {
       "title": "Notikumi",
-      "loading": "Notikumu ielādēšana...",
-      "viewPastEvents": "Skatīt iepriekšējos notikumus"
+      "loading": "Notiek pasākumu ielāde...",
+      "noEvents": "Nav atrastu gaidāmo pasākumu, lūdzu, pārbaudi vēlāk!",
+      "viewPastEvents": "Skatīt iepriekšējos pasākumus"
     },
     "signUp": {
       "email": {
@@ -109,41 +110,54 @@
       },
       "error": "Kļūda",
       "phone": {
-        "label": "Phone Number (Optional)",
-        "placeholder": "Ievadiet savu tālruņa numuru"
+        "label": "Tālruņa numurs (pēc izvēles)",
+        "placeholder": "Ievadi savu tālruņa numuru"
       },
-      "title": "Reģistrējieties",
-      "submit": "Reģistrējieties",
-      "success": "Success!",
+      "title": "Reģistrējies",
+      "submit": "Reģistrēties",
+      "success": "Veiksmīgi!",
       "fullName": {
         "error": "Pilnam vārdam jābūt vismaz 3 rakstzīmēm",
-        "label": "Pilns nosaukums"
+        "label": "Pilns vārds"
       },
       "motivation": {
-        "error": "Lūdzu, sniedziet vismaz 50 rakstzīmes, kurās paskaidrojiet savu motivāciju.",
+        "error": "Lūdzu, uzraksti vismaz 50 rakstzīmes, paskaidrojot savu motivāciju",
         "label": "Kāpēc vēlaties apmeklēt šo pasākumu?",
-        "placeholder": "Lūdzu, pastāstiet mums, kāpēc jūs interesē dalība..."
+        "placeholder": "Lūdzu, pastāsti, kāpēc vēlies piedalīties..."
       },
-      "submitting": "Reģistrēšanās...",
-      "errorMessage": "Neizdevās reģistrēties. Lūdzu, mēģiniet vēlreiz.",
-      "successMessage": "Jūs esat veiksmīgi reģistrējies pasākumam."
+      "submitting": "Notiek reģistrācija...",
+      "description": "Aizpildi šo veidlapu, lai reģistrētos pasākumam {{eventTitle}}. Lūdzu, norādi savu personīgo informāciju un nepieciešamos ar pasākumu saistītos datus.",
+      "errorMessage": "Neizdevās reģistrēties. Lūdzu, mēģini vēlreiz.",
+      "successMessage": "Jūs esat veiksmīgi reģistrējies pasākumam.",
+      "termsAndConditions": "Noteikumi un nosacījumi"
     },
+    "refresh": "Refresh",
+    "tryAgain": "Lūdzu, mēģini vēlāk.",
     "eventCard": {
       "date": "Datums",
-      "time": "Time",
+      "time": "Laiks",
       "hybrid": "Hibrīds",
       "online": "Tiešsaistē",
-      "signUp": "Reģistrējieties",
-      "inPerson": "Personīgi",
+      "signUp": "Reģistrēties",
+      "inPerson": "Klātienē",
       "location": "Atrašanās vieta",
       "readMore": "Lasīt vairāk",
-      "eventEnded": "Pasākums beidzās"
+      "eventEnded": "Pasākums beidzās",
+      "registrationOpen": "Reģistrācija atvērta",
+      "registrationClosed": "Reģistrācija slēgta",
+      "registrationPeriod": "Reģistrācija: {{start}} - {{end}}",
+      "registrationOpenUntil": "Reģistrācija atvērta līdz pasākuma sākumam ({{date}})",
+      "registrationNotStarted": "Reģistrācija vēl nav sākusies",
+      "registrationEndedMessage": "Reģistrācijas periods ir beidzies. Jaunas pieteikšanās vairs netiek pieņemtas.",
+      "registrationOpenUntilStart": "Reģistrācija atvērta līdz pasākuma sākumam",
+      "registrationNotStartedMessage": "Reģistrācija vēl nav sākusies. Lūdzu, pārbaudi vēlāk."
     },
     "pastEvents": {
-      "title": "Iepriekšējie notikumi",
-      "noEvents": "Nav atrasts neviens notikums",
-      "viewUpcomingEvents": "Pārskatīt gaidāmos pasākumus"
-    }
+      "title": "Iepriekšējie pasākumi",
+      "noEvents": "Nav atrastu iepriekšējo pasākumu",
+      "viewUpcomingEvents": "Skatīt gaidāmos pasākumus"
+    },
+    "errorLoading": "Notikusi kļūda, ielādējot pasākumus."
   },
   "header": {
     "other": {
@@ -153,48 +167,75 @@
     },
     "navigation": {
       "home": "Sākums",
-      "about": "Par",
+      "about": "Par mums",
       "admin": "Admin",
       "cloud": "Cloud",
       "events": "Notikumi",
-      "contact": "Sazinieties ar",
-      "gallery": "Gallery",
+      "contact": "Kontakti",
+      "gallery": "Galerija",
       "translations": "Tulkojumi"
     }
   },
   "contact": {
     "form": {
-      "name": "Nosaukums",
+      "name": "Vārds",
       "email": "Email",
-      "submit": "Send Message",
+      "errors": {
+        "emailInvalid": "Nederīga e-pasta adrese",
+        "nameRequired": "Vārds ir obligāts",
+        "subjectRequired": "Temats ir obligāts",
+        "messageMinLength": "Ziņojumam jābūt vismaz 10 rakstzīmēm"
+      },
+      "submit": "Sūtīt ziņojumu",
       "message": "Ziņa",
       "subject": "Temats"
     },
     "info": {
       "email": "Sūtiet mums e-pastu uz šādu adresi:",
-      "title": "Citi veidi, kā izveidot savienojumu",
+      "title": "Citi saziņas veidi",
       "social": "Sekojiet mums sociālajos medijos:"
     },
-    "title": "Sazinieties ar mums",
-    "description": "Sazinieties ar mums, ja jums ir kādi jautājumi vai jautājumi."
+    "error": {
+      "title": "Error",
+      "messageFailed": "Neizdevās nosūtīt ziņojumu. Lūdzu, mēģini vēlreiz."
+    },
+    "title": "Sazinies ar mums",
+    "sending": "Sūta...",
+    "success": {
+      "title": "Veiksmīgi",
+      "messageSent": "Tavs ziņojums ir veiksmīgi nosūtīts."
+    },
+    "description": "Sazinies ar mums, ja tev ir kādi jautājumi vai neskaidrības."
   },
   "gallery": {
-    "title": "Gallery"
+    "title": "Galerija"
   },
   "components": {
     "theme": {
-      "toggleTheme": "Toggle tēmu"
+      "toggleTheme": "Pārslēgt tēmu"
     },
     "events": {
-      "signUp": "Reģistrējieties",
+      "signUp": "Reģistrēties",
       "eventEnded": "Pasākums beidzās"
     },
     "languageSelector": {
-      "label": "Izvēlieties valodu"
+      "error": "Kļūda",
+      "label": "Izvēlieties valodu",
+      "success": "Veiksmīgi",
+      "errorMessage": "Neizdevās nomainīt valodu. Lūdzu, mēģini vēlreiz.",
+      "languageChanged": "Valoda nomainīta uz {{language}}"
     },
     "languageDetection": {
       "switchTo": "Pāriet uz {{{valoda}}",
       "available": "Šī vietne ir pieejama jūsu valodā!"
+    },
+    "translationEditor": {
+      "error": "Kļūda",
+      "success": "Veiksmīgi",
+      "saveFailed": "Neizdevās saglabāt tulkojumus",
+      "selectLanguage": "Izvēlies valodu",
+      "selectNamespace": "Izvēlies namespace",
+      "translationsSaved": "Tulkojumi veiksmīgi saglabāti"
     }
   }
 }

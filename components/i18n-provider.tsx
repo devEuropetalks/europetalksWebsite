@@ -4,13 +4,38 @@ import { I18nextProvider as Provider } from "react-i18next";
 import i18next, { TFunction } from "i18next";
 import { initReactI18next } from "react-i18next";
 import { InitOptions } from "i18next";
-import { initialTranslations } from "@/translations/initial-translations";
+import { initialTranslations, loadLanguage } from "@/translations/initial-translations";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { X } from "lucide-react";
-import { useTranslations } from "@/hooks/use-translations";
 
 export const i18n = i18next;
+
+// Cache for loaded translations
+const loadedLanguages = new Set<string>(["en"]);
+const prefetchingLanguages = new Set<string>();
+
+// Prefetch a language without switching to it
+export async function prefetchLanguage(langCode: string): Promise<void> {
+  // Skip if already loaded or currently prefetching
+  if (loadedLanguages.has(langCode) || prefetchingLanguages.has(langCode)) {
+    return;
+  }
+
+  prefetchingLanguages.add(langCode);
+  
+  try {
+    const translations = await loadLanguage(langCode);
+    if (translations) {
+      Object.entries(translations).forEach(([ns, content]) => {
+        i18n.addResourceBundle(langCode, ns, content, true, true);
+      });
+      loadedLanguages.add(langCode);
+    }
+  } finally {
+    prefetchingLanguages.delete(langCode);
+  }
+}
 
 // Static translations for the language detection popup
 const popupTranslations = {
@@ -50,6 +75,10 @@ const popupTranslations = {
     available: "Šī vietne ir pieejama jūsu valodā!",
     switchTo: "Pāriet uz {{language}}",
   },
+  lt: {
+    available: "Ši svetainė pasiekiama jūsų kalba!",
+    switchTo: "Perjungti į {{language}}",
+  },
   hr: {
     available: "Ova stranica je dostupna na vašoj jeziku!",
     switchTo: "Prelazak na {{language}}",
@@ -76,131 +105,29 @@ const namespaces = [
   "other",
 ];
 
-// Cache for translations to avoid unnecessary API calls
-const translationsCache: Record<
-  string,
-  Record<string, Record<string, unknown>>
-> = {
-  en: initialTranslations.en,
-};
-
-// Add this function to reload resources
+// Load resources for a specific language (with dynamic import)
 i18n.reloadResources = async (language: string, namespace?: string) => {
-  try {
-    // Skip on server-side
-    if (typeof window === "undefined") {
-      return;
+  if (typeof window === "undefined") return;
+
+  // If language not loaded yet, fetch it dynamically
+  if (!loadedLanguages.has(language)) {
+    const translations = await loadLanguage(language);
+    if (translations) {
+      // Add all namespaces from the loaded translations
+      Object.entries(translations).forEach(([ns, content]) => {
+        i18n.addResourceBundle(language, ns, content, true, true);
+      });
+      loadedLanguages.add(language);
     }
+    return;
+  }
 
-    // Load the resources immediately from the initialTranslations
-    if (language in initialTranslations) {
-      // Loading translations from local JSON files
-
-      if (namespace) {
-        // Add single namespace
-        if (initialTranslations[language][namespace]) {
-          i18n.addResourceBundle(
-            language,
-            namespace,
-            initialTranslations[language][namespace],
-            true,
-            true
-          );
-        }
-      } else {
-        // Add all namespaces
-        Object.entries(initialTranslations[language]).forEach(
-          ([ns, translations]) => {
-            i18n.addResourceBundle(language, ns, translations, true, true);
-          }
-        );
-      }
+  // Language already loaded, just ensure resources are available
+  if (namespace) {
+    const bundle = i18n.getResourceBundle(language, namespace);
+    if (bundle) {
+      i18n.addResourceBundle(language, namespace, bundle, true, true);
     }
-
-    // Also try to get translations from database
-    try {
-      // Check cache first
-      if (translationsCache[language]) {
-        if (namespace) {
-          if (translationsCache[language][namespace]) {
-            i18n.addResourceBundle(
-              language,
-              namespace,
-              translationsCache[language][namespace],
-              true,
-              true
-            );
-            return;
-          }
-        } else {
-          Object.entries(translationsCache[language]).forEach(
-            ([ns, translations]) => {
-              i18n.addResourceBundle(language, ns, translations, true, true);
-            }
-          );
-          return;
-        }
-      }
-
-      // If no specific namespace is provided, load all namespaces
-      const namespacesToLoad = namespace ? [namespace] : namespaces;
-
-      for (const ns of namespacesToLoad) {
-        const response = await fetch(
-          `/api/translations?language=${language}&namespace=${ns}`,
-          {
-            // Add cache headers for development
-            cache:
-              process.env.NODE_ENV === "development"
-                ? "no-cache"
-                : "force-cache",
-          }
-        );
-
-        // Handle 404 gracefully - database might be empty, use JSON fallback
-        if (response.status === 404) {
-          // No database translations, using JSON fallback
-          continue; // Skip this namespace, JSON already loaded
-        }
-
-        if (!response.ok) {
-          console.warn(
-            `Warning: Failed to reload database translations for ${language}/${ns}`
-          );
-          continue; // Skip this namespace, but already loaded from JSON
-        }
-
-        const data = await response.json();
-        // The response is now the namespace content directly when requesting a specific namespace
-        const content = namespace ? data : data[ns];
-        // Only add if content exists and is not empty
-        if (
-          content &&
-          typeof content === "object" &&
-          Object.keys(content).length > 0
-        ) {
-          // Update cache
-          if (!translationsCache[language]) {
-            translationsCache[language] = {};
-          }
-          translationsCache[language][ns] = content;
-
-          // Add to i18next (will override the JSON files if keys exist)
-          i18n.addResourceBundle(language, ns, content, true, true);
-        } else {
-          // Empty database translations, using JSON fallback
-        }
-      }
-    } catch (dbError) {
-      console.warn(
-        "Warning: Error fetching translations from database:",
-        dbError
-      );
-      // No need to do anything here since we've already loaded from JSON files
-    }
-  } catch (error) {
-    console.warn("Warning: Error reloading translations:", error);
-    // We've already loaded translations from local JSON files above
   }
 };
 
@@ -210,13 +137,15 @@ i18n.changeLanguage = async (
   lng: string | undefined,
   callback?: (error: unknown, t: TFunction) => void
 ) => {
-  await i18n.reloadResources(lng as string);
+  if (lng) {
+    await i18n.reloadResources(lng);
+  }
   return originalChangeLanguage(lng, callback);
 };
 
-// Initialize i18next
+// Initialize i18next with only English loaded initially
 const config: InitOptions = {
-  resources: initialTranslations, // Load all translations immediately
+  resources: initialTranslations,
   lng: "en",
   fallbackLng: "en",
   defaultNS: "home",
@@ -238,7 +167,6 @@ i18next.use(initReactI18next).init(config);
 export function I18nextProvider({ children }: { children: React.ReactNode }) {
   const [showLanguageHint, setShowLanguageHint] = useState(false);
   const [detectedLanguage, setDetectedLanguage] = useState<string | null>(null);
-  const { reload: reloadTranslations } = useTranslations();
 
   const languageNames = {
     en: "English",
@@ -250,13 +178,14 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
     nl: "Nederlands",
     uk: "Українська",
     lv: "Latviešu",
+    lt: "Lietuvių",
     hr: "Hrvatski",
     hu: "Magyar",
     el: "Greek",
   } as const;
 
   useEffect(() => {
-    const detectAndPrefetchLanguage = async () => {
+    const detectLanguage = async () => {
       // Get browser language (first 2 characters only)
       const browserLang = navigator.language.slice(0, 2).toLowerCase();
 
@@ -269,25 +198,27 @@ export function I18nextProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      // Prefetch the detected language in background
+      loadLanguage(browserLang).then((translations) => {
+        if (translations) {
+          Object.entries(translations).forEach(([ns, content]) => {
+            i18n.addResourceBundle(browserLang, ns, content, true, true);
+          });
+          loadedLanguages.add(browserLang);
+        }
+      });
+
       setDetectedLanguage(browserLang);
       setShowLanguageHint(true);
-
-      // Prefetch translations for detected language
-      try {
-        await i18n.reloadResources(browserLang);
-      } catch (error) {
-        console.warn("Failed to prefetch translations:", error);
-      }
     };
 
-    detectAndPrefetchLanguage();
+    detectLanguage();
   }, []);
 
   const handleLanguageSwitch = async () => {
     if (detectedLanguage) {
       try {
         await i18n.changeLanguage(detectedLanguage);
-        await reloadTranslations();
         setShowLanguageHint(false);
       } catch (error) {
         console.error("Failed to switch language:", error);
