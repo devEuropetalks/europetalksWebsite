@@ -5,7 +5,13 @@ export default function proxy(
   request: NextRequest,
   event: NextFetchEvent
 ) {
-  return clerkMiddleware()(request, event);
+  return clerkMiddleware({
+    authorizedParties: [
+      "http://localhost:3000",
+      "https://cloud.europetalks.eu",
+      "https://europetalks.eu",
+    ],
+  })(request, event);
 }
 
 export const config = {

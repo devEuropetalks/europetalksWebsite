@@ -1,6 +1,9 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import ContentWrapper from "@/components/ContentWrapper";
+
+export const dynamic = "force-dynamic";
+
 export default async function AdminLayout({
   children,
 }: {

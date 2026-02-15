@@ -10,9 +10,16 @@ export default function ClerkThemeProvider({
   children: React.ReactNode;
 }) {
   const { theme } = useTheme();
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
+  // Avoid ClerkProvider during build when key is missing (e.g. CI/Coolify without env yet)
+  if (!publishableKey) {
+    return <>{children}</>;
+  }
 
   return (
     <ClerkProvider
+      publishableKey={publishableKey}
       appearance={{
         baseTheme: theme === "dark" ? dark : undefined,
       }}
